@@ -8,15 +8,15 @@ import { defineConfig, globalIgnores } from 'eslint/config';
 import unicorn from 'eslint-plugin-unicorn';
 
 export default defineConfig([
-  globalIgnores(['dist', 'node_modules']),
+  globalIgnores(['dist', 'node_modules', 'eslint.config.js', 'postcss.config.js']),
 
   {
     files: ['**/*.{js,cjs,mjs,ts,tsx}'],
     languageOptions: {
       parser: tseslint.parser,
       parserOptions: {
+        projectService: true,
         tsconfigRootDir: process.cwd(),
-        project: ['./tsconfig.json'],
       },
       ecmaVersion: 2020,
       globals: { ...globals.browser },
@@ -30,6 +30,7 @@ export default defineConfig([
       eslintConfigPrettier,
     ],
     rules: {
+      "tailwindcss/classnames-order": "off",
       'unicorn/filename-case': ['error', {
         cases: {
           kebabCase: true,
