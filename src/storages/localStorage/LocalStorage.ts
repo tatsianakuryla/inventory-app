@@ -9,7 +9,7 @@ export class LocalStorage {
     return localStorage.getItem(ACCESS_TOKEN_KEY) ?? undefined;
   }
 
-  public static removeToken() {
+  public static removeToken(): void {
     localStorage.removeItem(ACCESS_TOKEN_KEY);
   }
 }
