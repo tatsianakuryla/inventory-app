@@ -76,6 +76,10 @@ export const HOME_ROUTES = {
   GET_ACTIVITY: '/api/home/activity',
 } as const;
 
+export const AUTH_PAGES = [USERS_ROUTES.LOGIN, USERS_ROUTES.REGISTER] as const;
+
+export const PUBLIC_PAGES = [...AUTH_PAGES, HOME_ROUTES.HOME] as const;
+
 export const THEMES = ['LIGHT', 'DARK'] as const;
 export type Theme = (typeof THEMES)[number];
 
