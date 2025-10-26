@@ -17,6 +17,7 @@ export const USERS_ROUTES = {
   LOGIN: '/api/users/login',
   GOOGLE_LOGIN: '/api/users/google/login',
   FACEBOOK_LOGIN: '/api/users/facebook/login',
+  LOGOUT: '/api/users/logout',
 } as const;
 
 export const ADMIN_ROUTES = {
