@@ -1,7 +1,7 @@
 import { create } from 'zustand';
-import { LocalStorage } from '../storages/localStorage/LocalStorage';
-import { SessionStorage } from '../storages/sessionStorage/SessionStorage';
-import { USERS_ROUTES } from '../config/constants';
+import { LocalStorage } from '../storages/localStorage/local-storage';
+import { SessionStorage } from '../storages/sessionStorage/session-storage';
+import { USERS_ROUTES } from '../shared/constants/constants';
 
 type AuthState = {
   accessToken: string | undefined;

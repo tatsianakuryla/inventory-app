@@ -79,18 +79,3 @@ export const HOME_ROUTES = {
 export const AUTH_PAGES = [USERS_ROUTES.LOGIN, USERS_ROUTES.REGISTER] as const;
 
 export const PUBLIC_PAGES = [...AUTH_PAGES, HOME_ROUTES.HOME] as const;
-
-export const THEMES = ['LIGHT', 'DARK'] as const;
-export type Theme = (typeof THEMES)[number];
-
-export const LANGUAGES = ['EN', 'RU'] as const;
-export type Language = (typeof LANGUAGES)[number];
-
-export const USER_ROLES = ['USER', 'ADMIN'] as const;
-export type UserRole = (typeof USER_ROLES)[number];
-
-export const USER_STATUSES = ['ACTIVE', 'BLOCKED'] as const;
-export type UserStatus = (typeof USER_STATUSES)[number];
-
-export const INVENTORY_STATUSES = ['OWNER', 'VIEWER', 'EDITOR'] as const;
-export type InventoryStatus = (typeof INVENTORY_STATUSES)[number];

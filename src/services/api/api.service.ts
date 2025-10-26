@@ -1,5 +1,5 @@
 import axios, { isAxiosError, AxiosHeaders } from 'axios';
-import { API_BASE_URL, AUTH_PAGES } from '../../config/constants';
+import { API_BASE_URL, AUTH_PAGES } from '../../shared/constants/constants';
 import { useAuthStore } from '../../stores/auth.store';
 import {
   extractMessage,

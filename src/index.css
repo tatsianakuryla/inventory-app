@@ -19,3 +19,7 @@ body,
   padding: 2rem;
   text-align: center;
 }
+
+input[type='search']::-webkit-search-cancel-button {
+  cursor: pointer;
+}
