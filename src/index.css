@@ -14,12 +14,18 @@ body,
 }
 
 #root {
-  max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem;
   text-align: center;
 }
 
 input[type='search']::-webkit-search-cancel-button {
   cursor: pointer;
+}
+
+.container {
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+  max-width: 1440px;
+  padding: 1rem 2rem;
 }

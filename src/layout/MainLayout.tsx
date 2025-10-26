@@ -7,7 +7,7 @@ type MainLayoutProperties = { theme: Theme };
 export const MainLayout = ({ theme }: MainLayoutProperties): JSX.Element => {
   return (
     <div>
-      <Header name="User" theme={theme} />
+      <Header theme={theme} />
     </div>
   );
 };
