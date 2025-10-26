@@ -5,7 +5,7 @@ export interface User {
   role: Role;
   status: Status;
   language: Language;
-  theme: Theme;
+  theme: THEMES;
   createdAt: string;
   updatedAt: string;
   version: number;
@@ -13,8 +13,12 @@ export interface User {
   facebookId: string | null;
 }
 
-export const THEMES = ['LIGHT', 'DARK'] as const;
-export type Theme = (typeof THEMES)[number];
+export enum THEMES {
+  'LIGHT' = 'LIGHT',
+  'DARK' = 'DARK',
+}
+
+export type Theme = keyof typeof THEMES;
 
 export const LANGUAGES = ['EN', 'RU'] as const;
 export type Language = (typeof LANGUAGES)[number];

@@ -8,7 +8,7 @@ import { defineConfig, globalIgnores } from 'eslint/config';
 import unicorn from 'eslint-plugin-unicorn';
 
 export default defineConfig([
-  globalIgnores(['dist', 'node_modules', 'eslint.config.js', 'postcss.config.js']),
+  globalIgnores(['dist', 'node_modules', 'eslint.config.js', 'postcss.config.js', 'tailwind.config.js']),
 
   {
     files: ['**/*.{js,cjs,mjs,ts,tsx}'],

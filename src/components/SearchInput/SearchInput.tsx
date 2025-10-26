@@ -1,7 +1,9 @@
 import type { ChangeEvent, JSX } from 'react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDebounced } from '../../hooks/use-debounce';
 import { getTailWindClass } from '../../shared/helpers/helpers';
+import { type Theme, THEMES } from '../../shared/types/main.types';
+import { baseWrapper, themeWrapper, baseInput, themeInput } from './input.styles';
 
 export interface SearchInputProperties {
   value?: string;
@@ -13,6 +15,7 @@ export interface SearchInputProperties {
   className?: string;
   inputClassName?: string;
   ariaLabel?: string;
+  theme: Theme;
 }
 
 export function SearchInput({
@@ -25,11 +28,16 @@ export function SearchInput({
   className = '',
   inputClassName = '',
   ariaLabel,
+  theme = THEMES.LIGHT,
 }: SearchInputProperties): JSX.Element {
   const [searchValue, setSearchValue] = useState(value ?? '');
 
-  const debouncedFire = useDebounced((value: string) => {
-    onDebouncedChange?.(value);
+  useEffect(() => {
+    if (value !== undefined && value !== searchValue) setSearchValue(value);
+  }, [value, searchValue]);
+
+  const debouncedFire = useDebounced((v: string) => {
+    onDebouncedChange?.(v);
   }, debounce);
 
   function handleChange(event: ChangeEvent<HTMLInputElement>): void {
@@ -39,16 +47,12 @@ export function SearchInput({
     debouncedFire(value);
   }
 
-  const wrapperStyleClass =
-    'relative flex items-center rounded-xl border bg-white shadow-sm border-gray-300 focus-within:ring-2 focus-within:ring-blue-500 transition-colors dark:border-gray-700 dark:bg-gray-900';
-  const inputStyleClass =
-    'w-full bg-transparent outline-none placeholder:text-gray-400 dark:placeholder:text-gray-500 text-gray-900 dark:text-gray-100 px-3 h-10';
-
   return (
     <div
       role="search"
       className={getTailWindClass(
-        wrapperStyleClass,
+        baseWrapper,
+        themeWrapper[theme],
         disabled ? 'cursor-not-allowed opacity-60' : '',
         className
       )}
@@ -57,7 +61,7 @@ export function SearchInput({
         value={searchValue}
         type="search"
         aria-label={ariaLabel ?? 'Search'}
-        className={getTailWindClass(inputStyleClass, inputClassName)}
+        className={getTailWindClass(baseInput, themeInput[theme], inputClassName)}
         placeholder={placeholder}
         onChange={handleChange}
         disabled={disabled}

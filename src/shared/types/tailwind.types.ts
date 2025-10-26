@@ -1,2 +1,2 @@
-export type ComponentVariant = 'primary' | 'secondary' | 'ghost' | 'danger';
-export type ComponentSize = 'sm' | 'md' | 'lg' | 'icon';
+export type ComponentSizeWithIcon = 'sm' | 'md' | 'lg' | 'icon';
+export type ComponentSize = 'sm' | 'md' | 'lg';

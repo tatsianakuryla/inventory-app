@@ -1,16 +1,17 @@
 import type { ReactNode, ButtonHTMLAttributes, JSX } from 'react';
 import { getTailWindClass } from '../../shared/helpers/helpers';
-import type { ComponentSize, ComponentVariant } from '../../shared/types/tailwind.types';
+import type { ComponentSizeWithIcon } from '../../shared/types/tailwind.types';
 import { baseButton, focusRing, sizeClasses, variantClasses } from './button.styles';
+import { type Theme, THEMES } from '../../shared/types/main.types';
 
 export interface ButtonProperties extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: ComponentVariant;
-  size?: ComponentSize;
+  theme: Theme;
+  size?: ComponentSizeWithIcon;
   children?: ReactNode;
 }
 
 export const Button = ({
-  variant = 'primary',
+  theme = THEMES.LIGHT,
   size = 'md',
   type = 'button',
   className = baseButton,
@@ -24,7 +25,7 @@ export const Button = ({
       className={getTailWindClass(
         baseButton,
         focusRing,
-        variantClasses[variant],
+        variantClasses[theme],
         sizeClasses[size],
         className
       )}

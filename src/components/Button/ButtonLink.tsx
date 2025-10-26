@@ -1,19 +1,20 @@
 import type { AnchorHTMLAttributes, MouseEvent, JSX } from 'react';
 import { getTailWindClass } from '../../shared/helpers/helpers';
-import type { ComponentVariant, ComponentSize } from '../../shared/types/tailwind.types';
+import type { ComponentSizeWithIcon } from '../../shared/types/tailwind.types';
 import { baseButton, sizeClasses, variantClasses } from './button.styles';
+import { type Theme, THEMES } from '../../shared/types/main.types';
 
 export interface ButtonLinkProperties
   extends Omit<AnchorHTMLAttributes<HTMLAnchorElement>, 'href'> {
   href: string;
-  variant?: ComponentVariant;
-  size?: ComponentSize;
+  theme: Theme;
+  size?: ComponentSizeWithIcon;
   disabled?: boolean;
 }
 
 export const ButtonLink = ({
   href,
-  variant = 'primary',
+  theme = THEMES.LIGHT,
   size = 'md',
   disabled,
   className,
@@ -21,12 +22,7 @@ export const ButtonLink = ({
   children,
   ...rest
 }: ButtonLinkProperties): JSX.Element => {
-  const classes = getTailWindClass(
-    baseButton,
-    variantClasses[variant],
-    sizeClasses[size],
-    className
-  );
+  const classes = getTailWindClass(baseButton, variantClasses[theme], sizeClasses[size], className);
   const handleClick = (event: MouseEvent<HTMLAnchorElement>): void => {
     if (disabled) {
       event.preventDefault();
