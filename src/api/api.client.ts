@@ -1,13 +1,13 @@
 import axios, { isAxiosError, AxiosHeaders } from 'axios';
-import { API_BASE_URL, AUTH_PAGES } from '../../shared/constants/constants';
-import { useAuthStore } from '../../stores/auth.store';
+import { API_BASE_URL, AUTH_PAGES } from '../shared/constants/constants';
+import { useAuthStore } from '../stores/auth.store';
 import {
   extractMessage,
   isCurrentPathOneOf,
   toAuthError,
   toRejection,
-} from '../helpers/api.helpers';
-import { isAxiosHeaders } from '../../shared/typeguards/typeguards';
+} from './helpers/api.helpers';
+import { isAxiosHeaders } from '../shared/typeguards/typeguards';
 
 export const api = axios.create({
   baseURL: API_BASE_URL,
