@@ -3,6 +3,7 @@ import { getTailWindClass } from '../../shared/helpers/helpers';
 import type { ComponentSizeWithIcon } from '../../shared/types/tailwind.types';
 import { baseButton, sizeClasses, variantClasses } from './button.styles';
 import { type Theme, THEMES } from '../../shared/types/main.types';
+import { Link } from 'react-router-dom';
 
 export interface ButtonLinkProperties
   extends Omit<AnchorHTMLAttributes<HTMLAnchorElement>, 'href'> {
@@ -32,8 +33,8 @@ export const ButtonLink = ({
     onClick?.(event);
   };
   return (
-    <a
-      href={disabled ? undefined : href}
+    <Link
+      to={href}
       aria-disabled={disabled || undefined}
       tabIndex={disabled ? -1 : rest.tabIndex}
       className={classes}
@@ -41,7 +42,7 @@ export const ButtonLink = ({
       {...rest}
     >
       {children}
-    </a>
+    </Link>
   );
 };
 
