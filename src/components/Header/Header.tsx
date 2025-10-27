@@ -11,7 +11,8 @@ export const Header = (): JSX.Element => {
     <>
       <div className="container">
         <UserName name={isAuthenticated ? (user?.name ?? 'User') : 'Guest'} />
-        <SearchInput onDebouncedChange={() => console.log('Search')} debounce={400} />
+        {/*TODO*/}
+        <SearchInput onDebouncedChange={() => {}} debounce={400} />
         {!isAuthenticated && (
           <>
             <ButtonLink href={APP_ROUTES.LOGIN}>Sign In</ButtonLink>
