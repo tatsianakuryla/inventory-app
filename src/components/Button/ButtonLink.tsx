@@ -1,30 +1,41 @@
 import type { AnchorHTMLAttributes, MouseEvent, JSX } from 'react';
-import { getTailWindClass } from '../../shared/helpers/helpers';
-import type { ComponentSizeWithIcon } from '../../shared/types/tailwind.types';
-import { baseButton, sizeClasses, variantClasses } from './button.styles';
-import { type Theme, THEMES } from '../../shared/types/main.types';
 import { Link } from 'react-router-dom';
+import { getTailWindClass } from '../../shared/helpers/helpers';
+import {
+  baseButton,
+  focusRing,
+  sizeClasses,
+  variantClasses,
+  type ButtonVariant,
+} from './button.styles';
 
 export interface ButtonLinkProperties
   extends Omit<AnchorHTMLAttributes<HTMLAnchorElement>, 'href'> {
   href: string;
-  theme: Theme;
-  size?: ComponentSizeWithIcon;
+  size?: keyof typeof sizeClasses;
+  variant?: ButtonVariant;
   disabled?: boolean;
 }
 
 export const ButtonLink = ({
   href,
-  theme = THEMES.LIGHT,
   size = 'md',
+  variant = 'primary',
   disabled,
   className,
   onClick,
   children,
   ...rest
 }: ButtonLinkProperties): JSX.Element => {
-  const classes = getTailWindClass(baseButton, variantClasses[theme], sizeClasses[size], className);
-  const handleClick = (event: MouseEvent<HTMLAnchorElement>): void => {
+  const classes = getTailWindClass(
+    baseButton,
+    focusRing,
+    variantClasses[variant],
+    sizeClasses[size],
+    className
+  );
+
+  const handleClick = (event: MouseEvent<HTMLAnchorElement>) => {
     if (disabled) {
       event.preventDefault();
       event.stopPropagation();
@@ -32,11 +43,13 @@ export const ButtonLink = ({
     }
     onClick?.(event);
   };
+
   return (
     <Link
       to={href}
       aria-disabled={disabled || undefined}
       tabIndex={disabled ? -1 : rest.tabIndex}
+      onMouseDown={(event) => disabled && event.preventDefault()}
       className={classes}
       onClick={handleClick}
       {...rest}
@@ -45,5 +58,3 @@ export const ButtonLink = ({
     </Link>
   );
 };
-
-ButtonLink.displayName = 'ApiButtonLink';

@@ -2,8 +2,7 @@ import type { ChangeEvent, JSX } from 'react';
 import { useEffect, useState } from 'react';
 import { useDebounced } from '../../hooks/use-debounce';
 import { getTailWindClass } from '../../shared/helpers/helpers';
-import { type Theme, THEMES } from '../../shared/types/main.types';
-import { baseWrapper, themeWrapper, baseInput, themeInput } from './input.styles';
+import { baseWrapper, baseInput } from './input.styles';
 
 export interface SearchInputProperties {
   value?: string;
@@ -15,7 +14,6 @@ export interface SearchInputProperties {
   className?: string;
   inputClassName?: string;
   ariaLabel?: string;
-  theme: Theme;
 }
 
 export function SearchInput({
@@ -28,13 +26,12 @@ export function SearchInput({
   className = '',
   inputClassName = '',
   ariaLabel,
-  theme = THEMES.LIGHT,
 }: SearchInputProperties): JSX.Element {
   const [searchValue, setSearchValue] = useState(value ?? '');
 
   useEffect(() => {
-    if (value !== undefined && value !== searchValue) setSearchValue(value);
-  }, [value, searchValue]);
+    if (value !== undefined) setSearchValue(value);
+  }, [value]);
 
   const debouncedFire = useDebounced((v: string) => {
     onDebouncedChange?.(v);
@@ -52,7 +49,6 @@ export function SearchInput({
       role="search"
       className={getTailWindClass(
         baseWrapper,
-        themeWrapper[theme],
         disabled ? 'cursor-not-allowed opacity-60' : '',
         className
       )}
@@ -61,10 +57,10 @@ export function SearchInput({
         value={searchValue}
         type="search"
         aria-label={ariaLabel ?? 'Search'}
-        className={getTailWindClass(baseInput, themeInput[theme], inputClassName)}
+        className={getTailWindClass(baseInput, inputClassName)}
         placeholder={placeholder}
         onChange={handleChange}
-        disabled={disabled}
+        disabled={!!disabled}
         autoComplete="off"
         autoCapitalize="none"
         autoCorrect="off"

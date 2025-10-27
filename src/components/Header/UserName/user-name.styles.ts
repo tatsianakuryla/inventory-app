@@ -1,5 +1,4 @@
 import type { ComponentSize } from '../../../shared/types/tailwind.types';
-import { type Theme, THEMES } from '../../../shared/types/main.types';
 
 export const baseUser = 'inline-flex items-center text-gray-900 dark:text-gray-100 mr-auto';
 
@@ -21,7 +20,6 @@ export const initialTextBySize: Record<ComponentSize, string> = {
   lg: 'text-base',
 };
 
-export const avatarThemeClasses: Record<Theme, string> = {
-  [THEMES.LIGHT]: 'bg-emerald-700 text-white ring-1 ring-emerald-700/20',
-  [THEMES.DARK]: 'bg-emerald-200 text-emerald-950 ring-1 ring-emerald-300/30',
-};
+export const avatarVariant =
+  'bg-emerald-700 text-white ring-1 ring-emerald-700/20 ' +
+  'dark:bg-emerald-200 dark:text-emerald-950 dark:ring-emerald-300/30';

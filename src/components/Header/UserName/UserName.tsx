@@ -2,18 +2,16 @@ import type { JSX } from 'react';
 import { getTailWindClass } from '../../../shared/helpers/helpers';
 import type { ComponentSize } from '../../../shared/types/tailwind.types';
 import {
-  avatarThemeClasses,
   baseUser,
   circleBySize,
   containerGapBySize,
   initialTextBySize,
+  avatarVariant,
 } from './user-name.styles';
-import { type Theme, THEMES } from '../../../shared/types/main.types';
 
 export type UserNameWithInitialProperties = {
   name: string;
   size?: ComponentSize;
-  theme: Theme;
   className?: string;
   circleClassName?: string;
   nameClassName?: string;
@@ -22,13 +20,12 @@ export type UserNameWithInitialProperties = {
 export const UserName = ({
   name,
   size = 'md',
-  theme = THEMES.LIGHT,
   className = '',
   circleClassName = '',
   nameClassName = '',
 }: UserNameWithInitialProperties): JSX.Element => {
   const trimmed = (name ?? 'User').trim();
-  const initial = trimmed[0].toUpperCase();
+  const initial = trimmed[0]?.toUpperCase() ?? 'U';
 
   return (
     <div className={getTailWindClass(baseUser, containerGapBySize[size], className)}>
@@ -38,7 +35,7 @@ export const UserName = ({
         className={getTailWindClass(
           'flex items-center justify-center rounded-full font-semibold select-none',
           circleBySize[size],
-          avatarThemeClasses[theme],
+          avatarVariant,
           circleClassName
         )}
         role="img"
