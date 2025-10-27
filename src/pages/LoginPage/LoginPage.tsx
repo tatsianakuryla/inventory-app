@@ -2,6 +2,8 @@ import type { JSX } from 'react';
 import { APP_ROUTES } from '../../AppRouter/routes/routes';
 import { AuthCard } from '../../components/Auth/AuthCard/AuthCard';
 import { LoginForm } from '../../components/Auth/LoginForm/LoginForm';
+import { AuthSocialButtons } from '../../components/Auth/AuthSocialButton/AuthSocialButton';
+import { DividerOr } from '../../components/DividerOr/DividerOr';
 
 export const LoginPage = (): JSX.Element => (
   <AuthCard
@@ -13,5 +15,7 @@ export const LoginPage = (): JSX.Element => (
     }}
   >
     <LoginForm />
+    <DividerOr label="or continue with email" />
+    <AuthSocialButtons />
   </AuthCard>
 );
