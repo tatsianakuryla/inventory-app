@@ -1,4 +1,4 @@
-import { AppRouter } from './AppRouter/AppRouter';
+import { AppRouter } from './app-router/AppRouter';
 import { BrowserRouter } from 'react-router-dom';
 import { type JSX } from 'react';
 

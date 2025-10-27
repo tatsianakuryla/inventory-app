@@ -2,7 +2,7 @@ import type { JSX } from 'react';
 import { UserName } from './UserName/UserName';
 import { SearchInput } from '../SearchInput/SearchInput';
 import { ButtonLink } from '../Button/ButtonLink';
-import { APP_ROUTES } from '../../AppRouter/routes/routes';
+import { APP_ROUTES } from '../../app-router/routes/routes';
 import { useAuthStore } from '../../hooks/use-auth-store';
 
 export const Header = (): JSX.Element => {

@@ -1,5 +1,5 @@
 import type { JSX } from 'react';
-import { APP_ROUTES } from '../../AppRouter/routes/routes';
+import { APP_ROUTES } from '../../app-router/routes/routes';
 import { AuthCard } from '../../components/Auth/AuthCard/AuthCard';
 import { LoginForm } from '../../components/Auth/LoginForm/LoginForm';
 import { AuthSocialButtons } from '../../components/Auth/AuthSocialButton/AuthSocialButton';

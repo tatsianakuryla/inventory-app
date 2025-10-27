@@ -1,5 +1,5 @@
 import type { JSX } from 'react';
-import { APP_ROUTES } from '../../AppRouter/routes/routes';
+import { APP_ROUTES } from '../../app-router/routes/routes';
 import { AuthCard } from '../../components/Auth/AuthCard/AuthCard';
 import { RegisterForm } from '../../components/Auth/RegisterForm/RegisterForm';
 import { DividerOr } from '../../components/DividerOr/DividerOr';
