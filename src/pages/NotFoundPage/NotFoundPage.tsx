@@ -1,8 +1,9 @@
+import type { JSX } from 'react';
 import { Link } from 'react-router-dom';
 import { TriangleAlert } from 'lucide-react';
 import { APP_ROUTES } from '../../AppRouter/routes/routes';
 
-export const NotFoundPage = () => {
+export const NotFoundPage = (): JSX.Element => {
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4 dark:bg-gray-900">
       <div className="w-full max-w-md rounded-2xl bg-white shadow-lg dark:bg-gray-800">

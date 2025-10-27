@@ -35,7 +35,7 @@ export const ButtonLink = ({
     className
   );
 
-  const handleClick = (event: MouseEvent<HTMLAnchorElement>) => {
+  const handleClick = (event: MouseEvent<HTMLAnchorElement>): void => {
     if (disabled) {
       event.preventDefault();
       event.stopPropagation();

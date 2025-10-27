@@ -1,6 +1,5 @@
 import { Routes, Route } from 'react-router-dom';
 import type { JSX } from 'react';
-import type { Theme } from '../shared/types/main.types';
 import { APP_ROUTES } from './routes/routes';
 import { AppLayout } from '../layouts/AppLayout';
 import { AuthLayout } from '../layouts/AuthLayout';
@@ -17,10 +16,10 @@ import { LoginPage } from '../pages/LoginPage/LoginPage';
 import { RegisterPage } from '../pages/RegisterPage/RegisterPage';
 import { NotFoundPage } from '../pages/NotFoundPage/NotFoundPage';
 
-export const AppRouter = ({ theme }: { theme: Theme }): JSX.Element => {
+export const AppRouter = (): JSX.Element => {
   return (
     <Routes>
-      <Route element={<AppLayout theme={theme} />}>
+      <Route element={<AppLayout />}>
         <Route index element={<HomePage />} />
         <Route path={APP_ROUTES.INVENTORIES} element={<InventoriesPage />} />
         <Route path={APP_ROUTES.INVENTORY_VIEW} element={<InventoryViewPage />} />

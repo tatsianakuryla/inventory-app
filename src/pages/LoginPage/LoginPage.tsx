@@ -1,10 +1,17 @@
-import { type JSX } from 'react';
+import type { JSX } from 'react';
+import { APP_ROUTES } from '../../AppRouter/routes/routes';
+import { AuthCard } from '../../components/Auth/AuthCard/AuthCard';
+import { LoginForm } from '../../components/Auth/LoginForm/LoginForm';
 
-export const LoginPage = (): JSX.Element => {
-  return (
-    <div className="p-4">
-      <h1 className="mb-4 text-2xl font-bold">Login</h1>
-      <p>Login form will be here</p>
-    </div>
-  );
-};
+export const LoginPage = (): JSX.Element => (
+  <AuthCard
+    title="Login"
+    redirectionLink={{
+      text: 'Don’t have an account?',
+      href: APP_ROUTES.REGISTER,
+      label: 'Register',
+    }}
+  >
+    <LoginForm />
+  </AuthCard>
+);
