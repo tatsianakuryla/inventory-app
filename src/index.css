@@ -13,6 +13,10 @@ body,
   color: hsl(var(--foreground));
 }
 
+body {
+  margin: 0;
+}
+
 #root {
   margin: 0 auto;
   text-align: center;
