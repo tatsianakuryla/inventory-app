@@ -28,8 +28,4 @@ export class AuthService {
     const { data } = await api.post<AuthResponse>(USERS_ROUTES.FACEBOOK_LOGIN, { accessToken });
     return data;
   }
-
-  public static async logout(): Promise<void> {
-    await api.post(USERS_ROUTES.LOGOUT);
-  }
 }

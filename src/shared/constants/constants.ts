@@ -3,6 +3,8 @@ export const API_BASE_URL: string =
     ? import.meta.env.VITE_API_URL
     : 'http://localhost:3000';
 
+export const API_ORIGIN = new URL(API_BASE_URL).origin;
+
 export const PAGINATION = {
   DEFAULT_PAGE: 1,
   DEFAULT_PAGE_SIZE: 20,

@@ -11,3 +11,6 @@ export const APP_ROUTES = {
   PROFILE: '/profile/:userId',
   ADMIN_USERS: '/admin/users',
 } as const;
+
+export const APP_AUTH_PAGES = [APP_ROUTES.LOGIN, APP_ROUTES.REGISTER] as const;
+export const APP_PUBLIC_PAGES = [...APP_AUTH_PAGES, APP_ROUTES.HOME] as const;

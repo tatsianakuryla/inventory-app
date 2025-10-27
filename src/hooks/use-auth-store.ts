@@ -1,27 +1,96 @@
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { LocalStorage } from '../storages/localStorage/local-storage';
 import type { User } from '../shared/types/main.types';
+import { APP_ROUTES } from '../app-router/routes/routes';
+import { ACCESS_TOKEN_KEY } from '../storages/localStorage/types';
+import { AUTH_MESSAGES, type AuthError } from '../shared/constants/auth-messages';
 
-interface AuthState {
-  user?: User;
-  token?: string;
+type AuthState = {
+  user: User | undefined;
+  accessToken: string | undefined;
   isAuthenticated: boolean;
-}
+  authError?: AuthError;
+  setAuth: (user: User, accessToken: string) => void;
+  setUser: (user: User | undefined) => void;
+  clearAuth: () => void;
+  setAuthError: (error?: AuthError) => void;
+  logout: (options?: { redirect?: boolean }) => void;
+};
 
-export const useAuthStore = create<AuthState>()(
-  persist<AuthState>(
-    (_set, _get) => ({
-      user: undefined,
-      token: undefined,
-      isAuthenticated: false,
-    }),
-    {
-      name: 'auth-storage',
-      partialize: (state) => ({
-        user: state.user,
-        token: state.token,
-        isAuthenticated: state.isAuthenticated,
-      }),
-    }
-  )
-);
+const initialToken = LocalStorage.getToken();
+let storageListenerInstalled = false;
+
+export const useAuthStore = create<AuthState>()((set, get) => {
+  if (globalThis.window !== undefined && !storageListenerInstalled) {
+    globalThis.addEventListener('storage', (event) => {
+      if (event.key === undefined) {
+        get().clearAuth();
+        return;
+      }
+      if (event.key === ACCESS_TOKEN_KEY) {
+        const token = LocalStorage.getToken();
+        if (token) {
+          set({ accessToken: token, isAuthenticated: true });
+        } else {
+          get().clearAuth();
+        }
+      }
+    });
+    storageListenerInstalled = true;
+  }
+
+  return {
+    user: undefined,
+    accessToken: initialToken,
+    isAuthenticated: Boolean(initialToken),
+    authError: undefined,
+
+    setAuth: (user, accessToken) => {
+      LocalStorage.setToken(accessToken);
+      set({
+        user,
+        accessToken,
+        isAuthenticated: true,
+        authError: undefined,
+      });
+    },
+
+    setUser: (user) => {
+      set((state) => ({
+        user,
+        isAuthenticated: Boolean(state.accessToken),
+      }));
+    },
+
+    clearAuth: () => {
+      LocalStorage.removeToken();
+      set({
+        user: undefined,
+        accessToken: undefined,
+        isAuthenticated: false,
+        authError: undefined,
+      });
+    },
+
+    setAuthError: (error) => {
+      if (error === AUTH_MESSAGES.SESSION_EXPIRED) {
+        LocalStorage.removeToken();
+        set({
+          user: undefined,
+          accessToken: undefined,
+          isAuthenticated: false,
+          authError: error,
+        });
+      } else {
+        set({ authError: error });
+      }
+    },
+
+    logout: (options) => {
+      get().clearAuth();
+      if (options?.redirect) {
+        globalThis.location?.assign?.(APP_ROUTES.HOME);
+      }
+    },
+  };
+});
