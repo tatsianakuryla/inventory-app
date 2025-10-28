@@ -11,6 +11,11 @@
     "verbatimModuleSyntax": true,
     "forceConsistentCasingInFileNames": true
   },
-  "include": ["src", "index.html"],
+  "include": [
+    "src",
+    "index.html",
+    "src/shared/types/facebook.d.ts",
+    "src/shared/types/google.d.ts"
+  ],
   "exclude": ["node_modules", "dist"]
 }

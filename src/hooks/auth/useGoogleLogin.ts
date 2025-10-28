@@ -1,14 +1,17 @@
-import { useMutation } from '@tanstack/react-query';
-import type { UseMutationResult } from '@tanstack/react-query';
+import { useMutation, type UseMutationResult } from '@tanstack/react-query';
 import { AuthService } from '../../api/AuthService';
-import { useOnAuthSuccess } from './useOnAuthSuccess';
-import type { AuthResponse } from '../../api/types/api.schemas';
+import { useAuthStore } from '../useAuthStore';
+import { getGoogleIdToken } from '../../components/Auth/AuthSocialButton/helpers';
+import { type AuthResponse } from '../../api/types/api.schemas';
 
-export const useGoogleLogin = (): UseMutationResult<AuthResponse, unknown, string> => {
-  const onAuthSuccess = useOnAuthSuccess();
+export function useGoogleLogin(): UseMutationResult<AuthResponse, unknown, void> {
+  const setAuth = useAuthStore((state) => state.setAuth);
 
   return useMutation({
-    mutationFn: (idToken: string) => AuthService.googleLogin(idToken),
-    onSuccess: onAuthSuccess,
+    mutationFn: async () => {
+      const idToken = await getGoogleIdToken();
+      return AuthService.googleLogin(idToken);
+    },
+    onSuccess: (data) => setAuth(data, data.token),
   });
-};
+}
