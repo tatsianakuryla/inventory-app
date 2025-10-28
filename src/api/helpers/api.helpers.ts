@@ -4,7 +4,7 @@ import {
   type AuthError,
   BACKEND_ERRORS,
 } from '../../shared/constants/auth-messages';
-import { APP_ROUTES } from '../../app-router/routes/routes';
+import { APP_ROUTES } from '../../appRouter/routes/routes';
 
 export const toRejection = (error: unknown): Promise<never> =>
   Promise.reject(isError(error) ? error : new Error(String(error)));

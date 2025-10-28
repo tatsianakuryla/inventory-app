@@ -1,9 +1,9 @@
 import { create } from 'zustand';
 import { LocalStorage } from '../storages/localStorage/localStorage';
-import type { User } from '../shared/types/main.types';
-import { APP_ROUTES } from '../app-router/routes/routes';
+import { APP_ROUTES } from '../appRouter/routes/routes';
 import { ACCESS_TOKEN_KEY } from '../storages/localStorage/types';
 import { AUTH_MESSAGES, type AuthError } from '../shared/constants/auth-messages';
+import type { User } from '../api/types/api.schemas';
 
 type AuthState = {
   user: User | undefined;
