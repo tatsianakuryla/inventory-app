@@ -21,7 +21,7 @@ export const Header = (): JSX.Element => {
       )}
       {isAuthenticated && (
         <>
-          <ButtonLink href={APP_ROUTES.PROFILE}>Profile</ButtonLink>
+          <ButtonLink href={`/profile/${currentUser?.id ?? ''}`}>Profile</ButtonLink>
           <LogoutButton />
         </>
       )}

@@ -11,14 +11,12 @@ export function GoogleAuthButton(): JSX.Element {
   const googleLogin = useGoogleLogin();
   const [errorText, setErrorText] = useState<string | undefined>();
 
-  const handleGoogleLogin = useCallback(async () => {
+  const handleGoogleLogin = useCallback(() => {
     setErrorText(undefined);
-    try {
-      await googleLogin.mutateAsync();
-    } catch (error) {
+    void googleLogin.mutateAsync().catch((error) => {
       const { message } = getApiError(error);
       setErrorText(message || 'Google login failed. Please try again.');
-    }
+    });
   }, [googleLogin]);
 
   const disabled = useMemo(() => !ready || googleLogin.isPending, [ready, googleLogin.isPending]);
@@ -27,7 +25,7 @@ export function GoogleAuthButton(): JSX.Element {
     <div className="space-y-2">
       <Button
         type="button"
-        onClick={void handleGoogleLogin}
+        onClick={handleGoogleLogin}
         disabled={disabled}
         variant="secondary"
         className="inline-flex w-full items-center justify-center gap-2"

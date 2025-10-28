@@ -15,7 +15,7 @@ export const RegisterPage = (): JSX.Element => (
     }}
   >
     <RegisterForm />
-    <DividerOr label="or continue with email" />
+    <DividerOr label="or" />
     <AuthSocialButtons />
   </AuthCard>
 );

@@ -4,12 +4,12 @@ import { useAuthStore } from '../useAuthStore';
 
 export const useLogout = (): UseMutationResult<void, unknown, void> => {
   const queryClient = useQueryClient();
-  const doLogout = useAuthStore((state) => state.logout);
+  const clearAuth = useAuthStore((state) => state.clearAuth);
 
   return useMutation({
     mutationFn: AuthService.logout,
     onSettled: () => {
-      doLogout({ redirect: true });
+      clearAuth();
       queryClient.clear();
     },
   });

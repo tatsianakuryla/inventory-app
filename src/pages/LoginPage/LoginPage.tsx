@@ -15,7 +15,7 @@ export const LoginPage = (): JSX.Element => (
     }}
   >
     <LoginForm />
-    <DividerOr label="or continue with email" />
+    <DividerOr label="or" />
     <AuthSocialButtons />
   </AuthCard>
 );

@@ -10,11 +10,12 @@ export const FacebookAuthButton = (): JSX.Element => {
   const { ready } = useFacebookSdk();
   const facebookLoginMutation = useFacebookLogin();
   const [errorText, setErrorText] = useState<string | undefined>();
-
   const handleFacebookLogin = useCallback(() => {
     setErrorText(undefined);
 
-    const fb = globalThis.window?.FB;
+    if (!ready || facebookLoginMutation.isPending) return;
+
+    const fb = globalThis.window.FB;
     if (!fb) {
       setErrorText('Facebook SDK not loaded. Please try again.');
       return;
@@ -43,9 +44,9 @@ export const FacebookAuthButton = (): JSX.Element => {
           },
         });
       },
-      { scope: 'email,public_profile' }
+      { scope: 'public_profile,email', return_scopes: true }
     );
-  }, [facebookLoginMutation]);
+  }, [ready, facebookLoginMutation]);
 
   const disabled = useMemo(
     () => !ready || facebookLoginMutation.isPending,
@@ -65,7 +66,6 @@ export const FacebookAuthButton = (): JSX.Element => {
         <Facebook className="h-4 w-4" aria-hidden />
         Continue with Facebook
       </Button>
-
       {errorText && <ServerError>{errorText}</ServerError>}
     </div>
   );

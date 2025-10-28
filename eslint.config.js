@@ -4,11 +4,17 @@ import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
 import tseslint from 'typescript-eslint';
 import eslintConfigPrettier from 'eslint-config-prettier';
-import { defineConfig, globalIgnores } from 'eslint/config';
 import unicorn from 'eslint-plugin-unicorn';
 
-export default defineConfig([
-  globalIgnores(['dist', 'node_modules', 'eslint.config.js', 'postcss.config.js', 'tailwind.config.js']),
+export default [
+  {
+    ignores: ['dist', 'node_modules', 'eslint.config.js', 'postcss.config.js', 'tailwind.config.js'],
+  },
+
+  js.configs.recommended,
+  ...tseslint.configs.recommendedTypeChecked,
+  unicorn.configs.recommended,
+  eslintConfigPrettier,
 
   {
     files: ['**/*.{js,cjs,mjs,ts,tsx}'],
@@ -21,15 +27,13 @@ export default defineConfig([
       ecmaVersion: 2020,
       globals: { ...globals.browser },
     },
-    extends: [
-      js.configs.recommended,
-      ...tseslint.configs.recommendedTypeChecked,
-      reactHooks.configs['recommended-latest'],
-      reactRefresh.configs.vite,
-      unicorn.configs.recommended,
-      eslintConfigPrettier,
-    ],
+    plugins: {
+      'react-hooks': reactHooks,
+      'react-refresh': reactRefresh,
+    },
     rules: {
+      ...reactHooks.configs.recommended.rules,
+      'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
       "tailwindcss/classnames-order": "off",
       'unicorn/filename-case': ["error", {
         "cases": {
@@ -58,4 +62,4 @@ export default defineConfig([
       eqeqeq: ['error', 'always'],
     },
   },
-]);
+];

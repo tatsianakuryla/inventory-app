@@ -89,7 +89,7 @@ export const useAuthStore = create<AuthState>()((set, get) => {
     logout: (options) => {
       get().clearAuth();
       if (options?.redirect) {
-        globalThis.location?.assign?.(APP_ROUTES.HOME);
+        globalThis.window?.location?.replace(APP_ROUTES.HOME);
       }
     },
   };

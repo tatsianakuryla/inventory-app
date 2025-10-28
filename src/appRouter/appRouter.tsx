@@ -15,25 +15,40 @@ import { AdminUsersPage } from '../pages/AdminUsersPage/AdminUsersPage';
 import { LoginPage } from '../pages/LoginPage/LoginPage';
 import { RegisterPage } from '../pages/RegisterPage/RegisterPage';
 import { NotFoundPage } from '../pages/NotFoundPage/NotFoundPage';
+import { RequireAuth } from './guards/RequireAuth';
+import { RequireAdmin } from './guards/RequireAdmin';
+import { RequireGuest } from './guards/RequireGuest';
 
 export const AppRouter = (): JSX.Element => {
   return (
     <Routes>
       <Route element={<AppLayout />}>
         <Route index element={<HomePage />} />
-        <Route path={APP_ROUTES.INVENTORIES} element={<InventoriesPage />} />
-        <Route path={APP_ROUTES.INVENTORY_VIEW} element={<InventoryViewPage />} />
-        <Route path={APP_ROUTES.INVENTORY_SETTINGS} element={<InventorySettingsPage />} />
-        <Route path={APP_ROUTES.INVENTORY_ITEMS} element={<InventoryItemsPage />} />
-        <Route path={APP_ROUTES.ITEM_VIEW} element={<ItemViewPage />} />
         <Route path={APP_ROUTES.SEARCH} element={<SearchPage />} />
-        <Route path={APP_ROUTES.PROFILE} element={<ProfilePage />} />
-        <Route path={APP_ROUTES.ADMIN_USERS} element={<AdminUsersPage />} />
       </Route>
 
-      <Route element={<AuthLayout />}>
-        <Route path={APP_ROUTES.LOGIN} element={<LoginPage />} />
-        <Route path={APP_ROUTES.REGISTER} element={<RegisterPage />} />
+      <Route element={<RequireAuth />}>
+        <Route element={<AppLayout />}>
+          <Route path={APP_ROUTES.INVENTORIES} element={<InventoriesPage />} />
+          <Route path={APP_ROUTES.INVENTORY_VIEW} element={<InventoryViewPage />} />
+          <Route path={APP_ROUTES.INVENTORY_SETTINGS} element={<InventorySettingsPage />} />
+          <Route path={APP_ROUTES.INVENTORY_ITEMS} element={<InventoryItemsPage />} />
+          <Route path={APP_ROUTES.ITEM_VIEW} element={<ItemViewPage />} />
+          <Route path={APP_ROUTES.PROFILE} element={<ProfilePage />} />
+        </Route>
+      </Route>
+
+      <Route element={<RequireAdmin />}>
+        <Route element={<AppLayout />}>
+          <Route path={APP_ROUTES.ADMIN_USERS} element={<AdminUsersPage />} />
+        </Route>
+      </Route>
+
+      <Route element={<RequireGuest />}>
+        <Route element={<AuthLayout />}>
+          <Route path={APP_ROUTES.LOGIN} element={<LoginPage />} />
+          <Route path={APP_ROUTES.REGISTER} element={<RegisterPage />} />
+        </Route>
       </Route>
 
       <Route path="*" element={<NotFoundPage />} />

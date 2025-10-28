@@ -5,15 +5,15 @@ export const LanguageSchema = z.enum(['EN', 'RU']);
 export const RoleSchema = z.enum(['USER', 'ADMIN']);
 export const StatusSchema = z.enum(['ACTIVE', 'BLOCKED']);
 export const UserSchema = z.object({
-  id: z.string().uuid(),
+  id: z.string().min(1),
   email: z.string().email(),
   name: z.string().min(1),
   role: RoleSchema,
   status: StatusSchema,
   language: LanguageSchema,
   theme: ThemeSchema,
-  createdAt: z.string(),
-  updatedAt: z.string(),
+  createdAt: z.string().datetime(),
+  updatedAt: z.string().datetime(),
   version: z.number().int().min(1),
   googleId: z.string().nullable(),
   facebookId: z.string().nullable(),

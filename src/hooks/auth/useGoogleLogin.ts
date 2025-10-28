@@ -12,6 +12,9 @@ export function useGoogleLogin(): UseMutationResult<AuthResponse, unknown, void>
       const idToken = await getGoogleIdToken();
       return AuthService.googleLogin(idToken);
     },
-    onSuccess: (data) => setAuth(data, data.token),
+    onSuccess: (data) => {
+      const { token, ...user } = data;
+      setAuth(user, token);
+    },
   });
 }

@@ -35,7 +35,7 @@ export const LoginForm = (): JSX.Element => {
     <FormProvider {...methods}>
       <form
         className="space-y-4"
-        onSubmit={void handleSubmit(onSubmit)}
+        onSubmit={(event) => void handleSubmit(onSubmit)(event)}
         noValidate
         aria-busy={isSubmitting || undefined}
       >
