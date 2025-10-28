@@ -4,7 +4,10 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { FormInput } from '../../FormInput/FormInput';
 import { Button } from '../../Button/Button';
 import { type RegisterValues, DEFAULT_REGISTER_VALUES, RegisterSchema } from './schemas';
-import { isError } from '../../../shared/typeguards/typeguards';
+import { getApiError } from '../../../api/helpers/api.helpers';
+import { useRegister } from '../../../hooks/auth/useRegister';
+import { Spinner } from '../../Spinner/Spinner';
+import { ServerError } from '../../ServerError/ServerError';
 
 export const RegisterForm = (): JSX.Element => {
   const methods = useForm<RegisterValues>({
@@ -14,15 +17,25 @@ export const RegisterForm = (): JSX.Element => {
     shouldFocusError: true,
   });
 
-  const { handleSubmit, formState, setError } = methods;
+  const { handleSubmit, formState, setError, clearErrors } = methods;
+  const { errors } = formState;
+  const registerMutation = useRegister();
+  const isSubmitting = registerMutation.isPending;
 
-  const onSubmit = async (_data: RegisterValues): Promise<void> => {
+  const onSubmit = async (values: RegisterValues): Promise<void> => {
+    clearErrors('root.serverError');
     try {
-      //TODO
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-    } catch (error: unknown) {
-      const message = isError(error) ? error.message : 'Registration failed. Please try again.';
-      setError('root.serverError', { type: 'server', message });
+      await registerMutation.mutateAsync(values);
+    } catch (error) {
+      const { status, message } = getApiError(error);
+      if (status === 409) {
+        setError('email', { type: 'server', message: message || 'Email is already registered.' });
+      } else {
+        setError('root.serverError', {
+          type: 'server',
+          message: message || 'Registration failed. Please try again.',
+        });
+      }
     }
   };
 
@@ -32,7 +45,7 @@ export const RegisterForm = (): JSX.Element => {
         className="space-y-4"
         onSubmit={void handleSubmit(onSubmit)}
         noValidate
-        aria-busy={formState.isSubmitting || undefined}
+        aria-busy={isSubmitting || undefined}
       >
         <FormInput
           name="name"
@@ -40,7 +53,7 @@ export const RegisterForm = (): JSX.Element => {
           type="text"
           placeholder="Your name"
           autoComplete="name"
-          disabled={formState.isSubmitting}
+          disabled={isSubmitting}
         />
 
         <FormInput
@@ -49,7 +62,7 @@ export const RegisterForm = (): JSX.Element => {
           type="email"
           placeholder="you@example.com"
           autoComplete="username"
-          disabled={formState.isSubmitting}
+          disabled={isSubmitting}
         />
 
         <FormInput
@@ -58,17 +71,14 @@ export const RegisterForm = (): JSX.Element => {
           type="password"
           placeholder="••••••••"
           autoComplete="new-password"
-          disabled={formState.isSubmitting}
+          disabled={isSubmitting}
         />
 
-        {methods.formState.errors.root?.serverError?.message && (
-          <p className="text-sm text-red-600 dark:text-red-400">
-            {methods.formState.errors.root.serverError.message}
-          </p>
+        {errors.root?.serverError?.message && (
+          <ServerError>{errors.root.serverError.message}</ServerError>
         )}
-
-        <Button type="submit" disabled={formState.isSubmitting} className="w-full">
-          {formState.isSubmitting ? 'Signing up…' : 'Register'}
+        <Button type="submit" disabled={isSubmitting} className="w-full">
+          {isSubmitting ? <Spinner size={10} /> : 'Register'}
         </Button>
       </form>
     </FormProvider>

@@ -4,8 +4,10 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { DEFAULT_LOGIN_VALUES, LoginSchema, type LoginValues } from './schemas';
 import { FormInput } from '../../FormInput/FormInput';
 import { Button } from '../../Button/Button';
-import { isError } from '../../../shared/typeguards/typeguards';
 import { useLogin } from '../../../hooks/auth/useLogin';
+import { getApiError } from '../../../api/helpers/api.helpers';
+import { Spinner } from '../../Spinner/Spinner';
+import { ServerError } from '../../ServerError/ServerError';
 
 export const LoginForm = (): JSX.Element => {
   const methods = useForm<LoginValues>({
@@ -15,16 +17,17 @@ export const LoginForm = (): JSX.Element => {
     shouldFocusError: true,
   });
 
-  const { handleSubmit, formState, setError } = methods;
-  const { isSubmitting, errors } = formState;
-  const login = useLogin();
-
-  const onSubmit = (data: LoginValues): void => {
+  const { handleSubmit, formState, setError, clearErrors } = methods;
+  const { errors } = formState;
+  const loginMutation = useLogin();
+  const isSubmitting = loginMutation.isPending;
+  const onSubmit = async (values: LoginValues): Promise<void> => {
+    clearErrors('root.serverError');
     try {
-      login.mutate(data);
-    } catch (error: unknown) {
-      const message = isError(error) ? error.message : 'Login failed. Please try again.';
-      setError('root.serverError', { type: 'server', message });
+      await loginMutation.mutateAsync(values);
+    } catch (error) {
+      const { message } = getApiError(error);
+      setError('root.serverError', { type: 'server', message: message || 'Login failed.' });
     }
   };
 
@@ -44,7 +47,6 @@ export const LoginForm = (): JSX.Element => {
           autoComplete="username"
           disabled={isSubmitting}
         />
-
         <FormInput
           name="password"
           label="Password"
@@ -53,15 +55,11 @@ export const LoginForm = (): JSX.Element => {
           autoComplete="current-password"
           disabled={isSubmitting}
         />
-
         {errors.root?.serverError?.message && (
-          <p className="text-sm text-red-600 dark:text-red-400" role="alert" aria-live="polite">
-            {errors.root.serverError.message}
-          </p>
+          <ServerError>{errors.root.serverError.message}</ServerError>
         )}
-
         <Button type="submit" disabled={isSubmitting} className="w-full">
-          {isSubmitting ? 'Signing in…' : 'Log in'}
+          {isSubmitting ? <Spinner size={10} /> : 'Log in'}
         </Button>
       </form>
     </FormProvider>

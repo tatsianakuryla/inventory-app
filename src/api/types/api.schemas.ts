@@ -47,3 +47,4 @@ export const FacebookLoginPayloadSchema = z.object({
 export type AuthResponse = z.infer<typeof AuthResponseSchema>;
 export type LoginPayload = z.infer<typeof LoginPayloadSchema>;
 export type RegisterPayload = z.infer<typeof RegisterPayloadSchema>;
+export type ApiErrorBody = { error?: string; message?: string };

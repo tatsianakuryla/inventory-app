@@ -5,6 +5,8 @@ import {
   BACKEND_ERRORS,
 } from '../../shared/constants/auth-messages';
 import { APP_ROUTES } from '../../appRouter/routes/routes';
+import { isAxiosError } from 'axios';
+import type { ApiErrorBody } from '../types/api.schemas';
 
 export const toRejection = (error: unknown): Promise<never> =>
   Promise.reject(isError(error) ? error : new Error(String(error)));
@@ -41,4 +43,19 @@ export function toAuthError(status: number, message?: string): AuthError | undef
     return AUTH_MESSAGES.SESSION_EXPIRED;
   }
   return undefined;
+}
+
+export function getApiError(error: unknown): { status?: number; message: string } {
+  if (isAxiosError<ApiErrorBody>(error)) {
+    const status = error.response?.status;
+    const body = error.response?.data;
+    const message =
+      body?.error ??
+      body?.message ??
+      error.message ??
+      (status ? `HTTP ${status}` : 'Unknown error');
+    return { status, message: message };
+  }
+  if (isError(error)) return { message: error.message };
+  return { message: String(error) };
 }
