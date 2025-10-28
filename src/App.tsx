@@ -1,10 +1,10 @@
-import { AppRouter } from './app-router/AppRouter';
+import { AppRouter } from './appRouter/appRouter';
 import { BrowserRouter } from 'react-router-dom';
 import { type JSX } from 'react';
 import { bootstrapAuth } from './api/auth.bootstrap';
 import { useEffect } from 'react';
 import { QueryClientProvider } from '@tanstack/react-query';
-import { queryClient } from './query-client/queryClient';
+import { queryClient } from './queryClient/queryClient';
 
 function App(): JSX.Element {
   useEffect(() => {

@@ -5,6 +5,7 @@ import { DEFAULT_LOGIN_VALUES, LoginSchema, type LoginValues } from './schemas';
 import { FormInput } from '../../FormInput/FormInput';
 import { Button } from '../../Button/Button';
 import { isError } from '../../../shared/typeguards/typeguards';
+import { useLogin } from '../../../hooks/auth/useLogin';
 
 export const LoginForm = (): JSX.Element => {
   const methods = useForm<LoginValues>({
@@ -16,11 +17,11 @@ export const LoginForm = (): JSX.Element => {
 
   const { handleSubmit, formState, setError } = methods;
   const { isSubmitting, errors } = formState;
+  const login = useLogin();
 
-  const onSubmit = async (_data: LoginValues): Promise<void> => {
+  const onSubmit = (data: LoginValues): void => {
     try {
-      //TODO
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      login.mutate(data);
     } catch (error: unknown) {
       const message = isError(error) ? error.message : 'Login failed. Please try again.';
       setError('root.serverError', { type: 'server', message });

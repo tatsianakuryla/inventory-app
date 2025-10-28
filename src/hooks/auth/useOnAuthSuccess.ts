@@ -1,8 +1,8 @@
 import { useCallback } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useAuthStore } from '../useAuthStore';
-import { queryKeys } from '../../query-client/queryKeys';
-import type { AuthResponse } from '../../api/api.types';
+import type { AuthResponse } from '../../api/types/api.schemas';
+import { queryKeys } from '../../queryClient/queryClient';
 
 export const useOnAuthSuccess = (): ((data: AuthResponse) => void) => {
   const queryClient = useQueryClient();

@@ -1,7 +1,7 @@
 import type { JSX } from 'react';
 import { Link } from 'react-router-dom';
 import { TriangleAlert } from 'lucide-react';
-import { APP_ROUTES } from '../../app-router/routes/routes';
+import { APP_ROUTES } from '../../appRouter/routes/routes';
 
 export const NotFoundPage = (): JSX.Element => {
   return (

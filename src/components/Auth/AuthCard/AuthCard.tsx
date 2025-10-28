@@ -1,6 +1,6 @@
 import type { JSX, ReactNode } from 'react';
 import { ButtonLink } from '../../Button/ButtonLink';
-import { APP_ROUTES } from '../../../app-router/routes/routes';
+import { APP_ROUTES } from '../../../appRouter/routes/routes';
 
 type RedirectionLink = { text: string; href: string; label: string };
 

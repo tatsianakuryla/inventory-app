@@ -2,8 +2,8 @@ import { useEffect } from 'react';
 import { useQuery, type UseQueryResult } from '@tanstack/react-query';
 import { AuthService } from '../../api/AuthService';
 import { useAuthStore } from '../useAuthStore';
-import { queryKeys } from '../../query-client/queryKeys';
-import type { User } from '../../shared/types/main.types';
+import { queryKeys } from '../../queryClient/queryClient';
+import type { User } from '../../api/types/api.schemas';
 
 export const useSession = (): UseQueryResult<User, unknown> => {
   const accessToken = useAuthStore((state) => state.accessToken);
