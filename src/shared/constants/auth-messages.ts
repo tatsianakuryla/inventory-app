@@ -17,7 +17,8 @@ export const BACKEND_ERRORS = {
   UNAUTHENTICATED: 'Unauthenticated',
   INVALID_TOKEN: 'Invalid token',
   TOKEN_EXPIRED: 'Token expired',
+  UNAUTHORIZED: 'Unauthorized',
   USER_BLOCKED: 'User is blocked',
   USER_DELETED: 'User deleted',
-  UNAUTHORIZED: 'Unauthorized',
+  NOT_ADMIN: 'Not an admin',
 } as const;

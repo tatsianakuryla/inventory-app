@@ -1,4 +1,4 @@
-import { useAuthStore } from '../hooks/use-auth-store';
+import { useAuthStore } from '../hooks/useAuthStore';
 import { AuthService } from './AuthService';
 
 export async function bootstrapAuth(): Promise<void> {

@@ -3,15 +3,19 @@ import { BrowserRouter } from 'react-router-dom';
 import { type JSX } from 'react';
 import { bootstrapAuth } from './api/auth.bootstrap';
 import { useEffect } from 'react';
+import { QueryClientProvider } from '@tanstack/react-query';
+import { queryClient } from './query-client/queryClient';
 
 function App(): JSX.Element {
   useEffect(() => {
     void bootstrapAuth();
   }, []);
   return (
-    <BrowserRouter>
-      <AppRouter />
-    </BrowserRouter>
+    <QueryClientProvider client={queryClient}>
+      <BrowserRouter>
+        <AppRouter />
+      </BrowserRouter>
+    </QueryClientProvider>
   );
 }
 

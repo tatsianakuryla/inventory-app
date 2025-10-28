@@ -31,11 +31,12 @@ export default defineConfig([
     ],
     rules: {
       "tailwindcss/classnames-order": "off",
-      'unicorn/filename-case': ['error', {
-        cases: {
-          kebabCase: true,
-          pascalCase: true,
-        },
+      'unicorn/filename-case': ["error", {
+        "cases": {
+          "kebabCase": true,
+          "pascalCase": true,
+          "camelCase": true
+        }
       }],
       'unicorn/prevent-abbreviations': ['error', {
         allowList: { props: true, ref: true, args: true, ctx: true },

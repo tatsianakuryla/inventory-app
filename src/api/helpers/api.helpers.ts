@@ -42,8 +42,3 @@ export function toAuthError(status: number, message?: string): AuthError | undef
   }
   return undefined;
 }
-
-export const isAuthRoute = (): boolean => {
-  const path = globalThis.location?.pathname ?? '';
-  return [APP_ROUTES.LOGIN, APP_ROUTES.REGISTER].some((r) => path.startsWith(r));
-};

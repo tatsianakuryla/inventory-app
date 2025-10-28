@@ -1,6 +1,6 @@
 import type { ChangeEvent, JSX } from 'react';
 import { useEffect, useState } from 'react';
-import { useDebounced } from '../../hooks/use-debounce';
+import { useDebounced } from '../../hooks/useDebounce';
 import { getTailWindClass } from '../../shared/helpers/helpers';
 import { baseWrapper, baseInput } from './input.styles';
 

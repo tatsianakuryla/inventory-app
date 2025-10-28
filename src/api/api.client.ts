@@ -1,6 +1,6 @@
 import axios, { isAxiosError, AxiosHeaders } from 'axios';
 import { API_BASE_URL } from '../shared/constants/constants';
-import { useAuthStore } from '../hooks/use-auth-store';
+import { useAuthStore } from '../hooks/useAuthStore';
 import { extractMessage, onAuthPage, toAuthError, toRejection } from './helpers/api.helpers';
 import { isAxiosHeaders } from '../shared/typeguards/typeguards';
 
@@ -27,8 +27,8 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (!isAxiosError<{ error?: string; message?: string }>(error)) return toRejection(error);
-    if (!error.response) return Promise.reject(error);
+    if (!isAxiosError<{ message?: string }>(error)) return toRejection(error);
+    if (!error.response) return toRejection(error);
     const { status, data } = error.response;
     const authError = toAuthError(status, extractMessage(data));
     if (authError) {
@@ -36,6 +36,6 @@ api.interceptors.response.use(
       setAuthError(authError);
       logout({ redirect: !onAuthPage() });
     }
-    return Promise.reject(error);
+    return toRejection(error);
   }
 );

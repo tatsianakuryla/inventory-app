@@ -3,7 +3,8 @@ import { UserName } from './UserName/UserName';
 import { SearchInput } from '../SearchInput/SearchInput';
 import { ButtonLink } from '../Button/ButtonLink';
 import { APP_ROUTES } from '../../app-router/routes/routes';
-import { useAuthStore } from '../../hooks/use-auth-store';
+import { useAuthStore } from '../../hooks/useAuthStore';
+import { LogoutButton } from '../LogoutButton/LogoutButton';
 
 export const Header = (): JSX.Element => {
   const { isAuthenticated, user } = useAuthStore();
@@ -11,7 +12,6 @@ export const Header = (): JSX.Element => {
     <>
       <div className="container">
         <UserName name={isAuthenticated ? (user?.name ?? 'User') : 'Guest'} />
-        {/*TODO*/}
         <SearchInput onDebouncedChange={() => {}} debounce={400} />
         {!isAuthenticated && (
           <>
@@ -22,7 +22,7 @@ export const Header = (): JSX.Element => {
         {isAuthenticated && (
           <>
             <ButtonLink href={APP_ROUTES.PROFILE}>Profile</ButtonLink>
-            <ButtonLink href={APP_ROUTES.HOME}>Logout</ButtonLink>
+            <LogoutButton />
           </>
         )}
       </div>

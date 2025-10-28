@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { LocalStorage } from '../storages/localStorage/local-storage';
+import { LocalStorage } from '../storages/localStorage/localStorage';
 import type { User } from '../shared/types/main.types';
 import { APP_ROUTES } from '../app-router/routes/routes';
 import { ACCESS_TOKEN_KEY } from '../storages/localStorage/types';
@@ -23,7 +23,7 @@ let storageListenerInstalled = false;
 export const useAuthStore = create<AuthState>()((set, get) => {
   if (globalThis.window !== undefined && !storageListenerInstalled) {
     globalThis.addEventListener('storage', (event) => {
-      if (event.key === undefined) {
+      if (event.key === null) {
         get().clearAuth();
         return;
       }
