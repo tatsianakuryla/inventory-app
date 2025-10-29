@@ -6,16 +6,18 @@ import { AuthSocialButtons } from '../../components/Auth/AuthSocialButton/AuthSo
 import { DividerOr } from '../../components/DividerOr/DividerOr';
 
 export const LoginPage = (): JSX.Element => (
-  <AuthCard
-    title="Login"
-    redirectionLink={{
-      text: 'Don’t have an account?',
-      href: APP_ROUTES.REGISTER,
-      label: 'Register',
-    }}
-  >
-    <LoginForm />
-    <DividerOr label="or" />
-    <AuthSocialButtons />
-  </AuthCard>
+  <>
+    <AuthCard
+      title="Login"
+      redirectionLink={{
+        text: 'Don’t have an account?',
+        href: APP_ROUTES.REGISTER,
+        label: 'Register',
+      }}
+    >
+      <LoginForm />
+      <DividerOr label="or" />
+      <AuthSocialButtons />
+    </AuthCard>
+  </>
 );

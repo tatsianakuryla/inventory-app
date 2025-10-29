@@ -4,7 +4,7 @@ import { FacebookAuthButton } from './FacebookAuthButton/FacebookAuthButton';
 
 export function AuthSocialButtons(): JSX.Element {
   return (
-    <div className="space-y-3">
+    <div className="align-center flex flex-col justify-center space-y-3">
       <GoogleAuthButton />
       <FacebookAuthButton />
     </div>

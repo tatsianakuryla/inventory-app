@@ -1,39 +1,54 @@
-import { Mail } from 'lucide-react';
-import { type JSX, useCallback, useMemo, useState } from 'react';
+import { type JSX, useState } from 'react';
+import { GoogleLogin, type CredentialResponse } from '@react-oauth/google';
 import { Button } from '../../../Button/Button';
-import { useGoogleSdk } from '../../../../hooks/auth/useGoogleSdk';
+import { ServerError } from '../../../ServerError/ServerError';
 import { useGoogleLogin } from '../../../../hooks/auth/useGoogleLogin';
 import { getApiError } from '../../../../api/helpers/api.helpers';
-import { ServerError } from '../../../ServerError/ServerError';
+import { Mail } from 'lucide-react';
 
 export function GoogleAuthButton(): JSX.Element {
-  const { ready } = useGoogleSdk();
+  const [errorText, setErrorText] = useState<string>();
   const googleLogin = useGoogleLogin();
-  const [errorText, setErrorText] = useState<string | undefined>();
 
-  const handleGoogleLogin = useCallback(() => {
+  const handleSuccess = async (response: CredentialResponse): Promise<void> => {
     setErrorText(undefined);
-    void googleLogin.mutateAsync().catch((error) => {
+    const idToken = response.credential;
+    if (!idToken) {
+      setErrorText('Google returned an empty token.');
+      return;
+    }
+    try {
+      await googleLogin.mutateAsync(idToken);
+    } catch (error) {
       const { message } = getApiError(error);
       setErrorText(message || 'Google login failed. Please try again.');
-    });
-  }, [googleLogin]);
-
-  const disabled = useMemo(() => !ready || googleLogin.isPending, [ready, googleLogin.isPending]);
-
+    }
+  };
   return (
     <div className="space-y-2">
-      <Button
-        type="button"
-        onClick={handleGoogleLogin}
-        disabled={disabled}
-        variant="secondary"
-        className="inline-flex w-full items-center justify-center gap-2"
-        aria-busy={googleLogin.isPending || undefined}
-      >
-        <Mail className="h-4 w-4" aria-hidden />
-        Continue with Google
-      </Button>
+      <div className="relative">
+        <Button
+          type="button"
+          variant="secondary"
+          className="inline-flex w-full items-center justify-center gap-2 select-none"
+          onClick={(event) => event.preventDefault()}
+        >
+          <Mail />
+          Continue with Google
+        </Button>
+        <div className="pointer-events-auto absolute inset-0 flex items-center justify-center">
+          <div className="opacity-0">
+            <GoogleLogin
+              locale="en"
+              useOneTap={false}
+              onSuccess={(response) => {
+                void handleSuccess(response);
+              }}
+              onError={() => setErrorText('Google login failed.')}
+            />
+          </div>
+        </div>
+      </div>
       {errorText && <ServerError>{errorText}</ServerError>}
     </div>
   );

@@ -6,7 +6,7 @@ export const RoleSchema = z.enum(['USER', 'ADMIN']);
 export const StatusSchema = z.enum(['ACTIVE', 'BLOCKED']);
 export const UserSchema = z.object({
   id: z.string().min(1),
-  email: z.string().email(),
+  email: z.string().email().optional().nullable(),
   name: z.string().min(1),
   role: RoleSchema,
   status: StatusSchema,
@@ -15,8 +15,8 @@ export const UserSchema = z.object({
   createdAt: z.string().datetime(),
   updatedAt: z.string().datetime(),
   version: z.number().int().min(1),
-  googleId: z.string().nullable(),
-  facebookId: z.string().nullable(),
+  googleId: z.string().nullable().optional(),
+  facebookId: z.string().nullable().optional(),
 });
 
 export type User = z.infer<typeof UserSchema>;
@@ -48,3 +48,8 @@ export type AuthResponse = z.infer<typeof AuthResponseSchema>;
 export type LoginPayload = z.infer<typeof LoginPayloadSchema>;
 export type RegisterPayload = z.infer<typeof RegisterPayloadSchema>;
 export type ApiErrorBody = { error?: string; message?: string };
+export const FbCompletedSchema = z.object({
+  authResponse: z.object({
+    accessToken: z.string().min(1),
+  }),
+});
