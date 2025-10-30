@@ -1,7 +1,7 @@
 import type { JSX } from 'react';
-import { Link } from 'react-router-dom';
 import { TriangleAlert } from 'lucide-react';
 import { APP_ROUTES } from '../../appRouter/routes/routes';
+import { ButtonLink } from '../../components/Button/ButtonLink';
 
 export const NotFoundPage = (): JSX.Element => {
   return (
@@ -17,12 +17,13 @@ export const NotFoundPage = (): JSX.Element => {
           <p className="mb-6 text-gray-600 dark:text-gray-300">
             The page you are looking for does not exist or has been moved.
           </p>
-          <Link
-            to={APP_ROUTES.HOME}
+          <ButtonLink
+            href={APP_ROUTES.HOME}
+            variant="primary"
             className="inline-flex items-center justify-center rounded-lg bg-blue-600 px-6 py-3 text-white transition-colors hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 focus:outline-none dark:focus:ring-blue-800"
           >
             Go to the home page
-          </Link>
+          </ButtonLink>
         </div>
       </div>
     </div>
