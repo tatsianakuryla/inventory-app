@@ -1,5 +1,5 @@
-import { api } from './api.client';
-import { USERS_ROUTES } from '../shared/constants/constants';
+import { api } from '../api.client';
+import { USERS_ROUTES } from '../../shared/constants/constants';
 
 import {
   UserSchema,
@@ -12,8 +12,8 @@ import {
   type LoginPayload,
   type RegisterPayload,
   type User,
-} from './types/api.schemas';
-import { Validator } from '../validator/validator';
+} from './auth.schemas';
+import { Validator } from '../../validator/validator';
 
 export class AuthService {
   public static me = async (): Promise<User> => {

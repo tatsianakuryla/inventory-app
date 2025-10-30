@@ -1,7 +1,7 @@
 import { useMutation, type UseMutationResult } from '@tanstack/react-query';
-import { AuthService } from '../../api/AuthService';
+import { AuthService } from '../../api/AuthService/AuthService';
 import { useOnAuthSuccess } from './useOnAuthSuccess';
-import type { AuthResponse, LoginPayload } from '../../api/types/api.schemas';
+import type { AuthResponse, LoginPayload } from '../../api/AuthService/auth.schemas';
 
 export const useLogin = (): UseMutationResult<AuthResponse, unknown, LoginPayload> => {
   const handleAuthSuccess = useOnAuthSuccess();

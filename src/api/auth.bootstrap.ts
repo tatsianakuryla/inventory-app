@@ -1,5 +1,5 @@
-import { useAuthStore } from '../hooks/useAuthStore';
-import { AuthService } from './AuthService';
+import { useAuthStore } from '../stores/useAuthStore';
+import { AuthService } from './AuthService/AuthService';
 
 export async function bootstrapAuth(): Promise<void> {
   const { accessToken, setUser, clearAuth } = useAuthStore.getState();

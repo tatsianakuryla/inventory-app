@@ -6,7 +6,7 @@ import {
 } from '../../shared/constants/auth-messages';
 import { APP_ROUTES } from '../../appRouter/routes/routes';
 import { isAxiosError } from 'axios';
-import type { ApiErrorBody } from '../types/api.schemas';
+import type { ApiErrorBody } from '../AuthService/auth.schemas';
 
 export const toRejection = (error: unknown): Promise<never> =>
   Promise.reject(isError(error) ? error : new Error(String(error)));

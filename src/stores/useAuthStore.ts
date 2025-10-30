@@ -3,7 +3,7 @@ import { LocalStorage } from '../storages/localStorage/localStorage';
 import { APP_ROUTES } from '../appRouter/routes/routes';
 import { ACCESS_TOKEN_KEY } from '../storages/localStorage/types';
 import { AUTH_MESSAGES, type AuthError } from '../shared/constants/auth-messages';
-import type { User } from '../api/types/api.schemas';
+import type { User } from '../api/AuthService/auth.schemas';
 
 type AuthState = {
   user: User | undefined;

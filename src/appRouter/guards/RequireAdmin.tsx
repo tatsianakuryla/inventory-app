@@ -1,6 +1,6 @@
 import { type JSX } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
-import { useAuthStore } from '../../hooks/useAuthStore';
+import { useAuthStore } from '../../stores/useAuthStore';
 import { APP_ROUTES } from '../routes/routes';
 
 export const RequireAdmin = (): JSX.Element => {

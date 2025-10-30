@@ -1,6 +1,6 @@
 import axios, { isAxiosError, AxiosHeaders } from 'axios';
 import { API_BASE_URL } from '../shared/constants/constants';
-import { useAuthStore } from '../hooks/useAuthStore';
+import { useAuthStore } from '../stores/useAuthStore';
 import { extractMessage, onAuthPage, toAuthError, toRejection } from './helpers/api.helpers';
 import { isAxiosHeaders } from '../shared/typeguards/typeguards';
 

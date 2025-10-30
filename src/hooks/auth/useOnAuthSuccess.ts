@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
-import { useAuthStore } from '../useAuthStore';
-import type { AuthResponse } from '../../api/types/api.schemas';
+import { useAuthStore } from '../../stores/useAuthStore';
+import type { AuthResponse } from '../../api/AuthService/auth.schemas';
 import { queryKeys } from '../../queryClient/queryClient';
 
 export const useOnAuthSuccess = (): ((data: AuthResponse) => void) => {
