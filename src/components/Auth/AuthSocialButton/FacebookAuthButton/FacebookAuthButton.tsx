@@ -5,7 +5,7 @@ import { Button } from '../../../Button/Button';
 import { useFacebookLogin } from '../../../../hooks/auth/useFacebookLogin';
 import { ServerError } from '../../../ServerError/ServerError';
 import { isError } from '../../../../shared/typeguards/typeguards';
-import { FbCompletedSchema } from '../../../../api/types/api.schemas';
+import { FbCompletedSchema } from '../../../../api/AuthService/auth.schemas';
 
 export function FacebookAuthButton(): JSX.Element {
   const [errorText, setErrorText] = useState<string>();

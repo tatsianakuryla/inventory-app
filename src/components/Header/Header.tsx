@@ -3,7 +3,7 @@ import { UserName } from './UserName/UserName';
 import { SearchInput } from '../SearchInput/SearchInput';
 import { ButtonLink } from '../Button/ButtonLink';
 import { APP_ROUTES } from '../../appRouter/routes/routes';
-import { useAuthStore } from '../../hooks/useAuthStore';
+import { useAuthStore } from '../../stores/useAuthStore';
 import { LogoutButton } from '../LogoutButton/LogoutButton';
 
 export const Header = (): JSX.Element => {

@@ -10,7 +10,6 @@ export const APP_ROUTES = {
   SEARCH: '/search',
   PROFILE: '/profile/:userId',
   ADMIN_USERS: '/admin/users',
+  CREATE_INVENTORY: '/inventory/new',
+  MY_INVENTORIES: '/inventories/my',
 } as const;
-
-export const APP_AUTH_PAGES = [APP_ROUTES.LOGIN, APP_ROUTES.REGISTER] as const;
-export const APP_PUBLIC_PAGES = [...APP_AUTH_PAGES, APP_ROUTES.HOME] as const;
