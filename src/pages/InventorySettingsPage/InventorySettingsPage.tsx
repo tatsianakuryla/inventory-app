@@ -1,13 +1,13 @@
 import { type JSX } from 'react';
 import { useParams } from 'react-router-dom';
+import { PageHeader } from '../../components/PageHeader/PageHeader';
 
 export const InventorySettingsPage = (): JSX.Element => {
-  const { inventoryId } = useParams<{ inventoryId: string }>();
+  const { inventoryName } = useParams<{ inventoryName: string }>();
 
   return (
-    <div className="p-4">
-      <h1 className="mb-4 text-2xl font-bold">Inventory Settings</h1>
-      <p>Settings for inventory with ID: {inventoryId}</p>
-    </div>
+    <>
+      <PageHeader title={`Inventory ${inventoryName} settings`} />
+    </>
   );
 };

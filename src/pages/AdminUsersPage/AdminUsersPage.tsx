@@ -1,10 +1,10 @@
 import type { JSX } from 'react';
+import { PageHeader } from '../../components/PageHeader/PageHeader';
 
 export const AdminUsersPage = (): JSX.Element => {
   return (
-    <div className="p-4">
-      <h1 className="mb-4 text-2xl font-bold">Admin - Users Management</h1>
-      <p>Admin interface for managing users</p>
-    </div>
+    <>
+      <PageHeader title="Admin managment panel" />
+    </>
   );
 };

@@ -75,7 +75,7 @@ export const InventoryIdFormatSchema = z.object({
   version: z.number().int(),
 });
 
-export const InventoryListItemSchema = z.object({
+export const InventorySchema = z.object({
   id: z.string().uuid(),
   name: z.string().min(1),
   description: z.string().nullable(),
@@ -88,7 +88,9 @@ export const InventoryListItemSchema = z.object({
   version: z.number().int(),
 });
 
-export const InventoryDetailSchema = InventoryListItemSchema.extend({
+export const InventoryListItemSchema = InventorySchema;
+
+export const InventoryDetailSchema = InventorySchema.extend({
   fields: InventoryFieldsSchema.nullable(),
   InventoryIdFormat: InventoryIdFormatSchema.nullable(),
 });
@@ -145,6 +147,7 @@ export const RecentInventoriesResponseSchema = z.object({
 export type FieldState = z.infer<typeof FieldStateEnum>;
 export type InventoryFields = z.infer<typeof InventoryFieldsSchema>;
 export type InventoryIdFormat = z.infer<typeof InventoryIdFormatSchema>;
+export type Inventory = z.infer<typeof InventorySchema>;
 export type InventoryListItem = z.infer<typeof InventoryListItemSchema>;
 export type InventoryDetail = z.infer<typeof InventoryDetailSchema>;
 export type InventoriesQuery = z.infer<typeof InventoriesQuerySchema>;

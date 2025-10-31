@@ -1,10 +1,10 @@
 import { type JSX } from 'react';
 import { PageHeader } from '../../components/PageHeader/PageHeader';
 
-export const InventoriesPage = (): JSX.Element => {
+export const InventoryCreatePage = (): JSX.Element => {
   return (
     <>
-      <PageHeader title="All Inventories" />
+      <PageHeader title="Create an inventory" />
     </>
   );
 };
