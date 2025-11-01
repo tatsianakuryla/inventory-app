@@ -1,10 +1,10 @@
 import { type JSX } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
-import { useAuthStore } from '../../stores/useAuthStore';
+import { useUserStore } from '../../stores/useUserStore';
 import { APP_ROUTES } from '../routes/routes';
 
 export const RequireAuth = (): JSX.Element => {
-  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const isAuthenticated = useUserStore((state) => state.isAuthenticated);
 
   if (!isAuthenticated) {
     return <Navigate to={APP_ROUTES.HOME} replace />;

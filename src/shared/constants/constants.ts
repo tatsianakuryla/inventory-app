@@ -13,7 +13,7 @@ export const PAGINATION = {
 
 export const USERS_ROUTES = {
   ME: '/api/users/me',
-  UPDATE: '/api/users/me',
+  UPDATE: '/api/users/update',
   SEARCH_USERS: '/api/users/autocomplete',
   REGISTER: '/api/users/register',
   LOGIN: '/api/users/login',
@@ -23,17 +23,17 @@ export const USERS_ROUTES = {
 } as const;
 
 export const ADMIN_ROUTES = {
-  GET_ALL_USERS: '/api/admin/users',
+  GET_ALL_USERS: '/api/admin',
   BLOCK_USERS: '/api/admin/users/block',
   UNBLOCK_USERS: '/api/admin/users/unblock',
-  CHANGE_ROLE: '/api/admin/users/change-role',
+  PROMOTE_USERS: '/api/admin/users/promote',
+  DEMOTE_USERS: '/api/admin/users/demote',
+  DELETE_USERS: '/api/admin/users',
 } as const;
 
 export const INVENTORY_ROUTES = {
   CREATE: '/api/inventory',
   GET_ALL: '/api/inventory',
-  GET_POPULAR: '/api/inventory/popular',
-  GET_RECENT: '/api/inventory/recent',
   GET_BY_ID: '/api/inventory/:inventoryId',
   UPDATE: '/api/inventory/:inventoryId',
   DELETE_MANY: '/api/inventory',
@@ -46,41 +46,45 @@ export const INVENTORY_ROUTES = {
 } as const;
 
 export const ITEMS_ROUTES = {
-  GET_ALL: '/api/items',
-  GET_BY_ID: '/api/items/:itemId',
-  CREATE: '/api/items',
-  UPDATE: '/api/items/:itemId',
-  DELETE_MANY: '/api/items',
-  EXPORT: '/api/items/export',
+  GET_ALL: '/api/items/:inventoryId',
+  GET_BY_ID: '/api/items/:inventoryId/:itemId',
+  CREATE: '/api/items/:inventoryId',
+  UPDATE: '/api/items/:inventoryId/:itemId',
+  DELETE_MANY: '/api/items/:inventoryId',
+  LIKE: '/api/items/:inventoryId/:itemId/like',
+  UNLIKE: '/api/items/:inventoryId/:itemId/like',
 } as const;
 
 export const CATEGORIES_ROUTES = {
   GET_ALL: '/api/categories',
+  GET_STATS: '/api/categories/stats',
   CREATE: '/api/categories',
   UPDATE: '/api/categories/:categoryId',
-  DELETE_MANY: '/api/categories',
+  DELETE: '/api/categories/:categoryId',
+  DELETE_FORCE: '/api/categories/:categoryId/force',
 } as const;
 
 export const TAGS_ROUTES = {
   GET_ALL: '/api/tags',
+  GET_POPULAR: '/api/tags/popular',
   CREATE: '/api/tags',
-  DELETE_MANY: '/api/tags',
+  GET_INVENTORY_TAGS: '/api/tags/inventory/:inventoryId',
+  UPDATE_INVENTORY_TAGS: '/api/tags/inventory/:inventoryId',
 } as const;
 
 export const DISCUSSIONS_ROUTES = {
-  GET_ALL: '/api/discussions',
-  CREATE: '/api/discussions',
-  GET_BY_ID: '/api/discussions/:discussionId',
-  CREATE_COMMENT: '/api/discussions/:discussionId/comments',
-  DELETE_MANY: '/api/discussions',
+  GET_ALL: '/api/discussions/:inventoryId',
+  CREATE: '/api/discussions/:inventoryId',
+  DELETE: '/api/discussions/:discussionId',
 } as const;
 
 export const HOME_ROUTES = {
   HOME: '/',
-  GET_STATS: '/api/home/stats',
-  GET_ACTIVITY: '/api/home/activity',
+  GET_POPULAR: '/api/home/popular',
+  GET_RECENT: '/api/home/recent',
+  GET_TAG_CLOUD: '/api/home/tag-cloud',
 } as const;
 
-export const AUTH_PAGES = [USERS_ROUTES.LOGIN, USERS_ROUTES.REGISTER] as const;
-
-export const PUBLIC_PAGES = [...AUTH_PAGES, HOME_ROUTES.HOME] as const;
+export const SEARCH_ROUTES = {
+  GLOBAL_SEARCH: '/api/search',
+} as const;

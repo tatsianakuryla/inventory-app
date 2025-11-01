@@ -3,7 +3,7 @@ import { LocalStorage } from '../storages/localStorage/localStorage';
 import { APP_ROUTES } from '../appRouter/routes/routes';
 import { ACCESS_TOKEN_KEY } from '../storages/localStorage/types';
 import { AUTH_MESSAGES, type AuthError } from '../shared/constants/auth-messages';
-import type { User } from '../api/AuthService/auth.schemas';
+import type { User } from '../api/UserService/user.schemas';
 
 type AuthState = {
   user: User | undefined;
@@ -20,7 +20,7 @@ type AuthState = {
 const initialToken = LocalStorage.getToken();
 let storageListenerInstalled = false;
 
-export const useAuthStore = create<AuthState>()((set, get) => {
+export const useUserStore = create<AuthState>()((set, get) => {
   if (globalThis.window !== undefined && !storageListenerInstalled) {
     globalThis.addEventListener('storage', (event) => {
       if (event.key === null) {

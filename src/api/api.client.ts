@@ -1,6 +1,6 @@
 import axios, { isAxiosError, AxiosHeaders } from 'axios';
 import { API_BASE_URL } from '../shared/constants/constants';
-import { useAuthStore } from '../stores/useAuthStore';
+import { useUserStore } from '../stores/useUserStore';
 import { extractMessage, onAuthPage, toAuthError, toRejection } from './helpers/api.helpers';
 import { isAxiosHeaders } from '../shared/typeguards/typeguards';
 
@@ -11,7 +11,7 @@ export const api = axios.create({
 
 api.interceptors.request.use(
   (config) => {
-    const token = useAuthStore.getState().accessToken;
+    const token = useUserStore.getState().accessToken;
     if (!token) return config;
     if (!config.headers) config.headers = new AxiosHeaders();
     const headers = isAxiosHeaders(config.headers)
@@ -32,7 +32,7 @@ api.interceptors.response.use(
     const { status, data } = error.response;
     const authError = toAuthError(status, extractMessage(data));
     if (authError) {
-      const { setAuthError, logout } = useAuthStore.getState();
+      const { setAuthError, logout } = useUserStore.getState();
       setAuthError(authError);
       logout({ redirect: !onAuthPage() });
     }

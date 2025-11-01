@@ -13,16 +13,16 @@ export function InventoriesBasicTable<Row>({
   getRowId,
 }: InventoryBasicTableParameters<Row>): JSX.Element {
   return (
-    <div className="overflow-hidden rounded-lg border border-gray-200 bg-white shadow dark:border-gray-700 dark:bg-gray-800">
+    <div className="max-h-[700px] overflow-x-auto overflow-y-auto rounded-lg border border-gray-200 bg-white shadow dark:border-gray-700 dark:bg-gray-800">
       <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-        <thead className="bg-gray-50 dark:bg-gray-900">
+        <thead className="sticky top-0 z-10 bg-gray-50 dark:bg-gray-900">
           <tr>
             {columns.map((column) => (
               <th
                 key={column.key}
                 scope="col"
                 className={[
-                  'px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase dark:text-gray-400',
+                  'px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400',
                   column.className ?? '',
                 ].join(' ')}
               >
@@ -41,7 +41,7 @@ export function InventoriesBasicTable<Row>({
                 <td
                   key={column.key}
                   className={[
-                    'px-6 py-4 text-sm whitespace-nowrap text-gray-700 dark:text-gray-300',
+                    'whitespace-nowrap px-6 py-4 text-sm text-gray-700 dark:text-gray-300',
                     column.className ?? '',
                   ].join(' ')}
                 >

@@ -2,10 +2,10 @@ import { type JSX } from 'react';
 import { useMatch } from 'react-router-dom';
 import { ButtonLink } from '../Button/ButtonLink';
 import { APP_ROUTES } from '../../appRouter/routes/routes';
-import { useAuthStore } from '../../stores/useAuthStore';
+import { useUserStore } from '../../stores/useUserStore';
 
 export const PageButtonsGroup = (): JSX.Element => {
-  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const isAuthenticated = useUserStore((state) => state.isAuthenticated);
   const onAllInventoriesPage = Boolean(useMatch({ path: APP_ROUTES.INVENTORIES, end: true }));
   const onMyInventoriesPage = Boolean(useMatch({ path: APP_ROUTES.MY_INVENTORIES, end: true }));
   const onHomePage = Boolean(useMatch({ path: APP_ROUTES.HOME, end: true }));

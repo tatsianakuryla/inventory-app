@@ -45,7 +45,7 @@ import {
   InventoryStatisticsSchema,
 } from './inventory.schemas';
 import { Validator } from '../../validator/validator';
-import { INVENTORY_ROUTES } from '../../shared/constants/constants';
+import { HOME_ROUTES, INVENTORY_ROUTES } from '../../shared/constants/constants';
 
 function replaceUrlParameters(url: string, parameters: Record<string, string>): string {
   let result = url;
@@ -76,7 +76,7 @@ export class InventoriesService {
     rawParameters: PopularInventoriesQuery = {}
   ): Promise<PopularInventoriesResponse> => {
     const validParameters = Validator.zodParse(PopularInventoriesQuerySchema, rawParameters);
-    const response = await api.get(INVENTORY_ROUTES.GET_POPULAR, { params: validParameters });
+    const response = await api.get(HOME_ROUTES.GET_POPULAR, { params: validParameters });
     const data: unknown = response.data;
     return Validator.zodParse(PopularInventoriesResponseSchema, data);
   };
@@ -85,7 +85,7 @@ export class InventoriesService {
     rawParameters: RecentInventoriesQuery = {}
   ): Promise<RecentInventoriesResponse> => {
     const validParameters = Validator.zodParse(RecentInventoriesQuerySchema, rawParameters);
-    const response = await api.get(INVENTORY_ROUTES.GET_RECENT, { params: validParameters });
+    const response = await api.get(HOME_ROUTES.GET_RECENT, { params: validParameters });
     const data: unknown = response.data;
     return Validator.zodParse(RecentInventoriesResponseSchema, data);
   };
