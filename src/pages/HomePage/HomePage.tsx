@@ -6,7 +6,7 @@ import { PageHeader } from '../../components/PageHeader/PageHeader';
 
 export const HomePage = (): JSX.Element => {
   return (
-    <div className="mx-auto flex w-full max-w-7xl flex-col gap-5">
+    <>
       <div className="flex flex-col gap-5">
         <PageHeader title="Welcome to Inventory Management System" />
       </div>
@@ -20,6 +20,6 @@ export const HomePage = (): JSX.Element => {
           <RecentInventoriesTable />
         </HomePageSectionCard>
       </div>
-    </div>
+    </>
   );
 };
