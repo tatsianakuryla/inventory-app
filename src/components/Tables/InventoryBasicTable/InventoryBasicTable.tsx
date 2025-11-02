@@ -1,4 +1,4 @@
-import type { Column } from '../createCommonColumns';
+import type { Column } from '../CreateCommonColumns';
 import type { JSX } from 'react';
 
 interface InventoryBasicTableParameters<Row> {

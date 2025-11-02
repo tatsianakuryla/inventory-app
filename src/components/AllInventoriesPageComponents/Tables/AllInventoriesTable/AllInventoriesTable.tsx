@@ -1,11 +1,11 @@
 import { type JSX } from 'react';
-import { useGetPopularInventories } from '../../../../hooks/inventories/useInventories';
-import { POPULAR_COLUMNS } from '../../../Tables/CreateCommonColumns';
+import { useGetInventories } from '../../../../hooks/inventories/useInventories';
+import { ALL_INVENTORIES_COLUMNS } from '../../../Tables/CreateCommonColumns';
 import { InventoriesBasicTable } from '../../../Tables/InventoryBasicTable/InventoryBasicTable';
 import { LoadingErrorEmptySwitcher } from '../../../Tables/LoadingErrorEmptySwitcher/LoadingErrorEmptySwitcher';
 
-export function PopularInventoriesTable(): JSX.Element {
-  const { data, isLoading, error } = useGetPopularInventories({ limit: 5 });
+export const AllInventoriesTable = (): JSX.Element => {
+  const { data, isLoading, error } = useGetInventories({ perPage: 10 });
 
   return (
     <LoadingErrorEmptySwitcher
@@ -24,12 +24,11 @@ export function PopularInventoriesTable(): JSX.Element {
             ownerId: item.ownerId,
             imageUrl: item.imageUrl ?? undefined,
             createdAt: item.createdAt,
-            itemsCount: item.itemsCount,
           }))}
-          columns={POPULAR_COLUMNS}
+          columns={ALL_INVENTORIES_COLUMNS}
           getRowId={(row) => row.id}
         />
       )}
     </LoadingErrorEmptySwitcher>
   );
-}
+};

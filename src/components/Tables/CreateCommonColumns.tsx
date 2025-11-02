@@ -17,7 +17,7 @@ type CommonRowBase = {
   imageUrl: string | undefined;
 };
 
-export type RecentInventoryRow = CommonRowBase & {
+export type AllInventoryRow = CommonRowBase & {
   createdAt: string;
 };
 
@@ -26,8 +26,8 @@ export type PopularInventoryRow = CommonRowBase & {
   createdAt: string;
 };
 
-export const RECENT_COLUMNS: Column<RecentInventoryRow>[] = [
-  ...createCommonColumns<RecentInventoryRow>(),
+export const ALL_INVENTORIES_COLUMNS: Column<AllInventoryRow>[] = [
+  ...createCommonColumns<AllInventoryRow>(),
   {
     key: 'createdAt',
     header: 'Created',
