@@ -1,6 +1,5 @@
 import { api } from '../api.client';
 import {
-  type Paginated,
   type InventoryListItem,
   type InventoriesQuery,
   type PopularInventoriesQuery,
@@ -8,7 +7,6 @@ import {
   type RecentInventoriesQuery,
   type RecentInventoriesResponse,
   type InventoryDetail,
-  type InventoryCreateRequest,
   type InventoryUpdateRequest,
   type DeleteInventoriesBody,
   type DeleteInventoriesResponse,
@@ -43,9 +41,12 @@ import {
   UpdateIdFormatBodySchema,
   InventoryIdFormatSchema,
   InventoryStatisticsSchema,
+  type InventoryCreateRequestInput,
+  InventoryListItemSchema,
 } from './inventory.schemas';
 import { Validator } from '../../validator/validator';
 import { HOME_ROUTES, INVENTORY_ROUTES } from '../../shared/constants/constants';
+import type { Paginated } from '../../shared/types/schemas';
 
 function replaceUrlParameters(url: string, parameters: Record<string, string>): string {
   let result = url;
@@ -56,10 +57,12 @@ function replaceUrlParameters(url: string, parameters: Record<string, string>): 
 }
 
 export class InventoriesService {
-  public static create = async (rawBody: InventoryCreateRequest): Promise<InventoryListItem> => {
+  public static create = async (
+    rawBody: InventoryCreateRequestInput
+  ): Promise<InventoryListItem> => {
     const validBody = Validator.zodParse(InventoryCreateRequestSchema, rawBody);
     const response = await api.post(INVENTORY_ROUTES.CREATE, validBody);
-    return Validator.zodParse(InventoryDetailSchema, response.data);
+    return Validator.zodParse(InventoryListItemSchema, response.data);
   };
 
   public static getAll = async (

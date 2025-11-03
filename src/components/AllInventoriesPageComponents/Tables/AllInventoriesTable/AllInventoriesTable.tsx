@@ -5,7 +5,7 @@ import { InventoriesBasicTable } from '../../../Tables/InventoryBasicTable/Inven
 import { LoadingErrorEmptySwitcher } from '../../../Tables/LoadingErrorEmptySwitcher/LoadingErrorEmptySwitcher';
 
 export const AllInventoriesTable = (): JSX.Element => {
-  const { data, isLoading, error } = useGetInventories({ perPage: 10 });
+  const { data, isLoading, error } = useGetInventories();
 
   return (
     <LoadingErrorEmptySwitcher
@@ -21,7 +21,7 @@ export const AllInventoriesTable = (): JSX.Element => {
             id: item.id,
             name: item.name,
             description: item.description ?? undefined,
-            ownerId: item.ownerId,
+            owner: item.owner,
             imageUrl: item.imageUrl ?? undefined,
             createdAt: item.createdAt,
           }))}

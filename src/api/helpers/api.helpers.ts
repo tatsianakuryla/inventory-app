@@ -6,7 +6,7 @@ import {
 } from '../../shared/constants/auth-messages';
 import { APP_ROUTES } from '../../appRouter/routes/routes';
 import { isAxiosError } from 'axios';
-import type { ApiErrorBody } from '../AuthService/auth.schemas';
+import type { ResponseError } from '../../shared/types/schemas';
 
 export const toRejection = (error: unknown): Promise<never> =>
   Promise.reject(isError(error) ? error : new Error(String(error)));
@@ -16,10 +16,7 @@ export const onAuthPage = (): boolean => {
   return path.startsWith(APP_ROUTES.LOGIN) || path.startsWith(APP_ROUTES.REGISTER);
 };
 
-export function extractMessage(
-  body: { error?: string; message?: string } | undefined
-): string | undefined {
-  if (typeof body?.error === 'string' && body.error) return body.error;
+export function extractMessage(body: ResponseError | undefined): string | undefined {
   if (typeof body?.message === 'string' && body.message) return body.message;
   return undefined;
 }
@@ -46,14 +43,10 @@ export function toAuthError(status: number, message?: string): AuthError | undef
 }
 
 export function getApiError(error: unknown): { status?: number; message: string } {
-  if (isAxiosError<ApiErrorBody>(error)) {
+  if (isAxiosError<ResponseError>(error)) {
     const status = error.response?.status;
     const body = error.response?.data;
-    const message =
-      body?.error ??
-      body?.message ??
-      error.message ??
-      (status ? `HTTP ${status}` : 'Unknown error');
+    const message = body?.message ?? error.message ?? (status ? `HTTP ${status}` : 'Unknown error');
     return { status, message: message };
   }
   if (isError(error)) return { message: error.message };

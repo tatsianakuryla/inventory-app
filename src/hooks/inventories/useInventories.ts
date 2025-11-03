@@ -8,7 +8,6 @@ import {
 import { InventoriesService } from '../../api/InventoryService/InventoryService';
 import { queryKeys } from '../../queryClient/queryClient';
 import type {
-  Paginated,
   InventoryListItem,
   InventoriesQuery,
   PopularInventoriesQuery,
@@ -16,7 +15,6 @@ import type {
   RecentInventoriesQuery,
   RecentInventoriesResponse,
   InventoryDetail,
-  InventoryCreateRequest,
   InventoryUpdateRequest,
   DeleteInventoriesBody,
   DeleteInventoriesResponse,
@@ -30,7 +28,9 @@ import type {
   UpdateIdFormatBody,
   InventoryIdFormat,
   InventoryStatistics,
+  InventoryCreateRequestInput,
 } from '../../api/InventoryService/inventory.schemas';
+import type { Paginated } from '../../shared/types/schemas';
 
 export const useGetInventories = (
   parameters?: InventoriesQuery,
@@ -101,7 +101,7 @@ export const useGetInventoryStatistics = (
 export const useCreateInventory = (): UseMutationResult<
   InventoryListItem,
   Error,
-  InventoryCreateRequest
+  InventoryCreateRequestInput
 > => {
   const queryClient = useQueryClient();
 

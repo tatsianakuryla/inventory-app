@@ -3,6 +3,7 @@ import { API_BASE_URL } from '../shared/constants/constants';
 import { useUserStore } from '../stores/useUserStore';
 import { extractMessage, onAuthPage, toAuthError, toRejection } from './helpers/api.helpers';
 import { isAxiosHeaders } from '../shared/typeguards/typeguards';
+import type { ResponseError } from '../shared/types/schemas';
 
 export const api = axios.create({
   baseURL: API_BASE_URL,
@@ -27,7 +28,7 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (!isAxiosError<{ message?: string }>(error)) return toRejection(error);
+    if (!isAxiosError<ResponseError>(error)) return toRejection(error);
     if (!error.response) return toRejection(error);
     const { status, data } = error.response;
     const authError = toAuthError(status, extractMessage(data));

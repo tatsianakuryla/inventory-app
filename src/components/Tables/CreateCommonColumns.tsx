@@ -13,7 +13,9 @@ type CommonRowBase = {
   id: string;
   name: string;
   description: string | undefined;
-  ownerId: string;
+  owner: {
+    name: string;
+  };
   imageUrl: string | undefined;
 };
 
@@ -69,7 +71,7 @@ function createCommonColumns<Row extends CommonRowBase>(): Column<Row>[] {
       key: 'creator',
       header: 'Creator',
       className: 'hidden lg:table-cell',
-      cell: (row) => <span className="text-gray-600 dark:text-gray-400">{row.ownerId}</span>,
+      cell: (row) => <span className="text-gray-600 dark:text-gray-400">{row.owner.name}</span>,
     },
   ];
 }

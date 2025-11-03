@@ -18,7 +18,7 @@ export function RecentInventoriesTable(): JSX.Element {
     id: items.id,
     name: items.name,
     description: items.description ?? undefined,
-    ownerId: items.ownerId,
+    owner: items.owner,
     imageUrl: items.imageUrl ?? undefined,
     createdAt: items.createdAt,
   }));

@@ -10,7 +10,10 @@ import {
 
 export class UserService {
   public static update = async (payload: UpdateUserRequest): Promise<UpdateUserResponse> => {
-    const validRequestPayload = Validator.zodParse(UpdateProfileRequestSchema, payload);
+    const cleanedPayload = Object.fromEntries(
+      Object.entries(payload).filter(([_, value]) => value !== undefined)
+    );
+    const validRequestPayload = Validator.zodParse(UpdateProfileRequestSchema, cleanedPayload);
     const response = await api.patch(USERS_ROUTES.UPDATE, validRequestPayload);
     return Validator.zodParse(UpdateUserResponseSchema, response.data);
   };

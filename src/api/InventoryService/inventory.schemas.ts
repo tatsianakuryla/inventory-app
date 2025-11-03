@@ -1,9 +1,18 @@
 import { z } from 'zod';
+import {
+  IdSchema,
+  VersionSchema,
+  EmailSchema,
+  OptionalUrlSchema,
+  PaginatedSchema,
+  PaginationQuerySchema,
+  SortOrderSchema,
+} from '../../shared/types/schemas';
 
 export const FieldStateEnum = z.enum(['HIDDEN', 'SHOWN']);
 
 export const InventoryFieldsSchema = z.object({
-  inventoryId: z.string().uuid(),
+  inventoryId: IdSchema,
   version: z.number().int(),
   text1State: FieldStateEnum,
   text1Name: z.string().nullable(),
@@ -69,19 +78,22 @@ export const InventoryFieldsSchema = z.object({
 });
 
 export const InventoryIdFormatSchema = z.object({
-  inventoryId: z.string().uuid(),
+  inventoryId: IdSchema,
   schema: z.any(),
   updatedAt: z.string(),
   version: z.number().int(),
 });
 
 export const InventorySchema = z.object({
-  id: z.string().uuid(),
+  id: IdSchema,
   name: z.string().min(1),
   description: z.string().nullable(),
-  imageUrl: z.string().url().nullable(),
+  imageUrl: OptionalUrlSchema,
   isPublic: z.boolean(),
-  ownerId: z.string().uuid(),
+  ownerId: IdSchema,
+  owner: z.object({
+    name: z.string(),
+  }),
   categoryId: z.number().int().nullable(),
   createdAt: z.string(),
   updatedAt: z.string(),
@@ -95,33 +107,12 @@ export const InventoryDetailSchema = InventorySchema.extend({
   InventoryIdFormat: InventoryIdFormatSchema.nullable(),
 });
 
-export type Paginated<T> = {
-  items: T[];
-  total: number;
-  page: number;
-  perPage: number;
-  hasMore: boolean;
-};
-
-export const PaginatedSchema = <T extends z.ZodTypeAny>(
-  itemSchema: T
-): z.ZodType<Paginated<z.infer<T>>> =>
-  z.object({
-    items: z.array(itemSchema),
-    total: z.number().int().nonnegative(),
-    page: z.number().int().positive(),
-    perPage: z.number().int().positive(),
-    hasMore: z.boolean(),
-  });
-
 export const PaginatedInventoryListSchema = PaginatedSchema(InventoryListItemSchema);
 
-export const InventoriesQuerySchema = z.object({
-  page: z.number().int().positive().optional(),
-  perPage: z.number().int().positive().optional(),
-  search: z.string().trim().optional(),
-  sortBy: z.enum(['createdAt', 'name']).optional(),
-  order: z.enum(['asc', 'desc']).optional(),
+export const InventoriesQuerySchema = PaginationQuerySchema.extend({
+  search: z.string().trim().default(''),
+  sortBy: z.enum(['createdAt', 'name']).default('createdAt'),
+  order: SortOrderSchema.default('desc'),
 });
 
 export const PopularInventoryItemSchema = InventoryListItemSchema.extend({
@@ -150,7 +141,7 @@ export type InventoryIdFormat = z.infer<typeof InventoryIdFormatSchema>;
 export type Inventory = z.infer<typeof InventorySchema>;
 export type InventoryListItem = z.infer<typeof InventoryListItemSchema>;
 export type InventoryDetail = z.infer<typeof InventoryDetailSchema>;
-export type InventoriesQuery = z.infer<typeof InventoriesQuerySchema>;
+export type InventoriesQuery = z.input<typeof InventoriesQuerySchema>;
 export type PopularInventoryItem = z.infer<typeof PopularInventoryItemSchema>;
 export type PopularInventoriesQuery = z.infer<typeof PopularInventoriesQuerySchema>;
 export type PopularInventoriesResponse = z.infer<typeof PopularInventoriesResponseSchema>;
@@ -161,26 +152,27 @@ export const InventoryCreateRequestSchema = z.object({
   name: z.string().trim().min(1, 'Name is required'),
   description: z.string().trim().optional(),
   isPublic: z.boolean().default(false),
-  imageUrl: z.string().url().optional(),
+  imageUrl: OptionalUrlSchema,
   categoryId: z.number().int().optional(),
 });
 
-export type InventoryCreateRequest = z.infer<typeof InventoryCreateRequestSchema>;
+export type InventoryCreateRequestInput = z.input<typeof InventoryCreateRequestSchema>;
+export type InventoryCreateRequestOutput = z.output<typeof InventoryCreateRequestSchema>;
 
 export const InventoryUpdateRequestSchema = z.object({
-  version: z.number().int().min(1),
-  name: z.string().trim().min(1).optional(),
-  description: z.string().nullable().optional(),
+  name: z.string().trim().min(1, 'Name is required').optional(),
+  description: z.string().trim().optional(),
   isPublic: z.boolean().optional(),
-  imageUrl: z.string().url().nullable().optional(),
+  imageUrl: OptionalUrlSchema,
   categoryId: z.number().int().nullable().optional(),
+  version: VersionSchema,
 });
 
 export type InventoryUpdateRequest = z.infer<typeof InventoryUpdateRequestSchema>;
 
 export const InventoryToDeleteSchema = z.object({
-  id: z.string().uuid(),
-  version: z.number().int().min(1),
+  id: IdSchema,
+  version: VersionSchema,
 });
 
 export type InventoryToDelete = z.infer<typeof InventoryToDeleteSchema>;
@@ -193,11 +185,11 @@ export type DeleteInventoriesBody = z.infer<typeof DeleteInventoriesBodySchema>;
 
 export const DeleteInventoriesResponseSchema = z.object({
   deleted: z.number().int().nonnegative(),
-  deletedIds: z.array(z.string().uuid()),
+  deletedIds: z.array(IdSchema),
   conflicts: z.number().int().nonnegative(),
-  conflictIds: z.array(z.string().uuid()),
+  conflictIds: z.array(IdSchema),
   skipped: z.number().int().nonnegative(),
-  skippedIds: z.array(z.string().uuid()),
+  skippedIds: z.array(IdSchema),
 });
 
 export type DeleteInventoriesResponse = z.infer<typeof DeleteInventoriesResponseSchema>;
@@ -207,13 +199,13 @@ export const InventoryRoleEnum = z.enum(['OWNER', 'EDITOR', 'VIEWER']);
 export type InventoryRole = z.infer<typeof InventoryRoleEnum>;
 
 export const InventoryAccessUserSchema = z.object({
-  id: z.string().uuid(),
+  id: IdSchema,
   name: z.string(),
-  email: z.string().email(),
+  email: EmailSchema,
 });
 
 export const InventoryAccessDataItemSchema = z.object({
-  userId: z.string().uuid(),
+  userId: IdSchema,
   inventoryRole: InventoryRoleEnum,
   user: InventoryAccessUserSchema,
 });
@@ -225,8 +217,12 @@ export const InventoryAccessDataSchema = z.array(InventoryAccessDataItemSchema);
 export type InventoryAccessData = z.infer<typeof InventoryAccessDataSchema>;
 
 export const InventoryAccessEntrySchema = z.object({
-  userId: z.string().uuid(),
-  inventoryRole: InventoryRoleEnum,
+  userId: IdSchema,
+  inventoryRole: z
+    .string()
+    .trim()
+    .toUpperCase()
+    .pipe(z.enum(['OWNER', 'VIEWER', 'EDITOR'] as const)),
 });
 
 export type InventoryAccessEntry = z.infer<typeof InventoryAccessEntrySchema>;
@@ -240,36 +236,36 @@ export type UpsertAccessBody = z.infer<typeof UpsertAccessBodySchema>;
 export const UpsertAccessResponseSchema = z.object({
   processed: z.number().int().nonnegative(),
   created: z.number().int().nonnegative(),
-  createdUserIds: z.array(z.string().uuid()),
+  createdUserIds: z.array(IdSchema),
   updated: z.number().int().nonnegative(),
-  updatedUserIds: z.array(z.string().uuid()),
+  updatedUserIds: z.array(IdSchema),
   unchanged: z.number().int().nonnegative(),
-  unchangedUserIds: z.array(z.string().uuid()),
+  unchangedUserIds: z.array(IdSchema),
   skipped: z.number().int().nonnegative(),
-  skippedInvalidOwnerUserIds: z.array(z.string().uuid()),
+  skippedInvalidOwnerUserIds: z.array(IdSchema),
 });
 
 export type UpsertAccessResponse = z.infer<typeof UpsertAccessResponseSchema>;
 
 export const RevokeAccessBodySchema = z.object({
-  userIds: z.array(z.string().uuid()).min(1),
+  userIds: z.array(IdSchema).min(1),
 });
 
 export type RevokeAccessBody = z.infer<typeof RevokeAccessBodySchema>;
 
 export const RevokeAccessResponseSchema = z.object({
   deleted: z.number().int().nonnegative(),
-  deletedUserIds: z.array(z.string().uuid()),
+  deletedUserIds: z.array(IdSchema),
   skipped: z.number().int().nonnegative(),
-  skippedOwnerUserIds: z.array(z.string().uuid()),
+  skippedOwnerUserIds: z.array(IdSchema),
   notFound: z.number().int().nonnegative(),
-  notFoundUserIds: z.array(z.string().uuid()),
+  notFoundUserIds: z.array(IdSchema),
 });
 
 export type RevokeAccessResponse = z.infer<typeof RevokeAccessResponseSchema>;
 
 export const UpdateInventoryFieldsBodySchema = z.object({
-  version: z.number().int().min(1),
+  version: VersionSchema,
   patch: z
     .record(z.string(), z.unknown())
     .refine((object) => Object.keys(object).length > 0, { message: 'Empty patch' }),
@@ -278,7 +274,7 @@ export const UpdateInventoryFieldsBodySchema = z.object({
 export type UpdateInventoryFieldsBody = z.infer<typeof UpdateInventoryFieldsBodySchema>;
 
 export const UpdateInventoryFieldsResponseSchema = z.object({
-  inventoryId: z.string().uuid(),
+  inventoryId: IdSchema,
   version: z.number().int(),
 });
 
@@ -286,7 +282,7 @@ export type UpdateInventoryFieldsResponse = z.infer<typeof UpdateInventoryFields
 
 export const UpdateIdFormatBodySchema = z.object({
   schema: z.any(),
-  version: z.number().int().min(1).optional(),
+  version: VersionSchema.optional(),
 });
 
 export type UpdateIdFormatBody = z.infer<typeof UpdateIdFormatBodySchema>;

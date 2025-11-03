@@ -21,7 +21,7 @@ export function PopularInventoriesTable(): JSX.Element {
             id: item.id,
             name: item.name,
             description: item.description ?? undefined,
-            ownerId: item.ownerId,
+            owner: item.owner,
             imageUrl: item.imageUrl ?? undefined,
             createdAt: item.createdAt,
             itemsCount: item.itemsCount,

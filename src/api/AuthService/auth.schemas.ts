@@ -1,19 +1,20 @@
 import { z } from 'zod';
 import { UserSchema } from '../UserService/user.schemas';
+import { EmailSchema, type ResponseError } from '../../shared/types/schemas';
 
 export const AuthResponseSchema = UserSchema.extend({
   token: z.string().min(1),
 });
 
 export const LoginPayloadSchema = z.object({
-  email: z.string().email(),
-  password: z.string().min(6),
+  email: EmailSchema,
+  password: z.string().trim().min(6),
 });
 
 export const RegisterPayloadSchema = z.object({
-  name: z.string().min(1),
-  email: z.string().email(),
-  password: z.string().min(6),
+  name: z.string().trim().min(1),
+  email: EmailSchema,
+  password: z.string().trim().min(6),
 });
 
 export const GoogleLoginPayloadSchema = z.object({
@@ -27,7 +28,8 @@ export const FacebookLoginPayloadSchema = z.object({
 export type AuthResponse = z.infer<typeof AuthResponseSchema>;
 export type LoginPayload = z.infer<typeof LoginPayloadSchema>;
 export type RegisterPayload = z.infer<typeof RegisterPayloadSchema>;
-export type ApiErrorBody = { error?: string; message?: string };
+/** @deprecated Use ResponseError from shared/types/schemas instead */
+export type ApiErrorBody = ResponseError;
 export const FbCompletedSchema = z.object({
   authResponse: z.object({
     accessToken: z.string().min(1),
