@@ -7,7 +7,7 @@ import { Button } from '../../Button/Button';
 import { useLogin } from '../../../hooks/auth/useLogin';
 import { getApiError } from '../../../api/helpers/api.helpers';
 import { Spinner } from '../../Spinner/Spinner';
-import { ServerError } from '../../ServerError/ServerError';
+import { ErrorBlock } from '../../ErrorBlock/ErrorBlock';
 
 export const LoginForm = (): JSX.Element => {
   const methods = useForm<LoginValues>({
@@ -56,7 +56,7 @@ export const LoginForm = (): JSX.Element => {
           disabled={isSubmitting}
         />
         {errors.root?.serverError?.message && (
-          <ServerError>{errors.root.serverError.message}</ServerError>
+          <ErrorBlock>{errors.root.serverError.message}</ErrorBlock>
         )}
         <Button type="submit" disabled={isSubmitting} className="w-full">
           {isSubmitting ? <Spinner size={10} /> : 'Log in'}

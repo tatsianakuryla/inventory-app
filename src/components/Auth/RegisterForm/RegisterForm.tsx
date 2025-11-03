@@ -7,7 +7,7 @@ import { type RegisterValues, DEFAULT_REGISTER_VALUES, RegisterSchema } from './
 import { getApiError } from '../../../api/helpers/api.helpers';
 import { useRegister } from '../../../hooks/auth/useRegister';
 import { Spinner } from '../../Spinner/Spinner';
-import { ServerError } from '../../ServerError/ServerError';
+import { ErrorBlock } from '../../ErrorBlock/ErrorBlock';
 
 export const RegisterForm = (): JSX.Element => {
   const methods = useForm<RegisterValues>({
@@ -75,7 +75,7 @@ export const RegisterForm = (): JSX.Element => {
         />
 
         {errors.root?.serverError?.message && (
-          <ServerError>{errors.root.serverError.message}</ServerError>
+          <ErrorBlock>{errors.root.serverError.message}</ErrorBlock>
         )}
         <Button type="submit" disabled={isSubmitting} className="w-full">
           {isSubmitting ? <Spinner size={10} /> : 'Register'}

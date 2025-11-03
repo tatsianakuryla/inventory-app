@@ -1,7 +1,7 @@
 import { type JSX, useState } from 'react';
 import { GoogleLogin, type CredentialResponse } from '@react-oauth/google';
 import { Button } from '../../../Button/Button';
-import { ServerError } from '../../../ServerError/ServerError';
+import { ErrorBlock } from '../../../ErrorBlock/ErrorBlock';
 import { useGoogleLogin } from '../../../../hooks/auth/useGoogleLogin';
 import { getApiError } from '../../../../api/helpers/api.helpers';
 import { Mail } from 'lucide-react';
@@ -30,7 +30,7 @@ export function GoogleAuthButton(): JSX.Element {
         <Button
           type="button"
           variant="secondary"
-          className="inline-flex w-full items-center justify-center gap-2 select-none"
+          className="inline-flex w-full select-none items-center justify-center gap-2"
           onClick={(event) => event.preventDefault()}
         >
           <Mail />
@@ -49,7 +49,7 @@ export function GoogleAuthButton(): JSX.Element {
           </div>
         </div>
       </div>
-      {errorText && <ServerError>{errorText}</ServerError>}
+      {errorText && <ErrorBlock>{errorText}</ErrorBlock>}
     </div>
   );
 }

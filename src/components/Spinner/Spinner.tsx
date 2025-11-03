@@ -12,7 +12,7 @@ type SpinnerProperties = {
 export function Spinner({
   size = 16,
   ringClassName = 'text-gray-300 dark:text-gray-600',
-  fillClassName = 'fill-blue-600',
+  fillClassName = 'fill-emerald-600',
   className,
   label = 'Loading…',
 }: SpinnerProperties): JSX.Element {

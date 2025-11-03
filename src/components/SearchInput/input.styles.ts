@@ -1,6 +1,6 @@
 export const baseWrapper =
   'relative flex items-center rounded-xl border shadow-sm transition-colors ' +
-  'focus-within:ring-2 focus-within:ring-blue-500 ' +
+  'focus-within:ring-2 focus-within:ring-emerald-500 ' +
   'bg-white border-gray-300 ' +
   'dark:bg-gray-900 dark:border-gray-700';
 

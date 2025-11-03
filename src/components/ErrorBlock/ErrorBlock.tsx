@@ -5,7 +5,7 @@ type ServerErrorProperties = {
   className?: string;
 };
 
-export function ServerError({
+export function ErrorBlock({
   children,
   className = '',
 }: ServerErrorProperties): JSX.Element | undefined {

@@ -3,7 +3,7 @@ import { type JSX, useMemo, useState } from 'react';
 import { Login } from 'react-facebook';
 import { Button } from '../../../Button/Button';
 import { useFacebookLogin } from '../../../../hooks/auth/useFacebookLogin';
-import { ServerError } from '../../../ServerError/ServerError';
+import { ErrorBlock } from '../../../ErrorBlock/ErrorBlock';
 import { isError } from '../../../../shared/typeguards/typeguards';
 import { FbCompletedSchema } from '../../../../api/AuthService/auth.schemas';
 
@@ -51,7 +51,7 @@ export function FacebookAuthButton(): JSX.Element {
           );
         }}
       </Login>
-      {errorText && <ServerError>{errorText}</ServerError>}
+      {errorText && <ErrorBlock>{errorText}</ErrorBlock>}
     </div>
   );
 }

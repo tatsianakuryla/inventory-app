@@ -20,7 +20,7 @@ export const NotFoundPage = (): JSX.Element => {
           <ButtonLink
             href={APP_ROUTES.HOME}
             variant="primary"
-            className="inline-flex items-center justify-center rounded-lg bg-blue-600 px-6 py-3 text-white transition-colors hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 focus:outline-none dark:focus:ring-blue-800"
+            className="inline-flex items-center justify-center rounded-lg bg-emerald-600 px-6 py-3 text-white transition-colors hover:bg-emerald-700 focus:outline-none focus:ring-4 focus:ring-emerald-300 dark:focus:ring-emerald-800"
           >
             Go to the home page
           </ButtonLink>
