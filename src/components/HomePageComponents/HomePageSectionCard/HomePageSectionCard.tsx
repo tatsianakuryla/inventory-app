@@ -19,9 +19,9 @@ export const HomePageSectionCard = ({
       aria-labelledby={titleId}
       className="rounded-2xl border border-gray-200 bg-white/70 p-0 shadow-sm backdrop-blur dark:border-gray-800 dark:bg-gray-900/60"
     >
-      <div className="flex items-start justify-between gap-3 px-5 pt-5 pb-3 sm:px-6">
+      <div className="flex items-start justify-between gap-2 px-4 pb-2 pt-3 sm:px-5">
         <div>
-          <h2 id={titleId} className="text-lg font-semibold text-gray-900 dark:text-white">
+          <h2 id={titleId} className="text-base font-semibold text-gray-900 dark:text-white">
             {title}
           </h2>
           {description && (
@@ -30,7 +30,7 @@ export const HomePageSectionCard = ({
         </div>
       </div>
       <div className="h-px w-full bg-gray-200 dark:bg-gray-800" />
-      <div className="overflow-x-auto px-3 py-3 sm:px-4 sm:py-4">{children}</div>
+      <div className="overflow-x-auto px-2 py-2 sm:px-3 sm:py-3">{children}</div>
     </section>
   );
 };

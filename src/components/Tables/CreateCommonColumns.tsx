@@ -9,48 +9,24 @@ export type Column<Row> = {
   cell: (row: Row) => ReactNode;
 };
 
-type CommonRowBase = {
+export type InventoryTableRows = {
   id: string;
   name: string;
   description: string | undefined;
+  isPublic: boolean;
   owner: {
     name: string;
   };
   imageUrl: string | undefined;
-};
-
-export type AllInventoryRow = CommonRowBase & {
+  itemsCount?: number;
   createdAt: string;
 };
 
-export type PopularInventoryRow = CommonRowBase & {
-  itemsCount: number;
-  createdAt: string;
-};
-
-export const ALL_INVENTORIES_COLUMNS: Column<AllInventoryRow>[] = [
-  ...createCommonColumns<AllInventoryRow>(),
-  {
-    key: 'createdAt',
-    header: 'Created',
-    cell: (row) => (
-      <span className="text-gray-600 dark:text-gray-400">
-        {new Date(row.createdAt).toLocaleDateString()}
-      </span>
-    ),
-  },
+export const INVENTORY_COLUMNS: Column<InventoryTableRows>[] = [
+  ...createCommonColumns<InventoryTableRows>(),
 ];
 
-export const POPULAR_COLUMNS: Column<PopularInventoryRow>[] = [
-  ...createCommonColumns<PopularInventoryRow>(),
-  {
-    key: 'items',
-    header: 'Items',
-    cell: (row) => <ItemsCountBadge value={row.itemsCount} />,
-  },
-];
-
-function createCommonColumns<Row extends CommonRowBase>(): Column<Row>[] {
+function createCommonColumns<Row extends InventoryTableRows>(): Column<Row>[] {
   return [
     {
       key: 'name',
@@ -60,18 +36,49 @@ function createCommonColumns<Row extends CommonRowBase>(): Column<Row>[] {
     {
       key: 'description',
       header: 'Description',
-      className: 'hidden md:table-cell',
+      className: 'hidden md:table-cell w-1/3',
       cell: (row) => (
-        <p className="line-clamp-2 max-w-md text-gray-600 dark:text-gray-400">
+        <p className="line-clamp-2 text-left text-gray-600 dark:text-gray-400">
           {row.description || 'No description'}
         </p>
       ),
     },
     {
+      key: 'visibility',
+      header: 'Visibility',
+      className: 'hidden sm:table-cell',
+      cell: (row) => (
+        <span
+          className={`inline-flex items-center rounded-full px-2 py-1 text-xs font-medium ${
+            row.isPublic
+              ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400'
+              : 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300'
+          }`}
+        >
+          {row.isPublic ? 'Public' : 'Private'}
+        </span>
+      ),
+    },
+    {
+      key: 'items',
+      header: 'Items',
+      className: 'hidden lg:table-cell',
+      cell: (row) => <ItemsCountBadge value={row.itemsCount ?? 0} />,
+    },
+    {
       key: 'creator',
       header: 'Creator',
-      className: 'hidden lg:table-cell',
+      className: 'hidden xl:table-cell',
       cell: (row) => <span className="text-gray-600 dark:text-gray-400">{row.owner.name}</span>,
+    },
+    {
+      key: 'createdAt',
+      header: 'Created',
+      cell: (row) => (
+        <span className="text-gray-600 dark:text-gray-400">
+          {new Date(row.createdAt).toLocaleDateString()}
+        </span>
+      ),
     },
   ];
 }

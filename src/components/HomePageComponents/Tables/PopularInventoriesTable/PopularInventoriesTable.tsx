@@ -1,6 +1,6 @@
 import { type JSX } from 'react';
 import { useGetPopularInventories } from '../../../../hooks/inventories/useInventories';
-import { POPULAR_COLUMNS } from '../../../Tables/CreateCommonColumns';
+import { INVENTORY_COLUMNS } from '../../../Tables/CreateCommonColumns';
 import { InventoriesBasicTable } from '../../../Tables/InventoryBasicTable/InventoryBasicTable';
 import { LoadingErrorEmptySwitcher } from '../../../Tables/LoadingErrorEmptySwitcher/LoadingErrorEmptySwitcher';
 
@@ -21,12 +21,13 @@ export function PopularInventoriesTable(): JSX.Element {
             id: item.id,
             name: item.name,
             description: item.description ?? undefined,
+            isPublic: item.isPublic,
             owner: item.owner,
             imageUrl: item.imageUrl ?? undefined,
             createdAt: item.createdAt,
             itemsCount: item.itemsCount,
           }))}
-          columns={POPULAR_COLUMNS}
+          columns={INVENTORY_COLUMNS}
           getRowId={(row) => row.id}
         />
       )}

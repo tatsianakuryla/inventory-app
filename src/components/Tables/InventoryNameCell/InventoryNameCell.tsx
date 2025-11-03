@@ -15,9 +15,13 @@ interface InventoryNameCellProperties {
 export const InventoryNameCell = ({ row }: InventoryNameCellProperties): JSX.Element => {
   return (
     <div className="flex items-center">
-      {row.imageUrl && (
-        <img src={row.imageUrl} alt={row.name} className="mr-3 h-10 w-10 rounded object-cover" />
-      )}
+      <div className="mr-3 h-10 w-10 flex-shrink-0">
+        {row.imageUrl ? (
+          <img src={row.imageUrl} alt={row.name} className="h-10 w-10 rounded object-cover" />
+        ) : (
+          <div className="h-10 w-10 rounded bg-gray-200 dark:bg-gray-700" />
+        )}
+      </div>
       <ButtonLink href={`${APP_ROUTES.INVENTORIES}/:${row.id}`} variant="link">
         {row.name}
       </ButtonLink>

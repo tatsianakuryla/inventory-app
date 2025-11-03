@@ -13,7 +13,7 @@ export const ItemsCountBadge = ({
 }: ItemsCountBadgeProperties): JSX.Element => {
   const label = value === 1 ? singular : plural;
   return (
-    <span className="inline-flex rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+    <span className="inline-flex rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-800 dark:bg-green-900/30 dark:text-green-400">
       {value} {label}
     </span>
   );

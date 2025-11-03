@@ -1,6 +1,6 @@
 import { type JSX } from 'react';
 import { useGetInventories } from '../../../../hooks/inventories/useInventories';
-import { ALL_INVENTORIES_COLUMNS } from '../../../Tables/CreateCommonColumns';
+import { INVENTORY_COLUMNS } from '../../../Tables/CreateCommonColumns';
 import { InventoriesBasicTable } from '../../../Tables/InventoryBasicTable/InventoryBasicTable';
 import { LoadingErrorEmptySwitcher } from '../../../Tables/LoadingErrorEmptySwitcher/LoadingErrorEmptySwitcher';
 
@@ -21,11 +21,12 @@ export const AllInventoriesTable = (): JSX.Element => {
             id: item.id,
             name: item.name,
             description: item.description ?? undefined,
+            isPublic: item.isPublic,
             owner: item.owner,
             imageUrl: item.imageUrl ?? undefined,
             createdAt: item.createdAt,
           }))}
-          columns={ALL_INVENTORIES_COLUMNS}
+          columns={INVENTORY_COLUMNS}
           getRowId={(row) => row.id}
         />
       )}
