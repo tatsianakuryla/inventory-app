@@ -7,6 +7,7 @@ export const APP_ROUTES = {
   INVENTORY_SETTINGS: '/inventory/:inventoryId/settings',
   INVENTORY_ITEMS: '/inventory/:inventoryId/items',
   ITEM_VIEW: '/item/:itemId',
+  ITEM_CREATE: '/inventory/:inventoryId/items/new',
   SEARCH: '/search',
   PROFILE: '/profile/:userId',
   ADMIN_USERS: '/admin/users',

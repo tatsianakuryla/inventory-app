@@ -20,6 +20,7 @@ import { RequireAdmin } from './guards/RequireAdmin';
 import { RequireGuest } from './guards/RequireGuest';
 import { MyInventoriesPage } from '../pages/MyInventoriesPage/MyInventoriesPage';
 import { InventoryCreatePage } from '../pages/InventoryCreatePage/InventoryCreatePage';
+import { ItemCreatePage } from '../pages/ItemCreatePage/ItemCreatePage';
 
 export const AppRouter = (): JSX.Element => {
   return (
@@ -28,6 +29,7 @@ export const AppRouter = (): JSX.Element => {
         <Route index element={<HomePage />} />
         <Route path={APP_ROUTES.SEARCH} element={<SearchPage />} />
         <Route path={APP_ROUTES.INVENTORIES} element={<InventoriesPage />} />
+        <Route path={APP_ROUTES.INVENTORY_VIEW} element={<InventoryViewPage />} />
       </Route>
 
       <Route element={<RequireAuth />}>
@@ -38,6 +40,7 @@ export const AppRouter = (): JSX.Element => {
           <Route path={APP_ROUTES.INVENTORY_SETTINGS} element={<InventorySettingsPage />} />
           <Route path={APP_ROUTES.INVENTORY_ITEMS} element={<InventoryItemsPage />} />
           <Route path={APP_ROUTES.ITEM_VIEW} element={<ItemViewPage />} />
+          <Route path={APP_ROUTES.ITEM_CREATE} element={<ItemCreatePage />} />
           <Route path={APP_ROUTES.PROFILE} element={<ProfilePage />} />
           <Route path={APP_ROUTES.MY_INVENTORIES} element={<MyInventoriesPage />} />
         </Route>

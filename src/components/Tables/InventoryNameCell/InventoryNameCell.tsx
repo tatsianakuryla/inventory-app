@@ -1,6 +1,6 @@
 import type { JSX } from 'react';
-import { ButtonLink } from '../../Button/ButtonLink';
 import { APP_ROUTES } from '../../../appRouter/routes/routes';
+import { Link } from 'react-router-dom';
 
 type InventoryNameCellRow = {
   id: string;
@@ -22,9 +22,12 @@ export const InventoryNameCell = ({ row }: InventoryNameCellProperties): JSX.Ele
           <div className="h-10 w-10 rounded bg-gray-200 dark:bg-gray-700" />
         )}
       </div>
-      <ButtonLink href={`${APP_ROUTES.INVENTORIES}/:${row.id}`} variant="link">
+      <Link
+        to={`${APP_ROUTES.INVENTORIES}/${row.id}`}
+        className="text-teal-600 hover:text-teal-800 hover:underline dark:text-teal-400 dark:hover:text-teal-300"
+      >
         {row.name}
-      </ButtonLink>
+      </Link>
     </div>
   );
 };
