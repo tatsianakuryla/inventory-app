@@ -6,3 +6,10 @@ export type Status = (typeof USER_STATUSES)[number];
 
 export const INVENTORY_ROLES = ['OWNER', 'EDITOR', 'VIEWER'] as const;
 export type InventoryRole = (typeof INVENTORY_ROLES)[number];
+
+export const SERVER_SORTABLE_KEYS_MAP = {
+  name: true,
+  createdAt: true,
+} as const;
+
+export type ServerSortableKey = keyof typeof SERVER_SORTABLE_KEYS_MAP;

@@ -8,6 +8,8 @@ export type Column<Row> = {
   className?: string;
   width?: string;
   cell: (row: Row) => ReactNode;
+  sortable?: boolean;
+  sortKey?: string;
 };
 
 export type InventoryTableRows = {
@@ -34,6 +36,8 @@ function createCommonColumns<Row extends InventoryTableRows>(): Column<Row>[] {
       header: 'Name',
       width: 'w-[30%]',
       cell: (row) => <InventoryNameCell row={row} />,
+      sortable: true,
+      sortKey: 'name',
     },
     {
       key: 'description',
@@ -60,18 +64,24 @@ function createCommonColumns<Row extends InventoryTableRows>(): Column<Row>[] {
           {row.isPublic ? 'Public' : 'Private'}
         </span>
       ),
+      sortable: true,
+      sortKey: 'isPublic',
     },
     {
       key: 'items',
       header: 'Items',
       width: 'w-[10%]',
       cell: (row) => <ItemsCountBadge value={row.itemsCount ?? 0} />,
+      sortable: true,
+      sortKey: 'itemsCount',
     },
     {
       key: 'creator',
       header: 'Creator',
       width: 'w-[15%]',
       cell: (row) => <span className="text-gray-600 dark:text-gray-400">{row.owner.name}</span>,
+      sortable: true,
+      sortKey: 'owner',
     },
     {
       key: 'createdAt',
@@ -82,6 +92,8 @@ function createCommonColumns<Row extends InventoryTableRows>(): Column<Row>[] {
           {new Date(row.createdAt).toLocaleDateString()}
         </span>
       ),
+      sortable: true,
+      sortKey: 'createdAt',
     },
   ];
 }

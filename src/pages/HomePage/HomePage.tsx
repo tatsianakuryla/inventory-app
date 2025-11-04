@@ -11,12 +11,12 @@ export const HomePage = (): JSX.Element => {
         <PageHeader title="Welcome to Inventory Management System" />
       </div>
 
-      <div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
-        <HomePageSectionCard title="Most Popular Inventories" titleId="popular-inventories-title">
+      <div className="flex flex-col gap-4">
+        <HomePageSectionCard title="Most Popular Inventories">
           <PopularInventoriesTable />
         </HomePageSectionCard>
 
-        <HomePageSectionCard title="Latest Inventories" titleId="recent-inventories-title">
+        <HomePageSectionCard title="Latest Inventories">
           <RecentInventoriesTable />
         </HomePageSectionCard>
       </div>

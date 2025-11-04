@@ -1,16 +1,23 @@
 import type { Column } from '../CreateCommonColumns';
 import type { JSX } from 'react';
+import { SortableHeader, type SortOrder } from '../SortableHeader/SortableHeader';
 
 interface InventoryBasicTableParameters<Row> {
   items: Row[];
   columns: Column<Row>[];
   getRowId: (row: Row) => string;
+  sortKey?: string;
+  sortOrder?: SortOrder;
+  onSort?: (key: string) => void;
 }
 
 export function InventoriesBasicTable<Row>({
   items,
   columns,
   getRowId,
+  sortKey,
+  sortOrder,
+  onSort,
 }: InventoryBasicTableParameters<Row>): JSX.Element {
   return (
     <div
@@ -23,23 +30,38 @@ export function InventoriesBasicTable<Row>({
             <col key={column.key} className={column.width} />
           ))}
         </colgroup>
+
         <thead className="sticky top-0 z-10 bg-gray-50 dark:bg-gray-900">
           <tr>
-            {columns.map((column) => (
-              <th
-                key={column.key}
-                scope="col"
-                className={[
-                  'px-2 py-1.5 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400',
-                  column.className ?? '',
-                ].join(' ')}
-              >
-                {column.header}
-              </th>
-            ))}
+            {columns.map((column) => {
+              const showSortableHeader = !!column.sortable && !!column.sortKey && !!onSort;
+
+              return (
+                <th
+                  key={column.key}
+                  scope="col"
+                  className={[
+                    'px-2 py-1.5 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400',
+                    column.className ?? '',
+                  ].join(' ')}
+                >
+                  {showSortableHeader ? (
+                    <SortableHeader
+                      label={typeof column.header === 'string' ? column.header : column.key}
+                      isActive={sortKey === column.sortKey}
+                      order={sortKey === column.sortKey ? sortOrder : undefined}
+                      onClick={() => onSort(column.sortKey ?? 'createdAt')}
+                    />
+                  ) : (
+                    column.header
+                  )}
+                </th>
+              );
+            })}
           </tr>
         </thead>
-        <tbody className="divide-y divide-gray-200 bg-white dark:divide-gray-700 dark:bg-gray-800">
+
+        <tbody className="divide-y divide-gray-200 bg-white dark:divide-gray-700">
           {items.map((row) => (
             <tr
               key={getRowId(row)}

@@ -1,30 +1,35 @@
-import { type JSX } from 'react';
+import { type JSX, useMemo } from 'react';
 import { useGetRecentInventories } from '../../../../hooks/inventories/useInventories';
-import { LoadingBlock } from '../../../Tables/LoadingBlock/LoadingBlock';
-import { ErrorBlock } from '../../../Tables/ErrorBlock/ErrorBlock';
-import { EmptyBlock } from '../../../Tables/EmptyBlock/EmptyBlock';
 import { INVENTORY_COLUMNS, type InventoryTableRows } from '../../../Tables/CreateCommonColumns';
-import { InventoriesBasicTable } from '../../../Tables/InventoryBasicTable/InventoryBasicTable';
+import { InventoriesBasicTable } from '../../../Tables/InventoriesBasicTable/InventoriesBasicTable';
+import { LoadingErrorEmptySwitcher } from '../../../Tables/LoadingErrorEmptySwitcher/LoadingErrorEmptySwitcher';
 
 export function RecentInventoriesTable(): JSX.Element {
   const { data, isLoading, error } = useGetRecentInventories({ limit: 5 });
 
-  if (isLoading) return <LoadingBlock />;
-  if (error)
-    return <ErrorBlock title="Failed to load recent inventories" message={error.message} />;
-  if (!data?.items?.length) return <EmptyBlock text="No inventories found" />;
-
-  const items: InventoryTableRows[] = data.items.map((items) => ({
-    id: items.id,
-    name: items.name,
-    description: items.description ?? undefined,
-    isPublic: items.isPublic,
-    owner: items.owner,
-    imageUrl: items.imageUrl ?? undefined,
-    createdAt: items.createdAt,
-  }));
+  const items: InventoryTableRows[] = useMemo(
+    () =>
+      (data?.items ?? []).map((item) => ({
+        id: item.id,
+        name: item.name,
+        description: item.description ?? undefined,
+        isPublic: item.isPublic,
+        owner: item.owner,
+        imageUrl: item.imageUrl ?? undefined,
+        createdAt: item.createdAt,
+      })),
+    [data?.items]
+  );
 
   return (
-    <InventoriesBasicTable items={items} columns={INVENTORY_COLUMNS} getRowId={(row) => row.id} />
+    <LoadingErrorEmptySwitcher
+      isLoading={isLoading}
+      error={error}
+      data={{ items }}
+      emptyText="No inventories found"
+      errorTitle="Failed to load inventories"
+    >
+      <InventoriesBasicTable items={items} columns={INVENTORY_COLUMNS} getRowId={(row) => row.id} />
+    </LoadingErrorEmptySwitcher>
   );
 }

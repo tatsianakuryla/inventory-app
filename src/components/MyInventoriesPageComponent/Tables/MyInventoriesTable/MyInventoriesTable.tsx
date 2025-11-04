@@ -1,30 +1,26 @@
 import { type JSX } from 'react';
-import { LoadingErrorEmptySwitcher } from '../../../Tables/LoadingErrorEmptySwitcher/LoadingErrorEmptySwitcher';
-import { useGetInventories } from '../../../../hooks/inventories/useInventories';
 import { useUserStore } from '../../../../stores/useUserStore';
-import { InventoriesBasicTable } from '../../../Tables/InventoryBasicTable/InventoryBasicTable';
+import { LoadingErrorEmptySwitcher } from '../../../Tables/LoadingErrorEmptySwitcher/LoadingErrorEmptySwitcher';
+import { InventoriesBasicTable } from '../../../Tables/InventoriesBasicTable/InventoriesBasicTable';
 import { INVENTORY_COLUMNS } from '../../../Tables/CreateCommonColumns';
+import { useInventoriesTable } from '../../../../hooks/inventories/useInventoriesTable';
 
 export const MyInventoriesTable = (): JSX.Element => {
-  const { data, isLoading, error } = useGetInventories();
-  const user = useUserStore().user;
+  const userId = useUserStore().user?.id;
+  const { query, view } = useInventoriesTable({
+    filterPredicate: (item) => (userId ? item.ownerId === userId : false),
+  });
+
   return (
-    <LoadingErrorEmptySwitcher isLoading={isLoading} error={error} data={data}>
-      {data?.items && (
+    <LoadingErrorEmptySwitcher isLoading={query.isLoading} error={query.error} data={query.data}>
+      {query.data?.items && (
         <InventoriesBasicTable
-          items={data.items
-            .filter((item) => item.ownerId === user?.id)
-            .map((item) => ({
-              id: item.id,
-              name: item.name,
-              description: item.description ?? undefined,
-              isPublic: item.isPublic,
-              owner: item.owner,
-              imageUrl: item.imageUrl ?? undefined,
-              createdAt: item.createdAt,
-            }))}
+          items={view.sortedItems}
           columns={INVENTORY_COLUMNS}
           getRowId={(row) => row.id}
+          sortKey={view.sortKey}
+          sortOrder={view.sortOrder}
+          onSort={view.handleSort}
         />
       )}
     </LoadingErrorEmptySwitcher>

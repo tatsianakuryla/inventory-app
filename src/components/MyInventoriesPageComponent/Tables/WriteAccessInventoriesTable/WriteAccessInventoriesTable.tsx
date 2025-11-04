@@ -1,27 +1,63 @@
-import { type JSX } from 'react';
+import { type JSX, useState, useMemo } from 'react';
 import { LoadingErrorEmptySwitcher } from '../../../Tables/LoadingErrorEmptySwitcher/LoadingErrorEmptySwitcher';
 import { useGetMyWriteAccessInventories } from '../../../../hooks/inventories/useInventories';
-import { InventoriesBasicTable } from '../../../Tables/InventoryBasicTable/InventoryBasicTable';
-import { INVENTORY_COLUMNS } from '../../../Tables/CreateCommonColumns';
+import { InventoriesBasicTable } from '../../../Tables/InventoriesBasicTable/InventoriesBasicTable';
+import { INVENTORY_COLUMNS, type InventoryTableRows } from '../../../Tables/CreateCommonColumns';
+import type { SortOrder } from '../../../Tables/SortableHeader/SortableHeader';
+import { Sorter } from '../../../../sorter/Sorter';
+import { inventorySortAccessors } from '../../../Tables/InventorySortAccessors';
 
 export const WriteAccessInventoriesTable = (): JSX.Element => {
+  const [sortKey, setSortKey] = useState<string | undefined>('createdAt');
+  const [sortOrder, setSortOrder] = useState<SortOrder>('desc');
+
   const { data, isLoading, error } = useGetMyWriteAccessInventories();
+
+  const items: InventoryTableRows[] = useMemo(
+    () =>
+      (data?.items ?? []).map((item) => ({
+        id: item.id,
+        name: item.name,
+        description: item.description ?? undefined,
+        isPublic: item.isPublic,
+        owner: item.owner,
+        imageUrl: item.imageUrl ?? undefined,
+        createdAt: item.createdAt,
+      })),
+    [data?.items]
+  );
+
+  const sortedItems = useMemo(() => {
+    if (!sortKey || !sortOrder) return items;
+    const getComparableValue = inventorySortAccessors[sortKey];
+    if (!getComparableValue) return items;
+
+    const comparator = Sorter.createComparatorBy(getComparableValue, sortOrder);
+    return [...items].toSorted((a, b) => {
+      const result = comparator(a, b);
+      return result === 0 ? a.id.localeCompare(b.id) : result;
+    });
+  }, [items, sortKey, sortOrder]);
+
+  const handleSort = (key: string): void => {
+    if (sortKey === key) {
+      setSortOrder(Sorter.toggleSortOrder(sortOrder));
+    } else {
+      setSortKey(key);
+      setSortOrder('asc');
+    }
+  };
 
   return (
     <LoadingErrorEmptySwitcher isLoading={isLoading} error={error} data={data}>
       {data?.items && (
         <InventoriesBasicTable
-          items={data.items.map((item) => ({
-            id: item.id,
-            name: item.name,
-            description: item.description ?? undefined,
-            isPublic: item.isPublic,
-            owner: item.owner,
-            imageUrl: item.imageUrl ?? undefined,
-            createdAt: item.createdAt,
-          }))}
+          items={sortedItems}
           columns={INVENTORY_COLUMNS}
           getRowId={(row) => row.id}
+          sortKey={sortKey}
+          sortOrder={sortOrder}
+          onSort={handleSort}
         />
       )}
     </LoadingErrorEmptySwitcher>

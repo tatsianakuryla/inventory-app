@@ -1,0 +1,80 @@
+import { useMemo, useCallback, useState } from 'react';
+import { useGetInventories } from '../../hooks/inventories/useInventories';
+import type { SortOrder } from '../../components/Tables/SortableHeader/SortableHeader';
+import { Sorter } from '../../sorter/Sorter';
+import { inventorySortAccessors } from '../../components/Tables/InventorySortAccessors';
+import { isServerSortableKey } from '../../shared/typeguards/typeguards';
+import type { ServerSortableKey } from '../../shared/types/main.types';
+import type { InventoryTableRows } from '../../components/Tables/CreateCommonColumns';
+import type { InventoryListItem } from '../../api/InventoryService/inventory.schemas';
+
+type Options = {
+  initialSortKey?: string;
+  initialSortOrder?: SortOrder;
+  filterPredicate?: (item: InventoryListItem) => boolean;
+};
+
+export function useInventoriesTable({
+  initialSortKey = 'createdAt',
+  initialSortOrder = 'desc',
+  filterPredicate,
+}: Options = {}) {
+  const [sortKey, setSortKey] = useState<string | undefined>(initialSortKey);
+  const [sortOrder, setSortOrder] = useState<SortOrder>(initialSortOrder);
+
+  const serverSortBy: ServerSortableKey | undefined = useMemo(
+    () => (sortKey && isServerSortableKey(sortKey) ? sortKey : undefined),
+    [sortKey]
+  );
+
+  const serverParameters = useMemo(() => {
+    const order: 'asc' | 'desc' = sortOrder === 'asc' ? 'asc' : 'desc';
+    const sortBy: ServerSortableKey = serverSortBy ?? 'createdAt';
+    return { sortBy, order };
+  }, [serverSortBy, sortOrder]);
+
+  const { data, isLoading, error } = useGetInventories(serverParameters);
+
+  const items: InventoryTableRows[] = useMemo(() => {
+    const source = (data?.items ?? []).filter((index) =>
+      filterPredicate ? filterPredicate(index) : true
+    );
+    return source.map((item) => ({
+      id: item.id,
+      name: item.name,
+      description: item.description ?? undefined,
+      isPublic: item.isPublic,
+      owner: item.owner,
+      imageUrl: item.imageUrl ?? undefined,
+      createdAt: item.createdAt,
+    }));
+  }, [data?.items, filterPredicate]);
+
+  const sortedItems = useMemo(() => {
+    if (serverSortBy || !sortKey || !sortOrder) return items;
+    const getComparableValue = inventorySortAccessors[sortKey];
+    if (!getComparableValue) return items;
+    const comparator = Sorter.createComparatorBy(getComparableValue, sortOrder);
+    return [...items].toSorted((a, b) => {
+      const result = comparator(a, b);
+      return result === 0 ? a.id.localeCompare(b.id) : result;
+    });
+  }, [items, sortKey, sortOrder, serverSortBy]);
+
+  const handleSort = useCallback(
+    (clickedKey: string): void => {
+      if (sortKey === clickedKey) {
+        setSortOrder((previous) => Sorter.toggleSortOrder(previous));
+      } else {
+        setSortKey(clickedKey);
+        setSortOrder('asc');
+      }
+    },
+    [sortKey]
+  );
+
+  return {
+    query: { data, isLoading, error },
+    view: { sortedItems, sortKey, sortOrder, handleSort },
+  };
+}
