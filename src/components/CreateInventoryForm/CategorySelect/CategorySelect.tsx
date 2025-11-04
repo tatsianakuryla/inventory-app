@@ -1,25 +1,20 @@
 import { type JSX, useState, useRef, useEffect } from 'react';
-import {
-  useGetCategoryItemsQuantity,
-  useCreateCategory,
-} from '../../../hooks/categories/useCategories';
-import { ChevronDown, Plus } from 'lucide-react';
+import { useGetCategoryItemsQuantity } from '../../../hooks/categories/useCategories';
+import { ChevronDown } from 'lucide-react';
 import type { CategoryWithCount } from '../../../api/CategoryService/category.schemas';
-import { Button } from '../../Button/Button';
 
-interface CreatableCategorySelectProperties {
+interface CategorySelectProperties {
   value: number | undefined;
   onChange: (categoryId: number | undefined) => void;
   disabled?: boolean;
 }
 
-export function CreatableCategorySelect({
+export const CategorySelect = ({
   value,
   onChange,
   disabled,
-}: CreatableCategorySelectProperties): JSX.Element {
+}: CategorySelectProperties): JSX.Element => {
   const { data: categoriesData, isLoading: categoriesLoading } = useGetCategoryItemsQuantity();
-  const createMutation = useCreateCategory();
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const dropdownReference = useRef<HTMLDivElement>(null);
@@ -31,12 +26,6 @@ export function CreatableCategorySelect({
   const filteredCategories = categories.filter((category) =>
     category.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
-
-  const exactMatch = categories.some(
-    (category) => category.name.toLowerCase() === searchTerm.toLowerCase()
-  );
-
-  const showCreateOption = searchTerm.trim().length > 0 && !exactMatch;
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent): void => {
@@ -57,19 +46,6 @@ export function CreatableCategorySelect({
     onChange(category?.id);
     setIsOpen(false);
     setSearchTerm('');
-  };
-
-  const handleCreateCategory = async (): Promise<void> => {
-    if (!searchTerm.trim()) return;
-
-    try {
-      const newCategory = await createMutation.mutateAsync({ name: searchTerm.trim() });
-      onChange(newCategory.id);
-      setIsOpen(false);
-      setSearchTerm('');
-    } catch (error) {
-      console.error('Failed to create category:', error);
-    }
   };
 
   const handleToggleDropdown = (): void => {
@@ -107,7 +83,7 @@ export function CreatableCategorySelect({
               type="text"
               value={searchTerm}
               onChange={(event) => setSearchTerm(event.target.value)}
-              placeholder="Search or create category..."
+              placeholder="Search categories..."
               className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 outline-none transition-colors focus:ring-2 focus:ring-emerald-500 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100"
             />
           </div>
@@ -138,20 +114,7 @@ export function CreatableCategorySelect({
               </button>
             ))}
 
-            {showCreateOption && (
-              <Button
-                type="button"
-                onClick={() => {
-                  void handleCreateCategory();
-                }}
-                disabled={createMutation.isPending}
-                className="flex w-full items-center gap-2 rounded-lg border-t border-gray-200 px-3 py-2 text-left text-sm text-emerald-600 transition-colors hover:bg-emerald-50 disabled:cursor-not-allowed disabled:opacity-60 dark:border-gray-700 dark:text-emerald-400 dark:hover:bg-emerald-900/20"
-              >
-                <Plus className="h-4 w-4" />
-                <span>{createMutation.isPending ? 'Creating...' : `Create "${searchTerm}"`}</span>
-              </Button>
-            )}
-            {filteredCategories.length === 0 && !showCreateOption && searchTerm !== '' && (
+            {filteredCategories.length === 0 && searchTerm !== '' && (
               <div className="px-3 py-2 text-sm text-gray-400 dark:text-gray-500">
                 No categories found
               </div>
@@ -161,4 +124,4 @@ export function CreatableCategorySelect({
       )}
     </div>
   );
-}
+};

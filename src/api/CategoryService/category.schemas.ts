@@ -36,9 +36,3 @@ export const CategoryQuerySchema = PaginationQuerySchema.extend({
 });
 
 export type CategoryQuery = z.input<typeof CategoryQuerySchema>;
-
-export const CategoryCreateSchema = z.object({
-  name: z.string().trim().min(1, 'Name is required').max(100),
-});
-
-export type CategoryCreate = z.infer<typeof CategoryCreateSchema>;

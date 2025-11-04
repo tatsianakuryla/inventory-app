@@ -4,14 +4,8 @@ import {
   type Category,
   type CategoryQuery,
   type CategoryItemsQuantityResponse,
-  type CategoryCreate,
-  CategoryCreateSchema,
 } from './category.schemas';
-import {
-  CategorySchema,
-  PaginatedCategorySchema,
-  CategoryItemsQuantityResponseSchema,
-} from './category.schemas';
+import { PaginatedCategorySchema, CategoryItemsQuantityResponseSchema } from './category.schemas';
 import { CATEGORIES_ROUTES } from '../../shared/constants/constants';
 import type { Paginated } from '../../shared/types/schemas';
 
@@ -33,11 +27,5 @@ export class CategoryService {
   public static getCategoryItemsQuantity = async (): Promise<CategoryItemsQuantityResponse> => {
     const response = await api.get(CATEGORIES_ROUTES.GET_STATS);
     return Validator.zodParse(CategoryItemsQuantityResponseSchema, response.data);
-  };
-
-  public static create = async (data: CategoryCreate): Promise<Category> => {
-    const validParameters = Validator.zodParse(CategoryCreateSchema, data);
-    const response = await api.post(CATEGORIES_ROUTES.CREATE, validParameters);
-    return Validator.zodParse(CategorySchema, response.data);
   };
 }

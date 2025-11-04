@@ -1,7 +1,7 @@
 import type { JSX } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { FormInput } from '../../FormInput/FormInput';
-import { CreatableCategorySelect } from '../CreatableCategorySelect/CreatableCategorySelect';
+import { CategorySelect } from '../CategorySelect/CategorySelect';
 import type { InventoryCreateRequestInput } from '../../../api/InventoryService/inventory.schemas';
 import { ErrorBlock } from '../../ErrorBlock/ErrorBlock';
 
@@ -38,11 +38,7 @@ export function NameAndCategoryRow({ disabled }: { disabled?: boolean }): JSX.El
                     : 'border-gray-300 dark:border-gray-700'
                 }`}
               >
-                <CreatableCategorySelect
-                  value={field.value}
-                  onChange={field.onChange}
-                  disabled={disabled}
-                />
+                <CategorySelect value={field.value} onChange={field.onChange} disabled={disabled} />
               </div>
             )}
           />
