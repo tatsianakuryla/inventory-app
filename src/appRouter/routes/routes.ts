@@ -2,7 +2,7 @@ export const APP_ROUTES = {
   HOME: '/',
   LOGIN: '/login',
   REGISTER: '/register',
-  INVENTORIES: '/inventory',
+  INVENTORIES: '/inventories',
   INVENTORY_VIEW: '/inventory/:inventoryId',
   INVENTORY_SETTINGS: '/inventory/:inventoryId/settings',
   INVENTORY_ITEMS: '/inventory/:inventoryId/items',

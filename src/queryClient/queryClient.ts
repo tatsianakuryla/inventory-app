@@ -10,6 +10,7 @@ export const queryKeys = {
   inventoriesStatistics: (id: string) => ['inventories', id, 'statistics'],
   popularInventories: ['inventories', 'popular'],
   recentInventories: ['inventories', 'recent'],
+  myWriteAccessInventories: ['inventories', 'my-write-access'],
   categories: ['categories'],
   categoriesStats: ['categories', 'stats'],
 } as const;

@@ -34,6 +34,7 @@ export const ADMIN_ROUTES = {
 export const INVENTORY_ROUTES = {
   CREATE: '/api/inventory',
   GET_ALL: '/api/inventory',
+  GET_MY_WRITE_ACCESS: '/api/inventory/my/write-access',
   GET_BY_ID: '/api/inventory/:inventoryId',
   UPDATE: '/api/inventory/:inventoryId',
   DELETE_MANY: '/api/inventory',

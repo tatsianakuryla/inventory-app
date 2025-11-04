@@ -73,6 +73,16 @@ export class InventoriesService {
     return Validator.zodParse(PaginatedInventoryListSchema, response.data);
   };
 
+  public static getMyWriteAccessInventories = async (
+    rawParameters: InventoriesQuery = {}
+  ): Promise<Paginated<InventoryListItem>> => {
+    const validParameters = Validator.zodParse(InventoriesQuerySchema, rawParameters);
+    const response = await api.get(INVENTORY_ROUTES.GET_MY_WRITE_ACCESS, {
+      params: validParameters,
+    });
+    return Validator.zodParse(PaginatedInventoryListSchema, response.data);
+  };
+
   public static getPopular = async (
     rawParameters: PopularInventoriesQuery = {}
   ): Promise<PopularInventoriesResponse> => {

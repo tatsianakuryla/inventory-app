@@ -65,6 +65,16 @@ export const useGetRecentInventories = (
   });
 };
 
+export const useGetMyWriteAccessInventories = (options?: {
+  enabled?: boolean;
+}): UseQueryResult<Paginated<InventoryListItem>, Error> => {
+  return useQuery({
+    queryKey: queryKeys.myWriteAccessInventories,
+    queryFn: () => InventoriesService.getMyWriteAccessInventories(),
+    enabled: options?.enabled,
+  });
+};
+
 export const useGetInventoryById = (
   inventoryId: string,
   options?: { enabled?: boolean }
