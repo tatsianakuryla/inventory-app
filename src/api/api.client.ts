@@ -1,5 +1,5 @@
 import axios, { isAxiosError, AxiosHeaders } from 'axios';
-import { API_BASE_URL } from '../shared/constants/constants';
+import { API_BASE_URL } from './api.requestRoutes';
 import { useUserStore } from '../stores/useUserStore';
 import { extractMessage, onAuthPage, toAuthError, toRejection } from './helpers/api.helpers';
 import { isAxiosHeaders } from '../shared/typeguards/typeguards';

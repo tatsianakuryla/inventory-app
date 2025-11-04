@@ -1,6 +1,6 @@
 import { Validator } from '../../validator/validator';
 import { api } from '../api.client';
-import { USERS_ROUTES } from '../../shared/constants/constants';
+import { USERS_ROUTES } from '../api.requestRoutes';
 import {
   type UpdateUserRequest,
   UpdateProfileRequestSchema,

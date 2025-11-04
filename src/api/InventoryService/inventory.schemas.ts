@@ -142,7 +142,6 @@ export type Inventory = z.infer<typeof InventorySchema>;
 export type InventoryListItem = z.infer<typeof InventoryListItemSchema>;
 export type InventoryDetail = z.infer<typeof InventoryDetailSchema>;
 export type InventoriesQuery = z.input<typeof InventoriesQuerySchema>;
-export type PopularInventoryItem = z.infer<typeof PopularInventoryItemSchema>;
 export type PopularInventoriesQuery = z.infer<typeof PopularInventoriesQuerySchema>;
 export type PopularInventoriesResponse = z.infer<typeof PopularInventoriesResponseSchema>;
 export type RecentInventoriesQuery = z.infer<typeof RecentInventoriesQuerySchema>;
@@ -157,7 +156,6 @@ export const InventoryCreateRequestSchema = z.object({
 });
 
 export type InventoryCreateRequestInput = z.input<typeof InventoryCreateRequestSchema>;
-export type InventoryCreateRequestOutput = z.output<typeof InventoryCreateRequestSchema>;
 
 export const InventoryUpdateRequestSchema = z.object({
   name: z.string().trim().min(1, 'Name is required').optional(),
@@ -287,22 +285,22 @@ export const UpdateIdFormatBodySchema = z.object({
 
 export type UpdateIdFormatBody = z.infer<typeof UpdateIdFormatBodySchema>;
 
-export const NumericStatsSchema = z.object({
+export const NumericStatisticsSchema = z.object({
   avg: z.number().nullable(),
   min: z.number().nullable(),
   max: z.number().nullable(),
   count: z.number().int().nonnegative(),
 });
 
-export const TextStatsItemSchema = z.object({
+export const TextStatisticsItemSchema = z.object({
   value: z.string(),
   count: z.number().int().positive(),
 });
 
 export const InventoryStatisticsSchema = z.object({
   itemsCount: z.number().int().nonnegative(),
-  numericFields: z.record(z.string(), NumericStatsSchema),
-  textFields: z.record(z.string(), z.array(TextStatsItemSchema)),
+  numericFields: z.record(z.string(), NumericStatisticsSchema),
+  textFields: z.record(z.string(), z.array(TextStatisticsItemSchema)),
   firstItemCreatedAt: z.string().nullable(),
   lastItemCreatedAt: z.string().nullable(),
 });

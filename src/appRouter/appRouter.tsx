@@ -6,8 +6,6 @@ import { AuthLayout } from '../layouts/AuthLayout';
 import { HomePage } from '../pages/HomePage/HomePage';
 import { InventoriesPage } from '../pages/InventoriesPage/InventoriesPage';
 import { InventoryViewPage } from '../pages/InventoryViewPage/InventoryViewPage';
-import { InventorySettingsPage } from '../pages/InventorySettingsPage/InventorySettingsPage';
-import { InventoryItemsPage } from '../pages/InventoryItemsPage/InventoryItemsPage';
 import { ItemViewPage } from '../pages/ItemViewPage/ItemViewPage';
 import { SearchPage } from '../pages/SearchPage/SearchPage';
 import { ProfilePage } from '../pages/ProfilePage/ProfilePage';
@@ -37,8 +35,6 @@ export const AppRouter = (): JSX.Element => {
           <Route path={APP_ROUTES.INVENTORIES} element={<InventoriesPage />} />
           <Route path={APP_ROUTES.INVENTORY_VIEW} element={<InventoryViewPage />} />
           <Route path={APP_ROUTES.CREATE_INVENTORY} element={<InventoryCreatePage />} />
-          <Route path={APP_ROUTES.INVENTORY_SETTINGS} element={<InventorySettingsPage />} />
-          <Route path={APP_ROUTES.INVENTORY_ITEMS} element={<InventoryItemsPage />} />
           <Route path={APP_ROUTES.ITEM_VIEW} element={<ItemViewPage />} />
           <Route path={APP_ROUTES.ITEM_CREATE} element={<ItemCreatePage />} />
           <Route path={APP_ROUTES.PROFILE} element={<ProfilePage />} />

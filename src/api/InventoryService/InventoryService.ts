@@ -45,7 +45,7 @@ import {
   InventoryListItemSchema,
 } from './inventory.schemas';
 import { Validator } from '../../validator/validator';
-import { HOME_ROUTES, INVENTORY_ROUTES } from '../../shared/constants/constants';
+import { HOME_ROUTES, INVENTORY_ROUTES } from '../api.requestRoutes';
 import type { Paginated } from '../../shared/types/schemas';
 
 function replaceUrlParameters(url: string, parameters: Record<string, string>): string {

@@ -1,25 +1,75 @@
-import { type JSX } from 'react';
+import { type JSX, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { PageHeader } from '../../components/PageHeader/PageHeader';
-import { useGetInventoryById } from '../../hooks/inventories/useInventories';
+import { useCanEditInventory, useGetInventoryById } from '../../hooks/inventories/useInventories';
 import { useUserStore } from '../../stores/useUserStore';
-import { AddNewItemButton } from '../../components/InventoryViewPageComponents/AddNewItemButton/AddNewItemButton';
-import { InventoryDescriptionSection } from '../../components/InventoryViewPageComponents/InventoryDescriptionSection/InventoryDescriptionSection';
-import { InventoryViewPageTable } from '../../components/InventoryViewPageComponents/Tables/InventoryViewPageTable/InventoryViewPageTable';
+import { Tabs } from '../../components/Tabs/Tabs';
+import { InventoryItemsTab } from '../../components/InventoryViewPageComponents/Tabs/InventoryItemsTab/InventoryItemsTab';
+import { InventoryDiscussionTab } from '../../components/InventoryViewPageComponents/Tabs/InventoryDiscussionTab/InventoryDiscussionTab';
+import { InventorySettingsTab } from '../../components/InventoryViewPageComponents/Tabs/InventorySettingsTab/InventorySettingsTab';
+import { InventoryAccessTab } from '../../components/InventoryViewPageComponents/Tabs/InventoryAccessTab/InventoryAccessTab';
+import { InventoryCustomFieldsTab } from '../../components/InventoryViewPageComponents/Tabs/InventoryCustomFieldsTab/InventoryCustomFieldsTab';
+import { InventoryStatisticsTab } from '../../components/InventoryViewPageComponents/Tabs/InventoryStatisticsTab/InventoryStatisticsTab';
 
 export const InventoryViewPage = (): JSX.Element => {
   const { inventoryId } = useParams<{ inventoryId: string }>();
   const { data: inventory, isLoading } = useGetInventoryById(inventoryId ?? '');
-  const isAuthenticated = useUserStore((state) => state.isAuthenticated);
+  const user = useUserStore((state) => state.user);
+  const [activeTab, setActiveTab] = useState('items');
+
+  const { canEdit } = useCanEditInventory(inventoryId ?? '', inventory?.ownerId ?? '');
+
   if (isLoading) return <PageHeader title="Loading..." />;
   if (!inventory) return <PageHeader title="Inventory not found" />;
 
+  const isOwner = inventory.ownerId === user?.id;
+  const isAdmin = user?.role === 'ADMIN';
+  const canManage = isOwner || isAdmin;
+
+  const publicTabs = [
+    {
+      id: 'items',
+      label: 'Items',
+      content: <InventoryItemsTab inventoryId={inventoryId ?? ''} canEdit={canEdit} />,
+    },
+    {
+      id: 'discussion',
+      label: 'Discussion',
+      content: <InventoryDiscussionTab inventoryId={inventoryId ?? ''} />,
+    },
+  ];
+
+  const managementTabs = canManage
+    ? [
+        {
+          id: 'settings',
+          label: 'Settings',
+          content: <InventorySettingsTab inventory={inventory} />,
+        },
+        {
+          id: 'access',
+          label: 'Access Management',
+          content: <InventoryAccessTab inventoryId={inventoryId ?? ''} />,
+        },
+        {
+          id: 'custom-fields',
+          label: 'Custom Fields',
+          content: <InventoryCustomFieldsTab inventoryId={inventoryId ?? ''} />,
+        },
+        {
+          id: 'statistics',
+          label: 'Statistics',
+          content: <InventoryStatisticsTab inventoryId={inventoryId ?? ''} />,
+        },
+      ]
+    : [];
+
+  const allTabs = [...publicTabs, ...managementTabs];
+
   return (
     <>
-      <PageHeader />
-      <AddNewItemButton isAuthenticated={isAuthenticated} inventoryId={inventoryId} />
-      <InventoryDescriptionSection inventory={inventory} />
-      <InventoryViewPageTable />
+      <PageHeader title={inventory.name} />
+      <Tabs tabs={allTabs} activeTab={activeTab} onTabChange={setActiveTab} />
     </>
   );
 };

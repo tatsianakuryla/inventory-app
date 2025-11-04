@@ -6,7 +6,7 @@ import {
   type CategoryItemsQuantityResponse,
 } from './category.schemas';
 import { PaginatedCategorySchema, CategoryItemsQuantityResponseSchema } from './category.schemas';
-import { CATEGORIES_ROUTES } from '../../shared/constants/constants';
+import { CATEGORIES_ROUTES } from '../api.requestRoutes';
 import type { Paginated } from '../../shared/types/schemas';
 
 export class CategoryService {
