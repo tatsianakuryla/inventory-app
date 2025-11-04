@@ -21,7 +21,7 @@ export function InventoriesBasicTable<Row>({
 }: InventoryBasicTableParameters<Row>): JSX.Element {
   return (
     <div
-      className="max-h-[700px] overflow-x-auto overflow-y-auto rounded-lg border border-gray-200 bg-white shadow dark:border-gray-700 dark:bg-gray-800"
+      className="max-h-[700px] overflow-x-auto overflow-y-auto rounded-lg border border-gray-200 bg-white shadow dark:border-gray-700 dark:bg-gray-900"
       style={{ scrollbarGutter: 'stable' }}
     >
       <table className="w-full min-w-[900px] table-fixed divide-y divide-gray-200 dark:divide-gray-700">
@@ -61,19 +61,16 @@ export function InventoriesBasicTable<Row>({
           </tr>
         </thead>
 
-        <tbody className="divide-y divide-gray-200 bg-white dark:divide-gray-700">
+        <tbody className="divide-y divide-gray-200 bg-white dark:divide-gray-700 dark:bg-gray-900/40">
           {items.map((row) => (
             <tr
               key={getRowId(row)}
-              className="transition-colors hover:bg-gray-50 dark:hover:bg-gray-700"
+              className="transition-colors odd:bg-white even:bg-gray-50 focus-within:bg-gray-100 hover:bg-gray-100 dark:odd:bg-gray-800/60 dark:even:bg-gray-800/40 dark:focus-within:bg-gray-700/60 dark:hover:bg-gray-700/60"
             >
               {columns.map((column) => (
                 <td
                   key={column.key}
-                  className={[
-                    'px-2 py-1.5 text-left text-sm text-gray-700 dark:text-gray-300',
-                    column.className ?? '',
-                  ].join(' ')}
+                  className="px-2 py-1.5 text-left text-sm text-gray-800 dark:text-gray-200"
                 >
                   {column.cell(row)}
                 </td>
