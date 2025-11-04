@@ -8,9 +8,12 @@ import {
   initialTextBySize,
   avatarVariant,
 } from './user-name.styles';
+import type { Role } from '../../../shared/types/main.types';
+import { Roles } from '../../../shared/constants/constants';
 
 export type UserNameWithInitialProperties = {
   name: string;
+  role: Role;
   size?: ComponentSize;
   className?: string;
   circleClassName?: string;
@@ -19,6 +22,7 @@ export type UserNameWithInitialProperties = {
 
 export const UserName = ({
   name,
+  role = Roles.USER,
   size = 'md',
   className = '',
   circleClassName = '',
@@ -26,14 +30,14 @@ export const UserName = ({
 }: UserNameWithInitialProperties): JSX.Element => {
   const trimmed = (name ?? 'User').trim();
   const initial = trimmed[0]?.toUpperCase() ?? 'U';
-
+  const userNameWithRole = trimmed + ' (' + role + ')';
   return (
     <div className={getTailWindClass(baseUser, containerGapBySize[size], className)}>
       <span
         aria-hidden
         title={trimmed}
         className={getTailWindClass(
-          'flex items-center justify-center rounded-full font-semibold select-none',
+          'flex select-none items-center justify-center rounded-full font-semibold',
           circleBySize[size],
           avatarVariant,
           circleClassName
@@ -42,7 +46,7 @@ export const UserName = ({
       >
         <span className={getTailWindClass(initialTextBySize[size], 'leading-none')}>{initial}</span>
       </span>
-      <span className={getTailWindClass('truncate', nameClassName)}>{trimmed}</span>
+      <span className={getTailWindClass('truncate', nameClassName)}>{userNameWithRole}</span>
     </div>
   );
 };

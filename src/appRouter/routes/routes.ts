@@ -1,6 +1,6 @@
 export const APP_ROUTES = {
   ITEM_VIEW: '/item/:itemId',
-  ITEM_CREATE: '/inventory/:inventoryId/items/new',
+  ITEM_CREATE: '/inventories/:inventoryId/items/new',
   SEARCH: '/search',
   PROFILE: '/profile/:userId',
   ADMIN_USERS: '/admin/users',

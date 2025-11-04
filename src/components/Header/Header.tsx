@@ -6,13 +6,17 @@ import { APP_ROUTES } from '../../appRouter/routes/routes';
 import { useUserStore } from '../../stores/useUserStore';
 import { LogoutButton } from '../LogoutButton/LogoutButton';
 import { ThemeUpdateButton } from './ThemeUpdateButton/ThemeUpdateButton';
+import { Roles } from '../../shared/constants/constants';
 
 export const Header = (): JSX.Element => {
   const isAuthenticated = useUserStore((state) => state.isAuthenticated);
   const currentUser = useUserStore((state) => state.user);
   return (
     <div className="container">
-      <UserName name={isAuthenticated ? (currentUser?.name ?? 'User') : 'Guest'} />
+      <UserName
+        name={isAuthenticated ? (currentUser?.name ?? '') : 'Guest'}
+        role={isAuthenticated ? (currentUser?.role ?? Roles.USER) : Roles.USER}
+      />
       <SearchInput onDebouncedChange={() => {}} debounce={400} />
       {!isAuthenticated && (
         <>
