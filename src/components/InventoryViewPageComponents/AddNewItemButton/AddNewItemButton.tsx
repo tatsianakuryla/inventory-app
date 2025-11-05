@@ -1,17 +1,21 @@
 import { ButtonLink } from '../../Button/ButtonLink';
 import { APP_ROUTES } from '../../../appRouter/routes/routes';
 import { type JSX } from 'react';
+import { useUserStore } from '../../../stores/useUserStore';
+import { Status } from '../../../shared/constants/constants';
 
 interface AddNewItemButtonProperties {
-  isAuthenticated: boolean;
+  canEdit: boolean;
   inventoryId?: string;
 }
 
 export const AddNewItemButton = ({
-  isAuthenticated,
+  canEdit,
   inventoryId,
 }: AddNewItemButtonProperties): JSX.Element | undefined => {
-  if (!isAuthenticated || !inventoryId) return undefined;
+  const user = useUserStore((state) => state.user);
+
+  if (!canEdit || !inventoryId || user?.status === Status.BLOCKED) return undefined;
   return (
     <ButtonLink
       href={`${APP_ROUTES.INVENTORIES}/${inventoryId}/items/new`}

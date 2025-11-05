@@ -13,7 +13,7 @@ export const InventoryItemsTab = ({
 }: InventoryItemsTabProperties): JSX.Element => {
   return (
     <div className="flex flex-col gap-2">
-      {canEdit && <AddNewItemButton isAuthenticated={true} inventoryId={inventoryId} />}
+      <AddNewItemButton canEdit={canEdit} inventoryId={inventoryId} />
       <InventoryViewPageTable />
     </div>
   );

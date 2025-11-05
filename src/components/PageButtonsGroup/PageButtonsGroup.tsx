@@ -3,17 +3,20 @@ import { useMatch } from 'react-router-dom';
 import { ButtonLink } from '../Button/ButtonLink';
 import { APP_ROUTES } from '../../appRouter/routes/routes';
 import { useUserStore } from '../../stores/useUserStore';
+import { Status } from '../../shared/constants/constants';
 
 export const PageButtonsGroup = (): JSX.Element => {
   const isAuthenticated = useUserStore((state) => state.isAuthenticated);
+  const user = useUserStore((state) => state.user);
   const onAllInventoriesPage = Boolean(useMatch({ path: APP_ROUTES.INVENTORIES, end: true }));
   const onMyInventoriesPage = Boolean(useMatch({ path: APP_ROUTES.MY_INVENTORIES, end: true }));
   const onHomePage = Boolean(useMatch({ path: APP_ROUTES.HOME, end: true }));
   const onCreateInventoryPage = Boolean(useMatch({ path: APP_ROUTES.CREATE_INVENTORY, end: true }));
 
+  const isBlocked = user?.status === Status.BLOCKED;
   const showHomeButton = !onHomePage;
-  const showCreateButton = isAuthenticated && !onCreateInventoryPage;
-  const showMyButton = isAuthenticated && !onMyInventoriesPage;
+  const showCreateButton = isAuthenticated && !isBlocked && !onCreateInventoryPage;
+  const showMyButton = isAuthenticated && !isBlocked && !onMyInventoriesPage;
   const showAllButton = !onAllInventoriesPage;
 
   return (
