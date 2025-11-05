@@ -47,14 +47,7 @@ import {
 import { Validator } from '../../validator/validator';
 import { HOME_ROUTES, INVENTORY_ROUTES } from '../api.requestRoutes';
 import type { Paginated } from '../../shared/types/schemas';
-
-function replaceUrlParameters(url: string, parameters: Record<string, string>): string {
-  let result = url;
-  for (const [key, value] of Object.entries(parameters)) {
-    result = result.replace(`:${key}`, value);
-  }
-  return result;
-}
+import { replaceUrlParameters } from '../helpers/api.helpers';
 
 export class InventoriesService {
   public static create = async (

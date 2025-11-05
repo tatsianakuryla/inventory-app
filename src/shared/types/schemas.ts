@@ -7,6 +7,7 @@ export const ResponseErrorSchema = z.object({
 export type ResponseError = z.infer<typeof ResponseErrorSchema>;
 
 export const IdSchema = z.string().trim().pipe(z.cuid());
+export type Id = z.infer<typeof IdSchema>;
 
 export const EmailSchema = z
   .string()

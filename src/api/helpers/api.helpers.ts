@@ -52,3 +52,11 @@ export function getApiError(error: unknown): { status?: number; message: string 
   if (isError(error)) return { message: error.message };
   return { message: String(error) };
 }
+
+export function replaceUrlParameters(url: string, parameters: Record<string, string>): string {
+  let result = url;
+  for (const [key, value] of Object.entries(parameters)) {
+    result = result.replace(`:${key}`, value);
+  }
+  return result;
+}
