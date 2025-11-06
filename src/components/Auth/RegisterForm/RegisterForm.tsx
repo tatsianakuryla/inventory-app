@@ -54,6 +54,7 @@ export const RegisterForm = (): JSX.Element => {
           placeholder="Your name"
           autoComplete="name"
           disabled={isSubmitting}
+          required
         />
 
         <FormInput
@@ -63,6 +64,7 @@ export const RegisterForm = (): JSX.Element => {
           placeholder="you@example.com"
           autoComplete="username"
           disabled={isSubmitting}
+          required
         />
 
         <FormInput
@@ -72,6 +74,7 @@ export const RegisterForm = (): JSX.Element => {
           placeholder="••••••••"
           autoComplete="new-password"
           disabled={isSubmitting}
+          required
         />
 
         {errors.root?.serverError?.message && (

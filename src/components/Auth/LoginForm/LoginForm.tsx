@@ -46,6 +46,7 @@ export const LoginForm = (): JSX.Element => {
           placeholder="you@example.com"
           autoComplete="username"
           disabled={isSubmitting}
+          required
         />
         <FormInput
           name="password"
@@ -54,6 +55,7 @@ export const LoginForm = (): JSX.Element => {
           placeholder="••••••••"
           autoComplete="current-password"
           disabled={isSubmitting}
+          required
         />
         {errors.root?.serverError?.message && (
           <ErrorBlock>{errors.root.serverError.message}</ErrorBlock>
