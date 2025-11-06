@@ -43,6 +43,7 @@ export const ItemSchema = baseFields.extend({
   version: VersionSchema,
   createdById: IdSchema,
   _count: z.object({ likes: z.number() }).optional(),
+  isLikedByCurrentUser: z.boolean().optional(),
 });
 
 export const ItemCreateRequestSchema = baseFields;
@@ -77,11 +78,11 @@ export type DeleteItemsRequest = z.infer<typeof DeleteItemsRequestSchema>;
 
 export const DeleteItemsResponseSchema = z.object({
   deleted: z.number(),
-  deletedIds: z.array(z.number()),
+  deletedIds: z.array(IdSchema),
   conflicts: z.number(),
-  conflictIds: z.array(z.number()),
+  conflictIds: z.array(IdSchema),
   skipped: z.number(),
-  skippedIds: z.array(z.number()),
+  skippedIds: z.array(IdSchema),
 });
 
 export type DeleteItemsResponse = z.infer<typeof DeleteItemsResponseSchema>;
