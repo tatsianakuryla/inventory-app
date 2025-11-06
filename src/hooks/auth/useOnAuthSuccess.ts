@@ -10,8 +10,7 @@ export const useOnAuthSuccess = (): ((data: AuthResponse) => void) => {
 
   return useCallback(
     (data: AuthResponse) => {
-      const { token, ...user } = data;
-      setAuth(user, token);
+      setAuth(data);
       void queryClient.invalidateQueries({ queryKey: queryKeys.me });
     },
     [queryClient, setAuth]

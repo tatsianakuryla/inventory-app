@@ -15,8 +15,10 @@ import { Validator } from '../../validator/validator';
 import { type User, UserSchema } from '../UserService/user.schemas';
 
 export class AuthService {
-  public static me = async (): Promise<User> => {
-    const response = await api.get(USERS_ROUTES.ME);
+  public static me = async (skipAuthInterceptor = false): Promise<User> => {
+    const response = await api.get(USERS_ROUTES.ME, {
+      headers: skipAuthInterceptor ? { 'X-Skip-Auth-Interceptor': 'true' } : {},
+    });
     return Validator.zodParse(UserSchema, response.data);
   };
 

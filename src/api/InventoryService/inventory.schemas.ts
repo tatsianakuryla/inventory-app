@@ -98,6 +98,7 @@ export const InventorySchema = z.object({
   createdAt: z.string(),
   updatedAt: z.string(),
   version: z.number().int(),
+  itemsCount: z.number().int().nonnegative().optional(),
 });
 
 export const InventoryListItemSchema = InventorySchema;
@@ -115,9 +116,7 @@ export const InventoriesQuerySchema = PaginationQuerySchema.extend({
   order: SortOrderSchema.default('desc'),
 });
 
-export const PopularInventoryItemSchema = InventoryListItemSchema.extend({
-  itemsCount: z.number().int().nonnegative(),
-});
+export const PopularInventoryItemSchema = InventoryListItemSchema;
 
 export const PopularInventoriesQuerySchema = z.object({
   limit: z.number().int().min(1).max(50).optional(),

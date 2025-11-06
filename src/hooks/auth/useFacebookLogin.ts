@@ -12,8 +12,7 @@ export function useFacebookLogin(): UseMutationResult<AuthResponse, unknown, str
 
   const onSuccess = useCallback(
     (data: AuthResponse) => {
-      const { token, ...user } = data;
-      setAuth(user, token);
+      setAuth(data);
       void queryClient.invalidateQueries({ queryKey: queryKeys.me });
     },
     [queryClient, setAuth]

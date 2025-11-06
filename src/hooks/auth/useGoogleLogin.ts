@@ -9,8 +9,8 @@ export function useGoogleLogin(): UseMutationResult<AuthResponse, unknown, strin
   const queryClient = useQueryClient();
   return useMutation<AuthResponse, unknown, string>({
     mutationFn: (idToken) => AuthService.googleLogin(idToken),
-    onSuccess: ({ token, ...user }) => {
-      setAuth(user, token);
+    onSuccess: (data) => {
+      setAuth(data);
       void queryClient.invalidateQueries({ queryKey: queryKeys.me });
     },
   });

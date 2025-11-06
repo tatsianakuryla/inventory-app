@@ -3,10 +3,9 @@ import { AuthService } from './AuthService/AuthService';
 import { applyTheme, defineInitialTheme } from '../shared/helpers/theme.helpers';
 
 export async function bootstrapAuth(): Promise<void> {
-  const { accessToken, setUser, clearAuth } = useUserStore.getState();
-  if (!accessToken) return;
+  const { setUser, clearAuth } = useUserStore.getState();
   try {
-    const me = await AuthService.me();
+    const me = await AuthService.me(true);
     setUser(me);
     const theme = me.theme ?? defineInitialTheme();
     applyTheme(theme);

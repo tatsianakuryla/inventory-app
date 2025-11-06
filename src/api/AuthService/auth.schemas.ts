@@ -2,9 +2,7 @@ import { z } from 'zod';
 import { UserSchema } from '../UserService/user.schemas';
 import { EmailSchema, type ResponseError } from '../../shared/types/schemas';
 
-export const AuthResponseSchema = UserSchema.extend({
-  token: z.string().min(1),
-});
+export const AuthResponseSchema = UserSchema;
 
 export const LoginPayloadSchema = z.object({
   email: EmailSchema,
