@@ -80,7 +80,7 @@ export class ItemsService {
   public static like = async (ids: ItemRequest): Promise<void> => {
     const { inventoryId, itemId } = Validator.zodParse(ItemRequestSchema, ids);
     const url = replaceUrlParameters(ITEMS_ROUTES.LIKE, { inventoryId, itemId });
-    return await api.put(url);
+    return await api.post(url);
   };
 
   public static unlike = async (ids: ItemRequest): Promise<void> => {

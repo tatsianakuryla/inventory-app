@@ -306,3 +306,9 @@ export const InventoryStatisticsSchema = z.object({
 });
 
 export type InventoryStatistics = z.infer<typeof InventoryStatisticsSchema>;
+
+export const PreviewCustomIdResponseSchema = z.object({
+  preview: z.string(),
+});
+
+export type PreviewCustomIdResponse = z.infer<typeof PreviewCustomIdResponseSchema>;

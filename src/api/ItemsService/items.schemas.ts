@@ -35,13 +35,20 @@ export const baseFields = z.object({
 });
 
 export const ItemSchema = baseFields.extend({
-  customId: z.string().trim().min(1, 'Custom ID is required').max(96).optional(),
+  id: IdSchema,
+  inventoryId: IdSchema,
+  customId: z.string().trim().min(1, 'Custom ID is required').max(96),
+  createdAt: z.string().datetime(),
+  updatedAt: z.string().datetime(),
+  version: VersionSchema,
+  createdById: IdSchema,
+  _count: z.object({ likes: z.number() }).optional(),
 });
 
 export const ItemCreateRequestSchema = baseFields;
 
-export type ItemCreateRequest = z.infer<typeof ItemSchema>;
-export type Item = ItemCreateRequest;
+export type ItemCreateRequest = z.infer<typeof ItemCreateRequestSchema>;
+export type Item = z.infer<typeof ItemSchema>;
 
 export const ItemRequestSchema = z.object({
   inventoryId: IdSchema,
@@ -52,7 +59,10 @@ export type ItemRequest = z.infer<typeof ItemRequestSchema>;
 
 export const PaginatedItemsSchema = PaginatedSchema(ItemSchema);
 
-export const ItemUpdateSchema = baseFields;
+export const ItemUpdateSchema = baseFields.extend({
+  version: VersionSchema,
+  customId: z.string().trim().min(1, 'Custom ID is required').max(96).optional(),
+});
 
 export type ItemUpdateRequest = z.infer<typeof ItemUpdateSchema>;
 

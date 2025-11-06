@@ -20,6 +20,7 @@ import {
   type UpdateIdFormatBody,
   type InventoryIdFormat,
   type InventoryStatistics,
+  type PreviewCustomIdResponse,
   InventoriesQuerySchema,
   PaginatedInventoryListSchema,
   PopularInventoriesQuerySchema,
@@ -41,6 +42,7 @@ import {
   UpdateIdFormatBodySchema,
   InventoryIdFormatSchema,
   InventoryStatisticsSchema,
+  PreviewCustomIdResponseSchema,
   type InventoryCreateRequestInput,
   InventoryListItemSchema,
 } from './inventory.schemas';
@@ -158,7 +160,7 @@ export class InventoriesService {
   ): Promise<InventoryIdFormat> => {
     const validBody = Validator.zodParse(UpdateIdFormatBodySchema, rawBody);
     const url = replaceUrlParameters(INVENTORY_ROUTES.UPDATE_ID_FORMAT, { inventoryId });
-    const response = await api.patch(url, validBody);
+    const response = await api.put(url, validBody);
     return Validator.zodParse(InventoryIdFormatSchema, response.data);
   };
 
@@ -166,5 +168,11 @@ export class InventoriesService {
     const url = replaceUrlParameters(INVENTORY_ROUTES.GET_STATISTICS, { inventoryId });
     const response = await api.get(url);
     return Validator.zodParse(InventoryStatisticsSchema, response.data);
+  };
+
+  public static previewCustomId = async (inventoryId: string): Promise<PreviewCustomIdResponse> => {
+    const url = replaceUrlParameters(INVENTORY_ROUTES.PREVIEW_CUSTOM_ID, { inventoryId });
+    const response = await api.get(url);
+    return Validator.zodParse(PreviewCustomIdResponseSchema, response.data);
   };
 }

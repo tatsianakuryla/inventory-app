@@ -43,6 +43,7 @@ export const INVENTORY_ROUTES = {
   REVOKE_ACCESS: '/api/inventory/:inventoryId/access',
   UPDATE_FIELDS: '/api/inventory/:inventoryId/fields',
   UPDATE_ID_FORMAT: '/api/inventory/:inventoryId/id-format',
+  PREVIEW_CUSTOM_ID: '/api/inventory/:inventoryId/id-format/preview',
   GET_STATISTICS: '/api/inventory/:inventoryId/statistics',
 } as const;
 
