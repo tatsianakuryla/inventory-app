@@ -192,6 +192,22 @@ export const DeleteInventoriesResponseSchema = z.object({
 
 export type DeleteInventoriesResponse = z.infer<typeof DeleteInventoriesResponseSchema>;
 
+export const BulkUpdateVisibilityBodySchema = z.object({
+  inventoryIds: z.array(IdSchema).min(1).max(200, 'Too many inventories'),
+  isPublic: z.boolean(),
+});
+
+export type BulkUpdateVisibilityBody = z.infer<typeof BulkUpdateVisibilityBodySchema>;
+
+export const BulkUpdateVisibilityResponseSchema = z.object({
+  updated: z.number().int().nonnegative(),
+  updatedIds: z.array(IdSchema),
+  skipped: z.number().int().nonnegative(),
+  skippedIds: z.array(IdSchema),
+});
+
+export type BulkUpdateVisibilityResponse = z.infer<typeof BulkUpdateVisibilityResponseSchema>;
+
 export const InventoryRoleEnum = z.enum(['OWNER', 'EDITOR', 'VIEWER']);
 
 export type InventoryRole = z.infer<typeof InventoryRoleEnum>;

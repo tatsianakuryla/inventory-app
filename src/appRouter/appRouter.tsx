@@ -19,6 +19,7 @@ import { RequireGuest } from './guards/RequireGuest';
 import { MyInventoriesPage } from '../pages/MyInventoriesPage/MyInventoriesPage';
 import { InventoryCreatePage } from '../pages/InventoryCreatePage/InventoryCreatePage';
 import { ItemCreatePage } from '../pages/ItemCreatePage/ItemCreatePage';
+import { ItemEditPage } from '../pages/ItemEditPage/ItemEditPage';
 
 export const AppRouter = (): JSX.Element => {
   return (
@@ -35,6 +36,7 @@ export const AppRouter = (): JSX.Element => {
         <Route element={<AppLayout />}>
           <Route path={APP_ROUTES.CREATE_INVENTORY} element={<InventoryCreatePage />} />
           <Route path={APP_ROUTES.ITEM_CREATE} element={<ItemCreatePage />} />
+          <Route path={APP_ROUTES.ITEM_EDIT} element={<ItemEditPage />} />
           <Route path={APP_ROUTES.PROFILE} element={<ProfilePage />} />
           <Route path={APP_ROUTES.MY_INVENTORIES} element={<MyInventoriesPage />} />
         </Route>

@@ -38,6 +38,7 @@ export const INVENTORY_ROUTES = {
   GET_BY_ID: '/api/inventory/:inventoryId',
   UPDATE: '/api/inventory/:inventoryId',
   DELETE_MANY: '/api/inventory',
+  BULK_UPDATE_VISIBILITY: '/api/inventory/visibility',
   GET_ACCESS: '/api/inventory/:inventoryId/access',
   UPDATE_ACCESS: '/api/inventory/:inventoryId/access',
   REVOKE_ACCESS: '/api/inventory/:inventoryId/access',

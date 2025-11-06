@@ -195,6 +195,27 @@ export const useDeleteInventories = (): UseMutationResult<
   });
 };
 
+export const useBulkUpdateVisibility = (): UseMutationResult<
+  import('../../api/InventoryService/inventory.schemas').BulkUpdateVisibilityResponse,
+  Error,
+  import('../../api/InventoryService/inventory.schemas').BulkUpdateVisibilityBody
+> => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: InventoriesService.bulkUpdateVisibility,
+    onSuccess: async (response) => {
+      await queryClient.invalidateQueries({ queryKey: queryKeys.inventories });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.popularInventories });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.recentInventories });
+
+      for (const id of response.updatedIds) {
+        await queryClient.invalidateQueries({ queryKey: queryKeys.inventoriesById(id) });
+      }
+    },
+  });
+};
+
 export const useUpdateInventoryAccess = (): UseMutationResult<
   UpsertAccessResponse,
   Error,

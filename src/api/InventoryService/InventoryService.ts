@@ -10,6 +10,8 @@ import {
   type InventoryUpdateRequest,
   type DeleteInventoriesBody,
   type DeleteInventoriesResponse,
+  type BulkUpdateVisibilityBody,
+  type BulkUpdateVisibilityResponse,
   type InventoryAccessData,
   type UpsertAccessBody,
   type UpsertAccessResponse,
@@ -32,6 +34,8 @@ import {
   InventoryUpdateRequestSchema,
   DeleteInventoriesBodySchema,
   DeleteInventoriesResponseSchema,
+  BulkUpdateVisibilityBodySchema,
+  BulkUpdateVisibilityResponseSchema,
   InventoryAccessDataSchema,
   UpsertAccessBodySchema,
   UpsertAccessResponseSchema,
@@ -116,6 +120,14 @@ export class InventoriesService {
     const validBody = Validator.zodParse(DeleteInventoriesBodySchema, rawBody);
     const response = await api.delete(INVENTORY_ROUTES.DELETE_MANY, { data: validBody });
     return Validator.zodParse(DeleteInventoriesResponseSchema, response.data);
+  };
+
+  public static bulkUpdateVisibility = async (
+    rawBody: BulkUpdateVisibilityBody
+  ): Promise<BulkUpdateVisibilityResponse> => {
+    const validBody = Validator.zodParse(BulkUpdateVisibilityBodySchema, rawBody);
+    const response = await api.patch(INVENTORY_ROUTES.BULK_UPDATE_VISIBILITY, validBody);
+    return Validator.zodParse(BulkUpdateVisibilityResponseSchema, response.data);
   };
 
   public static getAccessData = async (inventoryId: string): Promise<InventoryAccessData> => {
