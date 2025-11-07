@@ -1,6 +1,6 @@
 import { type JSX } from 'react';
 import { AddNewItemButton } from '../../AddNewItemButton/AddNewItemButton';
-import { InventoryViewPageTable } from '../../Tables/InventoryViewPageTable/InventoryViewPageTable';
+import { InventoryViewPageTable } from '../../Tables/InventoryViewPageTable';
 
 interface InventoryItemsTabProperties {
   inventoryId: string;
@@ -14,7 +14,7 @@ export const InventoryItemsTab = ({
   return (
     <div className="flex flex-col gap-2">
       <AddNewItemButton canEdit={canEdit} inventoryId={inventoryId} />
-      <InventoryViewPageTable />
+      <InventoryViewPageTable canEdit={canEdit} />
     </div>
   );
 };
