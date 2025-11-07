@@ -1,0 +1,310 @@
+import type { JSX } from 'react';
+import { useFormContext, Controller } from 'react-hook-form';
+import type { InventoryFields } from '../../../api/InventoryService/inventory.schemas';
+import type { ItemCreateRequest } from '../../../api/ItemsService/items.schemas';
+import { FormInput } from '../../FormInput/FormInput';
+import { ErrorBlock } from '../../ErrorBlock/ErrorBlock';
+
+interface DynamicItemFieldsProperties {
+  fields: InventoryFields;
+  disabled?: boolean;
+}
+
+type FieldKey =
+  | 'text1'
+  | 'text2'
+  | 'text3'
+  | 'long1'
+  | 'long2'
+  | 'long3'
+  | 'num1'
+  | 'num2'
+  | 'num3'
+  | 'link1'
+  | 'link2'
+  | 'link3'
+  | 'bool1'
+  | 'bool2'
+  | 'bool3';
+
+export const DynamicItemFields = ({
+  fields,
+  disabled,
+}: DynamicItemFieldsProperties): JSX.Element => {
+  const methods = useFormContext<ItemCreateRequest>();
+
+  const getErrorMessage = (key: FieldKey): string | undefined => {
+    const fieldError = methods.formState.errors[key];
+    return fieldError?.message ? String(fieldError.message) : undefined;
+  };
+
+  const Wrapper = ({
+    children,
+    label,
+    desc,
+  }: {
+    children: JSX.Element;
+    label?: string | null;
+    desc?: string | null;
+  }): JSX.Element => (
+    <div className="flex flex-col gap-1">
+      {label && (
+        <label className="text-sm font-medium text-gray-900 dark:text-gray-100">{label}</label>
+      )}
+      {desc && <p className="text-xs text-gray-500 dark:text-gray-400">{desc}</p>}
+      {children}
+    </div>
+  );
+
+  type Descriptor =
+    | { key: FieldKey; type: 'text'; label?: string | null; desc?: string | null }
+    | { key: FieldKey; type: 'long'; label?: string | null; desc?: string | null }
+    | { key: FieldKey; type: 'number'; label?: string | null; desc?: string | null }
+    | { key: FieldKey; type: 'link'; label?: string | null; desc?: string | null }
+    | { key: FieldKey; type: 'bool'; label?: string | null; desc?: string | null };
+
+  const descriptors: Descriptor[] = [
+    ...(fields.text1State === 'SHOWN'
+      ? [
+          {
+            key: 'text1' as const,
+            type: 'text' as const,
+            label: fields.text1Name,
+            desc: fields.text1Desc,
+          },
+        ]
+      : []),
+    ...(fields.text2State === 'SHOWN'
+      ? [
+          {
+            key: 'text2' as const,
+            type: 'text' as const,
+            label: fields.text2Name,
+            desc: fields.text2Desc,
+          },
+        ]
+      : []),
+    ...(fields.text3State === 'SHOWN'
+      ? [
+          {
+            key: 'text3' as const,
+            type: 'text' as const,
+            label: fields.text3Name,
+            desc: fields.text3Desc,
+          },
+        ]
+      : []),
+
+    ...(fields.long1State === 'SHOWN'
+      ? [
+          {
+            key: 'long1' as const,
+            type: 'long' as const,
+            label: fields.long1Name,
+            desc: fields.long1Desc,
+          },
+        ]
+      : []),
+    ...(fields.long2State === 'SHOWN'
+      ? [
+          {
+            key: 'long2' as const,
+            type: 'long' as const,
+            label: fields.long2Name,
+            desc: fields.long2Desc,
+          },
+        ]
+      : []),
+    ...(fields.long3State === 'SHOWN'
+      ? [
+          {
+            key: 'long3' as const,
+            type: 'long' as const,
+            label: fields.long3Name,
+            desc: fields.long3Desc,
+          },
+        ]
+      : []),
+
+    ...(fields.num1State === 'SHOWN'
+      ? [
+          {
+            key: 'num1' as const,
+            type: 'number' as const,
+            label: fields.num1Name,
+            desc: fields.num1Desc,
+          },
+        ]
+      : []),
+    ...(fields.num2State === 'SHOWN'
+      ? [
+          {
+            key: 'num2' as const,
+            type: 'number' as const,
+            label: fields.num2Name,
+            desc: fields.num2Desc,
+          },
+        ]
+      : []),
+    ...(fields.num3State === 'SHOWN'
+      ? [
+          {
+            key: 'num3' as const,
+            type: 'number' as const,
+            label: fields.num3Name,
+            desc: fields.num3Desc,
+          },
+        ]
+      : []),
+
+    ...(fields.link1State === 'SHOWN'
+      ? [
+          {
+            key: 'link1' as const,
+            type: 'link' as const,
+            label: fields.link1Name,
+            desc: fields.link1Desc,
+          },
+        ]
+      : []),
+    ...(fields.link2State === 'SHOWN'
+      ? [
+          {
+            key: 'link2' as const,
+            type: 'link' as const,
+            label: fields.link2Name,
+            desc: fields.link2Desc,
+          },
+        ]
+      : []),
+    ...(fields.link3State === 'SHOWN'
+      ? [
+          {
+            key: 'link3' as const,
+            type: 'link' as const,
+            label: fields.link3Name,
+            desc: fields.link3Desc,
+          },
+        ]
+      : []),
+
+    ...(fields.bool1State === 'SHOWN'
+      ? [
+          {
+            key: 'bool1' as const,
+            type: 'bool' as const,
+            label: fields.bool1Name,
+            desc: fields.bool1Desc,
+          },
+        ]
+      : []),
+    ...(fields.bool2State === 'SHOWN'
+      ? [
+          {
+            key: 'bool2' as const,
+            type: 'bool' as const,
+            label: fields.bool2Name,
+            desc: fields.bool2Desc,
+          },
+        ]
+      : []),
+    ...(fields.bool3State === 'SHOWN'
+      ? [
+          {
+            key: 'bool3' as const,
+            type: 'bool' as const,
+            label: fields.bool3Name,
+            desc: fields.bool3Desc,
+          },
+        ]
+      : []),
+  ].filter((d) => d.label);
+
+  if (descriptors.length === 0) {
+    return (
+      <p className="text-sm text-gray-600 dark:text-gray-400">
+        No fields are configured to be shown in this inventory
+      </p>
+    );
+  }
+
+  return (
+    <>
+      {descriptors.map((desc) => {
+        const error = getErrorMessage(desc.key);
+        if (desc.type === 'text' || desc.type === 'long' || desc.type === 'link') {
+          return (
+            <div key={desc.key} className="flex flex-col gap-1">
+              <FormInput
+                name={desc.key}
+                label={desc.label ?? undefined}
+                placeholder={
+                  desc.desc ?? (desc.type === 'link' ? 'https://example.com' : undefined)
+                }
+                disabled={disabled}
+                multiline={desc.type === 'long'}
+                type={desc.type === 'link' ? 'url' : 'text'}
+              />
+              {error && <ErrorBlock>{error}</ErrorBlock>}
+            </div>
+          );
+        }
+        if (desc.type === 'number') {
+          return (
+            <Wrapper key={desc.key} label={desc.label} desc={desc.desc}>
+              <Controller<ItemCreateRequest, typeof desc.key>
+                name={desc.key}
+                control={methods.control}
+                render={({ field }) => {
+                  const numberValue = typeof field.value === 'number' ? field.value : '';
+                  return (
+                    <>
+                      <input
+                        type="number"
+                        disabled={disabled}
+                        value={numberValue}
+                        onChange={(event) => {
+                          const value = event.target.value;
+                          field.onChange(value === '' ? undefined : event.target.valueAsNumber);
+                        }}
+                        onBlur={field.onBlur}
+                        className="rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 shadow-sm transition-colors focus:border-teal-500 focus:outline-none focus:ring-2 focus:ring-teal-500 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:focus:border-teal-400"
+                      />
+                      {error && <ErrorBlock>{error}</ErrorBlock>}
+                    </>
+                  );
+                }}
+              />
+            </Wrapper>
+          );
+        }
+        return (
+          <Wrapper key={desc.key} label={desc.label} desc={desc.desc}>
+            <Controller<ItemCreateRequest, typeof desc.key>
+              name={desc.key}
+              control={methods.control}
+              render={({ field }) => (
+                <>
+                  <label className="flex items-center gap-2">
+                    <input
+                      type="checkbox"
+                      disabled={disabled}
+                      checked={Boolean(field.value)}
+                      onChange={(event) => field.onChange(event.target.checked)}
+                      onBlur={field.onBlur}
+                      className="h-4 w-4 rounded border-gray-300 text-teal-600 focus:ring-2 focus:ring-teal-500 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-600 dark:bg-gray-800"
+                    />
+                    <span className="text-sm text-gray-700 dark:text-gray-300">
+                      {field.value ? 'Yes' : 'No'}
+                    </span>
+                  </label>
+                  {error && <ErrorBlock>{error}</ErrorBlock>}
+                </>
+              )}
+            />
+          </Wrapper>
+        );
+      })}
+    </>
+  );
+};

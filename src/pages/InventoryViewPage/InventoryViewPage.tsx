@@ -9,6 +9,7 @@ import { InventoryDiscussionTab } from '../../components/InventoryViewPageCompon
 import { InventorySettingsTab } from '../../components/InventoryViewPageComponents/Tabs/InventorySettingsTab/InventorySettingsTab';
 import { InventoryAccessTab } from '../../components/InventoryViewPageComponents/Tabs/InventoryAccessTab/InventoryAccessTab';
 import { InventoryCustomFieldsTab } from '../../components/InventoryViewPageComponents/Tabs/InventoryCustomFieldsTab/InventoryCustomFieldsTab';
+import { InventoryCustomIdTab } from '../../components/InventoryViewPageComponents/Tabs/InventoryCustomIdTab/InventoryCustomIdTab';
 import { InventoryStatisticsTab } from '../../components/InventoryViewPageComponents/Tabs/InventoryStatisticsTab/InventoryStatisticsTab';
 
 export const InventoryViewPage = (): JSX.Element => {
@@ -55,6 +56,11 @@ export const InventoryViewPage = (): JSX.Element => {
           id: 'custom-fields',
           label: 'Custom Fields',
           content: <InventoryCustomFieldsTab inventoryId={inventoryId ?? ''} />,
+        },
+        {
+          id: 'custom-id',
+          label: 'Custom Item IDs',
+          content: <InventoryCustomIdTab inventoryId={inventoryId ?? ''} />,
         },
         {
           id: 'statistics',

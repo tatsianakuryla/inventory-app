@@ -1,12 +1,12 @@
 import { type JSX } from 'react';
 import { PageHeader } from '../../components/PageHeader/PageHeader';
-import { CreateItemForm } from '../../components/CreateItemForm/CreateItemForm';
+import { EditItemForm } from '../../components/EditItemForm/EditItemForm';
 
-export const ItemCreatePage = (): JSX.Element => {
+export const ItemEditPage = (): JSX.Element => {
   return (
     <>
       <PageHeader />
-      <CreateItemForm />
+      <EditItemForm />
     </>
   );
 };
