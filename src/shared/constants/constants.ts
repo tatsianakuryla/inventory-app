@@ -8,11 +8,6 @@ export const Language = {
   RU: 'RU',
 } as const;
 
-export const Theme = {
-  LIGHT: 'LIGHT',
-  DARK: 'DARK',
-} as const;
-
 export const Status = {
   BLOCKED: 'BLOCKED',
   ACTIVE: 'ACTIVE',
