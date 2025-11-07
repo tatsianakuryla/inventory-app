@@ -10,6 +10,17 @@ export const api = axios.create({
   withCredentials: true,
 });
 
+api.interceptors.request.use(
+  (config) => {
+    const token = useUserStore.getState().getToken();
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => toRejection(error)
+);
+
 api.interceptors.response.use(
   (response) => response,
   (error) => {
