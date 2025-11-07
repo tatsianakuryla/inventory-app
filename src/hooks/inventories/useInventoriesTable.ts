@@ -1,5 +1,5 @@
 import { useMemo, useCallback, useState } from 'react';
-import { useGetInventories } from '../../hooks/inventories/useInventories';
+import { useGetInventories } from './useInventories';
 import type { SortOrder } from '../../components/Tables/SortableHeader/SortableHeader';
 import { Sorter } from '../../sorter/Sorter';
 import { inventorySortAccessors } from '../../components/Tables/InventorySortAccessors';
@@ -7,6 +7,7 @@ import { isServerSortableKey } from '../../shared/typeguards/typeguards';
 import type { ServerSortableKey } from '../../shared/types/main.types';
 import type { InventoryTableRows } from '../../components/Tables/CreateCommonColumns';
 import type { InventoryListItem } from '../../api/InventoryService/inventory.schemas';
+import type { Paginated } from '../../shared/types/schemas';
 
 type Options = {
   initialSortKey?: string;
@@ -18,7 +19,19 @@ export function useInventoriesTable({
   initialSortKey = 'createdAt',
   initialSortOrder = 'desc',
   filterPredicate,
-}: Options = {}) {
+}: Options = {}): {
+  query: {
+    data: Paginated<InventoryListItem> | undefined;
+    isLoading: boolean;
+    error: Error | null;
+  };
+  view: {
+    sortedItems: InventoryTableRows[];
+    sortKey: string | undefined;
+    sortOrder: SortOrder;
+    handleSort: (key: string) => void;
+  };
+} {
   const [sortKey, setSortKey] = useState<string | undefined>(initialSortKey);
   const [sortOrder, setSortOrder] = useState<SortOrder>(initialSortOrder);
 
@@ -46,6 +59,7 @@ export function useInventoriesTable({
       isPublic: item.isPublic,
       owner: item.owner,
       imageUrl: item.imageUrl ?? undefined,
+      itemsCount: item.itemsCount,
       createdAt: item.createdAt,
     }));
   }, [data?.items, filterPredicate]);

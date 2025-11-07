@@ -21,14 +21,18 @@ import type { Id, Paginated } from '../../shared/types/schemas';
 
 const itemsListPrefixKey = (inventoryId: string) => ['items', 'list', String(inventoryId)] as const;
 
-const invalidateAllItemsLists = async (client: QueryClient, inventoryId: Id) => {
+const invalidateAllItemsLists = async (client: QueryClient, inventoryId: Id): Promise<void> => {
   await client.invalidateQueries({
     queryKey: itemsListPrefixKey(String(inventoryId)),
     exact: false,
   });
 };
 
-const invalidateItemDetail = async (client: QueryClient, inventoryId: Id, itemId: Id) => {
+const invalidateItemDetail = async (
+  client: QueryClient,
+  inventoryId: Id,
+  itemId: Id
+): Promise<void> => {
   await client.invalidateQueries({
     queryKey: queryKeys.itemsById(String(inventoryId), String(itemId)),
     exact: true,
