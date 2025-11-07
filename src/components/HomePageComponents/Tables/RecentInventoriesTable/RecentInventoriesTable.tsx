@@ -1,35 +1,17 @@
-import { type JSX, useMemo } from 'react';
+import { type JSX } from 'react';
 import { useGetRecentInventories } from '../../../../hooks/inventories/useInventories';
-import { INVENTORY_COLUMNS, type InventoryTableRows } from '../../../Tables/CreateCommonColumns';
-import { InventoriesBasicTable } from '../../../Tables/InventoriesBasicTable/InventoriesBasicTable';
-import { LoadingErrorEmptySwitcher } from '../../../Tables/LoadingErrorEmptySwitcher/LoadingErrorEmptySwitcher';
+import { InventoriesTableSection } from '../InventoriesTableSection/InventoriesTableSection';
+import type { AnyInventoryListItem } from '../inventory.mappers';
 
 export function RecentInventoriesTable(): JSX.Element {
-  const { data, isLoading, error } = useGetRecentInventories({ limit: 5 });
-
-  const items: InventoryTableRows[] = useMemo(
-    () =>
-      (data?.items ?? []).map((item) => ({
-        id: item.id,
-        name: item.name,
-        description: item.description ?? undefined,
-        isPublic: item.isPublic,
-        owner: item.owner,
-        imageUrl: item.imageUrl ?? undefined,
-        createdAt: item.createdAt,
-      })),
-    [data?.items]
-  );
+  const queryResult = useGetRecentInventories({ limit: 5 });
 
   return (
-    <LoadingErrorEmptySwitcher
-      isLoading={isLoading}
-      error={error}
-      data={{ items }}
-      emptyText="No inventories found"
-      errorTitle="Failed to load inventories"
-    >
-      <InventoriesBasicTable items={items} columns={INVENTORY_COLUMNS} getRowId={(row) => row.id} />
-    </LoadingErrorEmptySwitcher>
+    <InventoriesTableSection<typeof queryResult.data, AnyInventoryListItem>
+      queryResult={queryResult}
+      selectItems={(data) => data?.items ?? []}
+      emptyText="No recent inventories"
+      errorTitle="Failed to load recent inventories"
+    />
   );
 }
