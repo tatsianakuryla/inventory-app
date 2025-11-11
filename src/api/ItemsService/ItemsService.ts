@@ -52,7 +52,7 @@ export class ItemsService {
     const { inventoryId, itemId } = Validator.zodParse(ItemRequestSchema, ids);
     const validItem = Validator.zodParse(ItemUpdateSchema, item);
     const url = replaceUrlParameters(ITEMS_ROUTES.UPDATE, { inventoryId, itemId });
-    const response = await api.put(url, validItem);
+    const response = await api.patch(url, validItem);
     return Validator.zodParse(ItemSchema, response.data);
   };
 

@@ -11,6 +11,6 @@
     "verbatimModuleSyntax": true,
     "forceConsistentCasingInFileNames": true
   },
-  "include": ["src", "index.html"],
+  "include": ["src", "index.html", "vite-environment.d.ts"],
   "exclude": ["node_modules", "dist"]
 }

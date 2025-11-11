@@ -22,6 +22,7 @@ export const WriteAccessInventoriesTable = (): JSX.Element => {
         isPublic: item.isPublic,
         owner: item.owner,
         imageUrl: item.imageUrl ?? undefined,
+        itemsCount: item.itemsCount ?? 0,
         createdAt: item.createdAt,
       })),
     [data?.items]

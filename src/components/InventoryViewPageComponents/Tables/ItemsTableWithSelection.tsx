@@ -92,12 +92,11 @@ function buildColumns(inventoryFields?: InventoryFields | null): ColumnConfig[] 
 
   for (const fieldKey of ALL_FIELD_KEYS) {
     const state = getField(inventoryFields, `${fieldKey}State`);
-    const showInTable = Boolean(getField(inventoryFields, `${fieldKey}ShowInTable`));
     const nameValue = getField(inventoryFields, `${fieldKey}Name`);
     const label =
       typeof nameValue === 'string' && nameValue.trim() ? nameValue : fieldKey.toUpperCase();
 
-    if (state === 'SHOWN' && showInTable) {
+    if (state === 'SHOWN') {
       visibleCount += 1;
       columns.push({
         key: fieldKey,
@@ -127,8 +126,8 @@ function formatCell(
       <Link
         to={destination}
         onClick={(event) => event.stopPropagation()}
-        className="font-mono text-xs underline decoration-dotted hover:text-teal-700 hover:decoration-solid focus:text-teal-700 dark:hover:text-teal-300"
-        title={canEdit ? 'Open item in edit mode' : 'Open item'}
+        className="block overflow-hidden text-ellipsis whitespace-nowrap font-mono text-sm font-medium text-teal-600 hover:text-teal-700 hover:underline focus:text-teal-700 dark:text-teal-400 dark:hover:text-teal-300"
+        title={`${item.customId || 'N/A'} - ${canEdit ? 'Click to edit' : 'Click to view'}`}
         aria-label={canEdit ? 'Open item in edit mode' : 'Open item'}
       >
         {item.customId || 'N/A'}
@@ -170,7 +169,9 @@ function formatCell(
   }
 
   if (fieldKey.startsWith('num')) {
-    return typeof value === 'number' ? String(value) : '-';
+    if (typeof value !== 'number')
+      return <span className="text-gray-400 dark:text-gray-500">-</span>;
+    return <span className="font-mono">{value.toLocaleString()}</span>;
   }
 
   if (fieldKey.startsWith('link')) {
@@ -180,15 +181,39 @@ function formatCell(
         href={value}
         target="_blank"
         rel="noopener noreferrer"
-        className="text-blue-600 underline hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
+        className="inline-flex items-center gap-1 text-blue-600 hover:text-blue-700 hover:underline dark:text-blue-400 dark:hover:text-blue-300"
         onClick={(event) => event.stopPropagation()}
+        title={value}
       >
+        <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+          />
+        </svg>
         Link
       </a>
     );
   }
 
-  return typeof value === 'string' && value ? value : '-';
+  if (typeof value === 'string' && value) {
+    if (fieldKey.startsWith('long')) {
+      return (
+        <div className="overflow-hidden text-ellipsis whitespace-nowrap" title={value}>
+          {value}
+        </div>
+      );
+    }
+    return (
+      <div className="overflow-hidden text-ellipsis whitespace-nowrap" title={value}>
+        {value}
+      </div>
+    );
+  }
+
+  return <span className="text-gray-400 dark:text-gray-500">-</span>;
 }
 
 export const ItemsTableWithSelection = ({
@@ -222,30 +247,28 @@ export const ItemsTableWithSelection = ({
 
   return (
     <div
-      className="max-h-[700px] overflow-x-auto overflow-y-auto rounded-lg border border-gray-200 bg-white shadow dark:border-gray-700 dark:bg-gray-900"
+      className="max-h-[700px] overflow-x-auto overflow-y-auto rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-900"
       style={{ scrollbarGutter: 'stable' }}
     >
-      <table className="w-full min-w-[900px] table-fixed divide-y divide-gray-200 dark:divide-gray-700">
+      <table className="w-full min-w-[900px] table-auto border-collapse">
         <colgroup>
-          {canEdit && <col className="w-[50px]" />}
-          {columns.map((column) => (
-            <col key={column.key} style={{ width: column.width }} />
+          {canEdit && <col style={{ width: '50px' }} />}
+          {columns.map((col) => (
+            <col key={col.key} style={{ width: col.width }} />
           ))}
         </colgroup>
 
-        <thead className="sticky top-0 z-10 bg-gray-50 dark:bg-gray-900">
+        <thead className="sticky top-0 z-10 border-b border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-gray-800">
           <tr>
             {canEdit && (
-              <th
-                scope="col"
-                className="px-2 py-1.5 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400"
-              >
+              <th className="px-4 py-3 text-center">
                 <input
                   type="checkbox"
                   checked={isAllSelected}
                   onChange={(event) => onSelectAll(event.target.checked)}
-                  className="h-4 w-4 rounded border-gray-300 text-teal-600 focus:ring-2 focus:ring-teal-500 dark:border-gray-600 dark:bg-gray-800"
                   onClick={(event) => event.stopPropagation()}
+                  className="h-4 w-4 rounded border-gray-300 text-teal-600 focus:ring-2 focus:ring-teal-500 focus:ring-offset-0 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800"
+                  aria-label="Select all items"
                 />
               </th>
             )}
@@ -254,7 +277,7 @@ export const ItemsTableWithSelection = ({
               <th
                 key={column.key}
                 scope="col"
-                className="px-2 py-1.5 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400"
+                className="whitespace-nowrap px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-700 dark:text-gray-300"
               >
                 {column.key === 'customId' && onSort ? (
                   <SortableHeader
@@ -271,42 +294,68 @@ export const ItemsTableWithSelection = ({
           </tr>
         </thead>
 
-        <tbody className="divide-y divide-gray-200 bg-white dark:divide-gray-700 dark:bg-gray-900/40">
-          {items.map((item) => {
-            const isSelected = selectedIds.has(item.id);
-            const rowClassName = [
-              'transition-colors',
-              canEdit ? 'cursor-pointer' : '',
-              isSelected
-                ? 'bg-teal-50 dark:bg-teal-900/20'
-                : 'odd:bg-white even:bg-gray-50 hover:bg-gray-100 dark:odd:bg-gray-800/60 dark:even:bg-gray-800/40 dark:hover:bg-gray-700/60',
-            ].join(' ');
-
-            return (
-              <tr key={item.id} onClick={(): void => handleRowClick(item)} className={rowClassName}>
-                {canEdit && (
-                  <td className="px-2 py-1.5 text-left text-sm">
-                    <input
-                      type="checkbox"
-                      checked={isSelected}
-                      onChange={(event) => onSelectOne(item.id, event.target.checked)}
-                      onClick={(event) => event.stopPropagation()}
-                      className="h-4 w-4 rounded border-gray-300 text-teal-600 focus:ring-2 focus:ring-teal-500 dark:border-gray-600 dark:bg-gray-800"
+        <tbody className="divide-y divide-gray-100 bg-white dark:divide-gray-700 dark:bg-gray-900">
+          {items.length === 0 ? (
+            <tr>
+              <td
+                colSpan={canEdit ? columns.length + 1 : columns.length}
+                className="px-4 py-12 text-center"
+              >
+                <div className="flex flex-col items-center gap-2 text-gray-500 dark:text-gray-400">
+                  <svg className="h-12 w-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={1.5}
+                      d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"
                     />
-                  </td>
-                )}
+                  </svg>
+                  <p className="text-sm font-medium">No items found</p>
+                </div>
+              </td>
+            </tr>
+          ) : (
+            items.map((item) => {
+              const isSelected = selectedIds.has(item.id);
+              const rowClassName = [
+                'transition-colors duration-150',
+                canEdit ? 'cursor-pointer' : '',
+                isSelected
+                  ? 'bg-teal-50 dark:bg-teal-900/20 hover:bg-teal-100 dark:hover:bg-teal-900/30'
+                  : 'hover:bg-gray-50 dark:hover:bg-gray-800/50',
+              ].join(' ');
 
-                {columns.map((column) => (
-                  <td
-                    key={column.key}
-                    className="px-2 py-1.5 text-left text-sm text-gray-800 dark:text-gray-200"
-                  >
-                    {formatCell(item, column.key, canEdit)}
-                  </td>
-                ))}
-              </tr>
-            );
-          })}
+              return (
+                <tr
+                  key={item.id}
+                  onClick={(): void => handleRowClick(item)}
+                  className={rowClassName}
+                >
+                  {canEdit && (
+                    <td className="px-4 py-3 text-center">
+                      <input
+                        type="checkbox"
+                        checked={isSelected}
+                        onChange={(event) => onSelectOne(item.id, event.target.checked)}
+                        onClick={(event) => event.stopPropagation()}
+                        className="h-4 w-4 rounded border-gray-300 text-teal-600 focus:ring-2 focus:ring-teal-500 focus:ring-offset-0 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800"
+                        aria-label="Select item"
+                      />
+                    </td>
+                  )}
+
+                  {columns.map((column) => (
+                    <td
+                      key={column.key}
+                      className="overflow-hidden px-4 py-3 text-left text-sm text-gray-900 dark:text-gray-100"
+                    >
+                      {formatCell(item, column.key, canEdit)}
+                    </td>
+                  ))}
+                </tr>
+              );
+            })
+          )}
         </tbody>
       </table>
     </div>

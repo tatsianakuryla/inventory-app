@@ -1,7 +1,8 @@
 import { type JSX, useState, useEffect } from 'react';
-import { useMutation } from '@tanstack/react-query';
-import { useGetInventoryById } from '../../../../hooks/inventories/useInventories';
-import { InventoriesService } from '../../../../api/InventoryService/InventoryService';
+import {
+  useGetInventoryById,
+  useUpdateInventoryFields,
+} from '../../../../hooks/inventories/useInventories';
 import { Button } from '../../../Button/Button';
 import { Spinner } from '../../../Spinner/Spinner';
 
@@ -9,13 +10,12 @@ interface InventoryCustomFieldsTabProperties {
   inventoryId: string;
 }
 
-type FieldState = 'HIDDEN' | 'OPTIONAL' | 'REQUIRED' | 'SHOWN';
+type FieldState = 'HIDDEN' | 'SHOWN';
 
 type FieldConfig = {
   state: FieldState;
   name: string | undefined;
   desc: string | undefined;
-  showInTable: boolean;
 };
 
 type FieldType = 'text' | 'long' | 'num' | 'link' | 'bool';
@@ -48,13 +48,9 @@ export const InventoryCustomFieldsTab = ({
 }: InventoryCustomFieldsTabProperties): JSX.Element => {
   const { data: inventory, isLoading } = useGetInventoryById(inventoryId);
   const [fields, setFields] = useState<Record<string, FieldConfig>>({});
+  const [saveMessage, setSaveMessage] = useState<string | undefined>();
 
-  const updateMutation = useMutation({
-    mutationFn: (body: { version: number; patch: Record<string, unknown> }) =>
-      InventoriesService.updateFields(inventoryId, body),
-    onSuccess: () => {},
-    onError: () => {},
-  });
+  const updateMutation = useUpdateInventoryFields();
 
   useEffect(() => {
     if (inventory?.fields) {
@@ -65,19 +61,11 @@ export const InventoryCustomFieldsTab = ({
         const stateValue = fieldsData[`${key}State`];
         const nameValue = fieldsData[`${key}Name`];
         const descValue = fieldsData[`${key}Desc`];
-        const showInTableValue = fieldsData[`${key}ShowInTable`];
 
         initialFields[key] = {
-          state:
-            stateValue === 'HIDDEN' ||
-            stateValue === 'SHOWN' ||
-            stateValue === 'OPTIONAL' ||
-            stateValue === 'REQUIRED'
-              ? stateValue
-              : 'HIDDEN',
+          state: stateValue === 'HIDDEN' || stateValue === 'SHOWN' ? stateValue : 'HIDDEN',
           name: typeof nameValue === 'string' ? nameValue : undefined,
           desc: typeof descValue === 'string' ? descValue : undefined,
-          showInTable: Boolean(showInTableValue),
         };
       }
       setFields(initialFields);
@@ -94,7 +82,7 @@ export const InventoryCustomFieldsTab = ({
   const handleSave = (): void => {
     const version = inventory?.fields?.version;
     if (typeof version !== 'number') {
-      console.warn('Unable to save: version information is missing');
+      setSaveMessage('❌ Unable to save: version is missing');
       return;
     }
 
@@ -105,10 +93,23 @@ export const InventoryCustomFieldsTab = ({
         patch[`${key}State`] = field.state;
         patch[`${key}Name`] = field.name;
         patch[`${key}Desc`] = field.desc;
-        patch[`${key}ShowInTable`] = field.showInTable;
+        patch[`${key}ShowInTable`] = field.state === 'SHOWN';
       }
     }
-    updateMutation.mutate({ version, patch });
+
+    updateMutation.mutate(
+      { inventoryId, data: { version, patch } },
+      {
+        onSuccess: () => {
+          setSaveMessage('✅ Configuration saved successfully!');
+          setTimeout(() => setSaveMessage(undefined), 3000);
+        },
+        onError: (error: Error) => {
+          setSaveMessage(`❌ Error: ${error.message}`);
+          setTimeout(() => setSaveMessage(undefined), 5000);
+        },
+      }
+    );
   };
 
   if (isLoading) {
@@ -134,7 +135,6 @@ export const InventoryCustomFieldsTab = ({
             state: 'HIDDEN',
             name: undefined,
             desc: undefined,
-            showInTable: false,
           };
 
           return (
@@ -151,21 +151,14 @@ export const InventoryCustomFieldsTab = ({
                     value={field.state}
                     onChange={(event) => {
                       const value = event.target.value;
-                      if (
-                        value === 'HIDDEN' ||
-                        value === 'SHOWN' ||
-                        value === 'OPTIONAL' ||
-                        value === 'REQUIRED'
-                      ) {
+                      if (value === 'HIDDEN' || value === 'SHOWN') {
                         updateField(key, { state: value });
                       }
                     }}
                     className="w-full rounded-md border border-gray-300 px-3 py-2 dark:border-gray-600 dark:bg-gray-700"
                   >
                     <option value="HIDDEN">Hidden</option>
-                    <option value="SHOWN">Shown (optional)</option>
-                    <option value="OPTIONAL">Optional</option>
-                    <option value="REQUIRED">Required</option>
+                    <option value="SHOWN">Shown</option>
                   </select>
                 </div>
 
@@ -196,29 +189,30 @@ export const InventoryCustomFieldsTab = ({
                     className="w-full rounded-md border border-gray-300 px-3 py-2 disabled:opacity-50 dark:border-gray-600 dark:bg-gray-700"
                   />
                 </div>
-
-                <div className="md:col-span-2">
-                  <label className="flex items-center gap-2">
-                    <input
-                      type="checkbox"
-                      checked={field.showInTable}
-                      onChange={(event) => updateField(key, { showInTable: event.target.checked })}
-                      disabled={field.state === 'HIDDEN'}
-                      className="h-4 w-4"
-                    />
-                    <span className="text-sm">Show in table</span>
-                  </label>
-                </div>
               </div>
             </div>
           );
         })}
       </div>
 
-      <div className="flex gap-3">
-        <Button variant="primary" onClick={handleSave} disabled={updateMutation.isPending}>
-          {updateMutation.isPending ? 'Saving...' : 'Save Configuration'}
-        </Button>
+      <div className="flex flex-col gap-3">
+        <div className="flex gap-3">
+          <Button variant="primary" onClick={handleSave} disabled={updateMutation.isPending}>
+            {updateMutation.isPending ? 'Saving...' : 'Save Configuration'}
+          </Button>
+        </div>
+
+        {saveMessage && (
+          <div
+            className={`rounded-lg border p-3 text-sm ${
+              saveMessage.startsWith('✅')
+                ? 'border-green-300 bg-green-50 text-green-800 dark:border-green-700 dark:bg-green-900/20 dark:text-green-400'
+                : 'border-red-300 bg-red-50 text-red-800 dark:border-red-700 dark:bg-red-900/20 dark:text-red-400'
+            }`}
+          >
+            {saveMessage}
+          </div>
+        )}
       </div>
 
       <div className="rounded-lg border border-blue-300 bg-blue-50 p-4 text-sm dark:border-blue-700 dark:bg-blue-900/20">
@@ -228,13 +222,7 @@ export const InventoryCustomFieldsTab = ({
             <strong>Hidden:</strong> Field is not visible in forms or tables
           </li>
           <li>
-            <strong>Shown:</strong> Field is visible but optional
-          </li>
-          <li>
-            <strong>Optional:</strong> Field is visible and users can optionally fill it
-          </li>
-          <li>
-            <strong>Required:</strong> Field must be filled when creating/editing items
+            <strong>Shown:</strong> Field is visible in forms, tables, and can be filled by users
           </li>
         </ul>
       </div>
