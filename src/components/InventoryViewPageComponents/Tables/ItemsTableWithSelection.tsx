@@ -2,28 +2,13 @@ import type { JSX } from 'react';
 import { useCallback, useMemo } from 'react';
 import { generatePath, Link, useNavigate } from 'react-router-dom';
 import type { Item } from '../../../api/ItemsService/items.schemas';
-import type { InventoryFields } from '../../../api/InventoryService/inventory.schemas';
+import type { FieldKey, InventoryFields } from '../../../api/InventoryService/inventory.schemas';
+import { FIELD_KEYS, NAME_KEYS, STATE_KEYS } from '../../../api/InventoryService/inventory.schemas';
 import type { SortOrder } from '../../Tables/SortableHeader/SortableHeader';
 import { SortableHeader } from '../../Tables/SortableHeader/SortableHeader';
 import { APP_ROUTES } from '../../../appRouter/routes/routes';
 import { LikeButton } from '../../LikeButton/LikeButton';
-
-type FieldKey =
-  | 'text1'
-  | 'text2'
-  | 'text3'
-  | 'long1'
-  | 'long2'
-  | 'long3'
-  | 'num1'
-  | 'num2'
-  | 'num3'
-  | 'link1'
-  | 'link2'
-  | 'link3'
-  | 'bool1'
-  | 'bool2'
-  | 'bool3';
+import { isFieldKey } from '../../../shared/typeguards/typeguards';
 
 interface ItemsTableWithSelectionProperties {
   items: Item[];
@@ -44,24 +29,6 @@ type ColumnConfig = {
   width?: string;
 };
 
-const ALL_FIELD_KEYS: readonly FieldKey[] = [
-  'text1',
-  'text2',
-  'text3',
-  'long1',
-  'long2',
-  'long3',
-  'num1',
-  'num2',
-  'num3',
-  'link1',
-  'link2',
-  'link3',
-  'bool1',
-  'bool2',
-  'bool3',
-] as const;
-
 function getField<F extends keyof InventoryFields>(
   fields: InventoryFields | null | undefined,
   key: F
@@ -69,7 +36,7 @@ function getField<F extends keyof InventoryFields>(
   return fields ? Reflect.get(fields, key) : undefined;
 }
 
-function getItemValue<K extends FieldKey>(item: Item, key: K): Item[K] {
+function getItemValue(item: Item, key: FieldKey): string | number | boolean | null | undefined {
   return item[key];
 }
 
@@ -79,8 +46,8 @@ function buildColumns(inventoryFields?: InventoryFields | null): ColumnConfig[] 
     { key: 'likes', label: 'Likes', width: '8%' },
   ];
 
-  const hasConfiguredFields = ALL_FIELD_KEYS.some(
-    (k) => getField(inventoryFields, `${k}State`) === 'SHOWN'
+  const hasConfiguredFields = FIELD_KEYS.some(
+    (k) => getField(inventoryFields, STATE_KEYS[k]) === 'SHOWN'
   );
 
   if (!hasConfiguredFields) {
@@ -90,11 +57,13 @@ function buildColumns(inventoryFields?: InventoryFields | null): ColumnConfig[] 
 
   let visibleCount = 0;
 
-  for (const fieldKey of ALL_FIELD_KEYS) {
-    const state = getField(inventoryFields, `${fieldKey}State`);
-    const nameValue = getField(inventoryFields, `${fieldKey}Name`);
+  for (const fieldKey of FIELD_KEYS) {
+    const state = getField(inventoryFields, STATE_KEYS[fieldKey]);
+    const nameValue = getField(inventoryFields, NAME_KEYS[fieldKey]);
     const label =
-      typeof nameValue === 'string' && nameValue.trim() ? nameValue : fieldKey.toUpperCase();
+      typeof nameValue === 'string' && nameValue.trim()
+        ? nameValue
+        : String(fieldKey).toUpperCase();
 
     if (state === 'SHOWN') {
       visibleCount += 1;
@@ -148,10 +117,13 @@ function formatCell(
     );
   }
 
-  const fieldKey = columnKey;
-  const value = getItemValue(item, fieldKey);
+  if (!isFieldKey(columnKey)) {
+    return <span className="text-gray-400 dark:text-gray-500">-</span>;
+  }
 
-  if (fieldKey.startsWith('bool')) {
+  const value = getItemValue(item, columnKey);
+
+  if (columnKey.startsWith('bool')) {
     if (value === null || value === undefined) return '-';
     const isTrue = Boolean(value);
     return (
@@ -168,13 +140,13 @@ function formatCell(
     );
   }
 
-  if (fieldKey.startsWith('num')) {
+  if (columnKey.startsWith('num')) {
     if (typeof value !== 'number')
       return <span className="text-gray-400 dark:text-gray-500">-</span>;
     return <span className="font-mono">{value.toLocaleString()}</span>;
   }
 
-  if (fieldKey.startsWith('link')) {
+  if (columnKey.startsWith('link')) {
     if (typeof value !== 'string' || !value) return '-';
     return (
       <a
@@ -199,7 +171,7 @@ function formatCell(
   }
 
   if (typeof value === 'string' && value) {
-    if (fieldKey.startsWith('long')) {
+    if (columnKey.startsWith('long')) {
       return (
         <div className="overflow-hidden text-ellipsis whitespace-nowrap" title={value}>
           {value}
@@ -254,7 +226,7 @@ export const ItemsTableWithSelection = ({
         <colgroup>
           {canEdit && <col style={{ width: '50px' }} />}
           {columns.map((col) => (
-            <col key={col.key} style={{ width: col.width }} />
+            <col key={String(col.key)} style={{ width: col.width }} />
           ))}
         </colgroup>
 
@@ -275,7 +247,7 @@ export const ItemsTableWithSelection = ({
 
             {columns.map((column) => (
               <th
-                key={column.key}
+                key={String(column.key)}
                 scope="col"
                 className="whitespace-nowrap px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-700 dark:text-gray-300"
               >
@@ -346,7 +318,7 @@ export const ItemsTableWithSelection = ({
 
                   {columns.map((column) => (
                     <td
-                      key={column.key}
+                      key={String(column.key)}
                       className="overflow-hidden px-4 py-3 text-left text-sm text-gray-900 dark:text-gray-100"
                     >
                       {formatCell(item, column.key, canEdit)}

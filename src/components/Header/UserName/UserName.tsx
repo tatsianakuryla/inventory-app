@@ -46,7 +46,9 @@ export const UserName = ({
       >
         <span className={getTailWindClass(initialTextBySize[size], 'leading-none')}>{initial}</span>
       </span>
-      <span className={getTailWindClass('truncate', nameClassName)}>{userNameWithRole}</span>
+      <span className={getTailWindClass('hidden truncate sm:inline', nameClassName)}>
+        {userNameWithRole}
+      </span>
     </div>
   );
 };

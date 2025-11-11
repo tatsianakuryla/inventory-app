@@ -328,22 +328,25 @@ export const PreviewCustomIdResponseSchema = z.object({
 
 export type PreviewCustomIdResponse = z.infer<typeof PreviewCustomIdResponseSchema>;
 
-export type FieldKey =
-  | 'text1'
-  | 'text2'
-  | 'text3'
-  | 'long1'
-  | 'long2'
-  | 'long3'
-  | 'num1'
-  | 'num2'
-  | 'num3'
-  | 'link1'
-  | 'link2'
-  | 'link3'
-  | 'bool1'
-  | 'bool2'
-  | 'bool3';
+export const FIELD_KEYS = [
+  'text1',
+  'text2',
+  'text3',
+  'long1',
+  'long2',
+  'long3',
+  'num1',
+  'num2',
+  'num3',
+  'link1',
+  'link2',
+  'link3',
+  'bool1',
+  'bool2',
+  'bool3',
+] as const;
+
+export type FieldKey = (typeof FIELD_KEYS)[number];
 
 export const NAME_KEYS = {
   text1: 'text1Name',

@@ -7,6 +7,7 @@ import { useUserStore } from '../../stores/useUserStore';
 import { LogoutButton } from '../LogoutButton/LogoutButton';
 import { ThemeUpdateButton } from './ThemeUpdateButton/ThemeUpdateButton';
 import { Roles } from '../../shared/constants/constants';
+import { UserCircle, LogIn, UserPlus } from 'lucide-react';
 
 export const Header = (): JSX.Element => {
   const isAuthenticated = useUserStore((state) => state.isAuthenticated);
@@ -21,14 +22,29 @@ export const Header = (): JSX.Element => {
       {!isAuthenticated && (
         <>
           <ThemeUpdateButton />
-          <ButtonLink href={APP_ROUTES.LOGIN}>Sign In</ButtonLink>
-          <ButtonLink href={APP_ROUTES.REGISTER}>Sign Up</ButtonLink>
+          <ButtonLink href={APP_ROUTES.LOGIN}>
+            <span className="flex items-center gap-2">
+              <LogIn className="h-4 w-4" />
+              <span className="hidden sm:inline">Sign In</span>
+            </span>
+          </ButtonLink>
+          <ButtonLink href={APP_ROUTES.REGISTER}>
+            <span className="flex items-center gap-2">
+              <UserPlus className="h-4 w-4" />
+              <span className="hidden sm:inline">Sign Up</span>
+            </span>
+          </ButtonLink>
         </>
       )}
       {isAuthenticated && (
         <>
           <ThemeUpdateButton />
-          <ButtonLink href={`/profile/${currentUser?.id ?? ''}`}>Profile</ButtonLink>
+          <ButtonLink href={`/profile/${currentUser?.id ?? ''}`}>
+            <span className="flex items-center gap-2">
+              <UserCircle className="h-4 w-4" />
+              <span className="hidden sm:inline">Profile</span>
+            </span>
+          </ButtonLink>
           <LogoutButton />
         </>
       )}
