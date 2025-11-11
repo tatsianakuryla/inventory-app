@@ -1,4 +1,5 @@
 import { SERVER_SORTABLE_KEYS_MAP, type ServerSortableKey } from '../types/main.types';
+import type { FieldKey } from '../../api/InventoryService/inventory.schemas';
 
 export function isError(error: unknown): error is Error {
   return error instanceof Error;
@@ -25,4 +26,27 @@ export function isCustomIdFormatSchema(value: unknown): value is CustomIdFormatS
   return maybe.elements.every(
     (element) => typeof element === 'object' && element !== null && 'type' in element
   );
+}
+
+const FIELD_KEYS: readonly FieldKey[] = [
+  'text1',
+  'text2',
+  'text3',
+  'long1',
+  'long2',
+  'long3',
+  'num1',
+  'num2',
+  'num3',
+  'link1',
+  'link2',
+  'link3',
+  'bool1',
+  'bool2',
+  'bool3',
+] as const;
+
+export function isFieldKey(value: string): value is FieldKey {
+  // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+  return FIELD_KEYS.includes(value as FieldKey);
 }

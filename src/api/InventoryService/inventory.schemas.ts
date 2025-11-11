@@ -327,3 +327,56 @@ export const PreviewCustomIdResponseSchema = z.object({
 });
 
 export type PreviewCustomIdResponse = z.infer<typeof PreviewCustomIdResponseSchema>;
+
+export type FieldKey =
+  | 'text1'
+  | 'text2'
+  | 'text3'
+  | 'long1'
+  | 'long2'
+  | 'long3'
+  | 'num1'
+  | 'num2'
+  | 'num3'
+  | 'link1'
+  | 'link2'
+  | 'link3'
+  | 'bool1'
+  | 'bool2'
+  | 'bool3';
+
+export const NAME_KEYS = {
+  text1: 'text1Name',
+  text2: 'text2Name',
+  text3: 'text3Name',
+  long1: 'long1Name',
+  long2: 'long2Name',
+  long3: 'long3Name',
+  num1: 'num1Name',
+  num2: 'num2Name',
+  num3: 'num3Name',
+  link1: 'link1Name',
+  link2: 'link2Name',
+  link3: 'link3Name',
+  bool1: 'bool1Name',
+  bool2: 'bool2Name',
+  bool3: 'bool3Name',
+} as const satisfies Record<FieldKey, keyof InventoryFields>;
+
+export const STATE_KEYS = {
+  text1: 'text1State',
+  text2: 'text2State',
+  text3: 'text3State',
+  long1: 'long1State',
+  long2: 'long2State',
+  long3: 'long3State',
+  num1: 'num1State',
+  num2: 'num2State',
+  num3: 'num3State',
+  link1: 'link1State',
+  link2: 'link2State',
+  link3: 'link3State',
+  bool1: 'bool1State',
+  bool2: 'bool2State',
+  bool3: 'bool3State',
+} as const satisfies Record<FieldKey, keyof InventoryFields>;
