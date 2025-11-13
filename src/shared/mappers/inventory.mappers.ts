@@ -1,4 +1,4 @@
-import type { InventoryTableRows } from '../../Tables/CreateCommonColumns';
+import type { InventoryTableRows } from '../../components/Tables/CreateCommonColumns';
 
 export type AnyInventoryListItem = {
   id: string;

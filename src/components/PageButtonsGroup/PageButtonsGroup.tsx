@@ -3,7 +3,7 @@ import { useMatch } from 'react-router-dom';
 import { ButtonLink } from '../Button/ButtonLink';
 import { APP_ROUTES } from '../../appRouter/routes/routes';
 import { useUserStore } from '../../stores/useUserStore';
-import { Status } from '../../shared/constants/constants';
+import { Statuses } from '../../shared/types/enums';
 import { Home, Plus, BookMarked, Library } from 'lucide-react';
 
 export const PageButtonsGroup = (): JSX.Element => {
@@ -14,7 +14,7 @@ export const PageButtonsGroup = (): JSX.Element => {
   const onHomePage = Boolean(useMatch({ path: APP_ROUTES.HOME, end: true }));
   const onCreateInventoryPage = Boolean(useMatch({ path: APP_ROUTES.CREATE_INVENTORY, end: true }));
 
-  const isBlocked = user?.status === Status.BLOCKED;
+  const isBlocked = user?.status === Statuses.BLOCKED;
   const showHomeButton = !onHomePage;
   const showCreateButton = isAuthenticated && !isBlocked && !onCreateInventoryPage;
   const showMyButton = isAuthenticated && !isBlocked && !onMyInventoriesPage;

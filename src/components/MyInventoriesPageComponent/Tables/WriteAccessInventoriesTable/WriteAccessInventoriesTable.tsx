@@ -6,6 +6,7 @@ import { INVENTORY_COLUMNS, type InventoryTableRows } from '../../../Tables/Crea
 import type { SortOrder } from '../../../Tables/SortableHeader/SortableHeader';
 import { Sorter } from '../../../../sorter/Sorter';
 import { inventorySortAccessors } from '../../../Tables/InventorySortAccessors';
+import { toInventoryTableRows } from '../../../../shared/mappers/inventory.mappers';
 
 export const WriteAccessInventoriesTable = (): JSX.Element => {
   const [sortKey, setSortKey] = useState<string | undefined>('createdAt');
@@ -14,17 +15,7 @@ export const WriteAccessInventoriesTable = (): JSX.Element => {
   const { data, isLoading, error } = useGetMyWriteAccessInventories();
 
   const items: InventoryTableRows[] = useMemo(
-    () =>
-      (data?.items ?? []).map((item) => ({
-        id: item.id,
-        name: item.name,
-        description: item.description ?? undefined,
-        isPublic: item.isPublic,
-        owner: item.owner,
-        imageUrl: item.imageUrl ?? undefined,
-        itemsCount: item.itemsCount ?? 0,
-        createdAt: item.createdAt,
-      })),
+    () => toInventoryTableRows(data?.items ?? []),
     [data?.items]
   );
 

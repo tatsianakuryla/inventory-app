@@ -1,7 +1,9 @@
+import { AUTH_ERROR_MESSAGES } from './messages';
+
 export const AUTH_MESSAGES = {
-  SESSION_EXPIRED: 'Your session has expired. Please log in again.',
-  ACCOUNT_DELETED: 'Your account has been deleted',
-  ACCOUNT_BLOCKED: 'Your account has been blocked',
+  SESSION_EXPIRED: AUTH_ERROR_MESSAGES.SESSION_EXPIRED,
+  ACCOUNT_DELETED: AUTH_ERROR_MESSAGES.ACCOUNT_DELETED,
+  ACCOUNT_BLOCKED: AUTH_ERROR_MESSAGES.ACCOUNT_BLOCKED,
   UNKNOWN: 'UNKNOWN',
 } as const;
 
@@ -13,12 +15,4 @@ export type AuthError =
   | typeof AUTH_MESSAGES.ACCOUNT_BLOCKED
   | typeof AUTH_MESSAGES.UNKNOWN;
 
-export const BACKEND_ERRORS = {
-  UNAUTHENTICATED: 'Unauthenticated',
-  INVALID_TOKEN: 'Invalid token',
-  TOKEN_EXPIRED: 'Token expired',
-  UNAUTHORIZED: 'Unauthorized',
-  USER_BLOCKED: 'User is blocked',
-  USER_DELETED: 'User deleted',
-  NOT_ADMIN: 'Not an admin',
-} as const;
+export { BACKEND_ERRORS } from './messages';

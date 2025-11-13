@@ -8,6 +8,13 @@ import {
   PaginationQuerySchema,
   SortOrderSchema,
 } from '../../shared/types/schemas';
+import { InventoryRoleSchema, INVENTORY_ROLES } from '../../shared/types/enums';
+import {
+  VALIDATION_LIMITS,
+  VALIDATION_MESSAGES,
+  BATCH_LIMITS,
+  BATCH_MESSAGES,
+} from '../../shared/constants/validation';
 
 export const FieldStateEnum = z.enum(['HIDDEN', 'SHOWN']);
 
@@ -86,7 +93,7 @@ export const InventoryIdFormatSchema = z.object({
 
 export const InventorySchema = z.object({
   id: IdSchema,
-  name: z.string().min(1),
+  name: z.string().min(VALIDATION_LIMITS.NAME_MIN),
   description: z.string().nullable(),
   imageUrl: OptionalUrlSchema,
   isPublic: z.boolean(),
@@ -119,7 +126,12 @@ export const InventoriesQuerySchema = PaginationQuerySchema.extend({
 export const PopularInventoryItemSchema = InventoryListItemSchema;
 
 export const PopularInventoriesQuerySchema = z.object({
-  limit: z.number().int().min(1).max(50).optional(),
+  limit: z
+    .number()
+    .int()
+    .min(VALIDATION_LIMITS.NAME_MIN)
+    .max(BATCH_LIMITS.POPULAR_ITEMS_MAX)
+    .optional(),
 });
 
 export const PopularInventoriesResponseSchema = z.object({
@@ -127,7 +139,12 @@ export const PopularInventoriesResponseSchema = z.object({
 });
 
 export const RecentInventoriesQuerySchema = z.object({
-  limit: z.number().int().min(1).max(50).optional(),
+  limit: z
+    .number()
+    .int()
+    .min(VALIDATION_LIMITS.NAME_MIN)
+    .max(BATCH_LIMITS.RECENT_ITEMS_MAX)
+    .optional(),
 });
 
 export const RecentInventoriesResponseSchema = z.object({
@@ -147,7 +164,7 @@ export type RecentInventoriesQuery = z.infer<typeof RecentInventoriesQuerySchema
 export type RecentInventoriesResponse = z.infer<typeof RecentInventoriesResponseSchema>;
 
 export const InventoryCreateRequestSchema = z.object({
-  name: z.string().trim().min(1, 'Name is required'),
+  name: z.string().trim().min(VALIDATION_LIMITS.NAME_MIN, VALIDATION_MESSAGES.NAME_REQUIRED),
   description: z.string().trim().optional(),
   isPublic: z.boolean().default(false),
   imageUrl: OptionalUrlSchema,
@@ -157,7 +174,11 @@ export const InventoryCreateRequestSchema = z.object({
 export type InventoryCreateRequestInput = z.input<typeof InventoryCreateRequestSchema>;
 
 export const InventoryUpdateRequestSchema = z.object({
-  name: z.string().trim().min(1, 'Name is required').optional(),
+  name: z
+    .string()
+    .trim()
+    .min(VALIDATION_LIMITS.NAME_MIN, VALIDATION_MESSAGES.NAME_REQUIRED)
+    .optional(),
   description: z.string().trim().optional(),
   isPublic: z.boolean().optional(),
   imageUrl: OptionalUrlSchema,
@@ -175,7 +196,10 @@ export const InventoryToDeleteSchema = z.object({
 export type InventoryToDelete = z.infer<typeof InventoryToDeleteSchema>;
 
 export const DeleteInventoriesBodySchema = z.object({
-  inventories: z.array(InventoryToDeleteSchema).min(1).max(200, 'Too many inventories to delete'),
+  inventories: z
+    .array(InventoryToDeleteSchema)
+    .min(VALIDATION_LIMITS.NAME_MIN)
+    .max(BATCH_LIMITS.INVENTORIES_MAX, BATCH_MESSAGES.TOO_MANY_INVENTORIES_DELETE),
 });
 
 export type DeleteInventoriesBody = z.infer<typeof DeleteInventoriesBodySchema>;
@@ -192,7 +216,10 @@ export const DeleteInventoriesResponseSchema = z.object({
 export type DeleteInventoriesResponse = z.infer<typeof DeleteInventoriesResponseSchema>;
 
 export const BulkUpdateVisibilityBodySchema = z.object({
-  inventoryIds: z.array(IdSchema).min(1).max(200, 'Too many inventories'),
+  inventoryIds: z
+    .array(IdSchema)
+    .min(VALIDATION_LIMITS.NAME_MIN)
+    .max(BATCH_LIMITS.INVENTORIES_MAX, BATCH_MESSAGES.TOO_MANY_INVENTORIES),
   isPublic: z.boolean(),
 });
 
@@ -207,9 +234,7 @@ export const BulkUpdateVisibilityResponseSchema = z.object({
 
 export type BulkUpdateVisibilityResponse = z.infer<typeof BulkUpdateVisibilityResponseSchema>;
 
-export const InventoryRoleEnum = z.enum(['OWNER', 'EDITOR', 'VIEWER']);
-
-export type InventoryRole = z.infer<typeof InventoryRoleEnum>;
+export const InventoryRoleEnum = InventoryRoleSchema;
 
 export const InventoryAccessUserSchema = z.object({
   id: IdSchema,
@@ -231,17 +256,16 @@ export type InventoryAccessData = z.infer<typeof InventoryAccessDataSchema>;
 
 export const InventoryAccessEntrySchema = z.object({
   userId: IdSchema,
-  inventoryRole: z
-    .string()
-    .trim()
-    .toUpperCase()
-    .pipe(z.enum(['OWNER', 'VIEWER', 'EDITOR'] as const)),
+  inventoryRole: z.string().trim().toUpperCase().pipe(z.enum(INVENTORY_ROLES)),
 });
 
 export type InventoryAccessEntry = z.infer<typeof InventoryAccessEntrySchema>;
 
 export const UpsertAccessBodySchema = z.object({
-  accesses: z.array(InventoryAccessEntrySchema).min(1).max(200, 'Too many users to update access'),
+  accesses: z
+    .array(InventoryAccessEntrySchema)
+    .min(VALIDATION_LIMITS.NAME_MIN)
+    .max(BATCH_LIMITS.USERS_ACCESS_MAX, BATCH_MESSAGES.TOO_MANY_USERS_ACCESS),
 });
 
 export type UpsertAccessBody = z.infer<typeof UpsertAccessBodySchema>;
@@ -261,7 +285,7 @@ export const UpsertAccessResponseSchema = z.object({
 export type UpsertAccessResponse = z.infer<typeof UpsertAccessResponseSchema>;
 
 export const RevokeAccessBodySchema = z.object({
-  userIds: z.array(IdSchema).min(1),
+  userIds: z.array(IdSchema).min(VALIDATION_LIMITS.NAME_MIN),
 });
 
 export type RevokeAccessBody = z.infer<typeof RevokeAccessBodySchema>;
@@ -281,7 +305,7 @@ export const UpdateInventoryFieldsBodySchema = z.object({
   version: VersionSchema,
   patch: z
     .record(z.string(), z.unknown())
-    .refine((object) => Object.keys(object).length > 0, { message: 'Empty patch' }),
+    .refine((object) => Object.keys(object).length > 0, { message: BATCH_MESSAGES.EMPTY_PATCH }),
 });
 
 export type UpdateInventoryFieldsBody = z.infer<typeof UpdateInventoryFieldsBodySchema>;
@@ -383,3 +407,5 @@ export const STATE_KEYS = {
   bool2: 'bool2State',
   bool3: 'bool3State',
 } as const satisfies Record<FieldKey, keyof InventoryFields>;
+
+export { type InventoryRole } from '../../shared/types/enums';

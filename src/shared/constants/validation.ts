@@ -1,0 +1,30 @@
+export const VALIDATION_LIMITS = {
+  NAME_MIN: 1,
+  NAME_MAX: 100,
+  PASSWORD_MIN: 6,
+  CUSTOM_ID_MAX: 96,
+  TOKEN_MIN: 1,
+} as const;
+
+export const BATCH_LIMITS = {
+  INVENTORIES_MAX: 200,
+  ITEMS_MAX: 200,
+  USERS_ACCESS_MAX: 200,
+  POPULAR_ITEMS_MAX: 50,
+  RECENT_ITEMS_MAX: 50,
+} as const;
+
+export const HTTP_STATUS = {
+  CONFLICT: 409,
+  UNAUTHORIZED: 401,
+  FORBIDDEN: 403,
+  NOT_FOUND: 404,
+  INTERNAL_SERVER_ERROR: 500,
+} as const;
+
+export const UI_CONSTANTS = {
+  SPINNER_SIZE: 10,
+  DEBOUNCE_DELAY: 400,
+} as const;
+
+export { VALIDATION_MESSAGES, BATCH_MESSAGES } from './messages';

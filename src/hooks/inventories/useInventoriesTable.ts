@@ -8,6 +8,7 @@ import type { ServerSortableKey } from '../../shared/types/main.types';
 import type { InventoryTableRows } from '../../components/Tables/CreateCommonColumns';
 import type { InventoryListItem } from '../../api/InventoryService/inventory.schemas';
 import type { Paginated } from '../../shared/types/schemas';
+import { toInventoryTableRows } from '../../shared/mappers/inventory.mappers';
 
 type Options = {
   initialSortKey?: string;
@@ -52,16 +53,7 @@ export function useInventoriesTable({
     const source = (data?.items ?? []).filter((index) =>
       filterPredicate ? filterPredicate(index) : true
     );
-    return source.map((item) => ({
-      id: item.id,
-      name: item.name,
-      description: item.description ?? undefined,
-      isPublic: item.isPublic,
-      owner: item.owner,
-      imageUrl: item.imageUrl ?? undefined,
-      itemsCount: item.itemsCount,
-      createdAt: item.createdAt,
-    }));
+    return toInventoryTableRows(source);
   }, [data?.items, filterPredicate]);
 
   const sortedItems = useMemo(() => {

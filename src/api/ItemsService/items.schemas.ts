@@ -7,6 +7,11 @@ import {
   SortOrderSchema,
   VersionSchema,
 } from '../../shared/types/schemas';
+import {
+  VALIDATION_LIMITS,
+  VALIDATION_MESSAGES,
+  BATCH_LIMITS,
+} from '../../shared/constants/validation';
 
 export const ItemListQuerySchema = PaginationQuerySchema.extend({
   search: z.string().trim().default(''),
@@ -37,7 +42,11 @@ export const baseFields = z.object({
 export const ItemSchema = baseFields.extend({
   id: IdSchema,
   inventoryId: IdSchema,
-  customId: z.string().trim().min(1, 'Custom ID is required').max(96),
+  customId: z
+    .string()
+    .trim()
+    .min(VALIDATION_LIMITS.NAME_MIN, VALIDATION_MESSAGES.CUSTOM_ID_REQUIRED)
+    .max(VALIDATION_LIMITS.CUSTOM_ID_MAX),
   createdAt: z.string().datetime(),
   updatedAt: z.string().datetime(),
   version: VersionSchema,
@@ -62,7 +71,12 @@ export const PaginatedItemsSchema = PaginatedSchema(ItemSchema);
 
 export const ItemUpdateSchema = baseFields.extend({
   version: VersionSchema,
-  customId: z.string().trim().min(1, 'Custom ID is required').max(96).optional(),
+  customId: z
+    .string()
+    .trim()
+    .min(VALIDATION_LIMITS.NAME_MIN, VALIDATION_MESSAGES.CUSTOM_ID_REQUIRED)
+    .max(VALIDATION_LIMITS.CUSTOM_ID_MAX)
+    .optional(),
 });
 
 export type ItemUpdateRequest = z.infer<typeof ItemUpdateSchema>;
@@ -70,8 +84,8 @@ export type ItemUpdateRequest = z.infer<typeof ItemUpdateSchema>;
 export const DeleteItemsRequestSchema = z.object({
   items: z
     .array(z.object({ id: IdSchema, version: VersionSchema }))
-    .min(1)
-    .max(200),
+    .min(VALIDATION_LIMITS.NAME_MIN)
+    .max(BATCH_LIMITS.ITEMS_MAX),
 });
 
 export type DeleteItemsRequest = z.infer<typeof DeleteItemsRequestSchema>;

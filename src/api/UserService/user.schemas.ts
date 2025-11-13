@@ -1,18 +1,19 @@
 import { z } from 'zod';
 import { IdSchema, VersionSchema, EmailSchema } from '../../shared/types/schemas';
-
-export const ThemeSchema = z.enum(['LIGHT', 'DARK']);
-export type Theme = z.infer<typeof ThemeSchema>;
-
-export const LanguageSchema = z.enum(['EN', 'RU']);
-
-export const RoleSchema = z.enum(['USER', 'ADMIN']);
-export const StatusSchema = z.enum(['ACTIVE', 'BLOCKED']);
+import {
+  RoleSchema,
+  StatusSchema,
+  LanguageSchema,
+  ThemeSchema,
+  LANGUAGES,
+  THEMES,
+} from '../../shared/types/enums';
+import { VALIDATION_LIMITS, VALIDATION_MESSAGES } from '../../shared/constants/validation';
 
 export const UserSchema = z.object({
   id: IdSchema,
   email: EmailSchema.optional().nullable(),
-  name: z.string().min(1),
+  name: z.string().min(VALIDATION_LIMITS.NAME_MIN),
   role: RoleSchema,
   status: StatusSchema,
   language: LanguageSchema,
@@ -27,19 +28,14 @@ export const UserSchema = z.object({
 export type User = z.infer<typeof UserSchema>;
 
 export const UpdateProfileRequestSchema = z.object({
-  name: z.string().trim().min(1, 'Name is required').max(100).optional(),
-  language: z
+  name: z
     .string()
     .trim()
-    .toUpperCase()
-    .pipe(z.enum(['EN', 'RU'] as const))
+    .min(VALIDATION_LIMITS.NAME_MIN, VALIDATION_MESSAGES.NAME_REQUIRED)
+    .max(VALIDATION_LIMITS.NAME_MAX)
     .optional(),
-  theme: z
-    .string()
-    .trim()
-    .toUpperCase()
-    .pipe(z.enum(['LIGHT', 'DARK'] as const))
-    .optional(),
+  language: z.string().trim().toUpperCase().pipe(z.enum(LANGUAGES)).optional(),
+  theme: z.string().trim().toUpperCase().pipe(z.enum(THEMES)).optional(),
   version: VersionSchema,
 });
 
@@ -47,3 +43,5 @@ export type UpdateUserRequest = z.infer<typeof UpdateProfileRequestSchema>;
 
 export const UpdateUserResponseSchema = UserSchema;
 export type UpdateUserResponse = z.infer<typeof UpdateUserResponseSchema>;
+
+export { type Role, type Status, type Language, type Theme } from '../../shared/types/enums';

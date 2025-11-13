@@ -1,17 +1,26 @@
 import type { JSX } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FormProvider, useForm } from 'react-hook-form';
-import { DEFAULT_LOGIN_VALUES, LoginSchema, type LoginValues } from './schemas';
+import { LoginPayloadSchema, type LoginPayload } from '../../../api/AuthService/auth.schemas';
 import { FormInput } from '../../FormInput/FormInput';
 import { Button } from '../../Button/Button';
 import { useLogin } from '../../../hooks/auth/useLogin';
 import { getApiError } from '../../../api/helpers/api.helpers';
 import { Spinner } from '../../Spinner/Spinner';
 import { ErrorBlock } from '../../ErrorBlock/ErrorBlock';
+import {
+  AUTH_ERROR_MESSAGES,
+  FORM_LABELS,
+  FORM_PLACEHOLDERS,
+  BUTTON_LABELS,
+} from '../../../shared/constants/messages';
+import { UI_CONSTANTS } from '../../../shared/constants/validation';
+
+const DEFAULT_LOGIN_VALUES: LoginPayload = { email: '', password: '' };
 
 export const LoginForm = (): JSX.Element => {
-  const methods = useForm<LoginValues>({
-    resolver: zodResolver(LoginSchema),
+  const methods = useForm<LoginPayload>({
+    resolver: zodResolver(LoginPayloadSchema),
     defaultValues: DEFAULT_LOGIN_VALUES,
     mode: 'onBlur',
     shouldFocusError: true,
@@ -21,13 +30,16 @@ export const LoginForm = (): JSX.Element => {
   const { errors } = formState;
   const loginMutation = useLogin();
   const isSubmitting = loginMutation.isPending;
-  const onSubmit = async (values: LoginValues): Promise<void> => {
+  const onSubmit = async (values: LoginPayload): Promise<void> => {
     clearErrors('root.serverError');
     try {
       await loginMutation.mutateAsync(values);
     } catch (error) {
       const { message } = getApiError(error);
-      setError('root.serverError', { type: 'server', message: message || 'Login failed.' });
+      setError('root.serverError', {
+        type: 'server',
+        message: message || AUTH_ERROR_MESSAGES.LOGIN_FAILED,
+      });
     }
   };
 
@@ -41,18 +53,18 @@ export const LoginForm = (): JSX.Element => {
       >
         <FormInput
           name="email"
-          label="Email"
+          label={FORM_LABELS.EMAIL}
           type="email"
-          placeholder="you@example.com"
+          placeholder={FORM_PLACEHOLDERS.EMAIL}
           autoComplete="username"
           disabled={isSubmitting}
           required
         />
         <FormInput
           name="password"
-          label="Password"
+          label={FORM_LABELS.PASSWORD}
           type="password"
-          placeholder="••••••••"
+          placeholder={FORM_PLACEHOLDERS.PASSWORD}
           autoComplete="current-password"
           disabled={isSubmitting}
           required
@@ -61,7 +73,7 @@ export const LoginForm = (): JSX.Element => {
           <ErrorBlock>{errors.root.serverError.message}</ErrorBlock>
         )}
         <Button type="submit" disabled={isSubmitting} className="w-full">
-          {isSubmitting ? <Spinner size={10} /> : 'Log in'}
+          {isSubmitting ? <Spinner size={UI_CONSTANTS.SPINNER_SIZE} /> : BUTTON_LABELS.LOGIN}
         </Button>
       </form>
     </FormProvider>

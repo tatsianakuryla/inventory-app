@@ -9,7 +9,7 @@ import {
   avatarVariant,
 } from './user-name.styles';
 import type { Role } from '../../../shared/types/main.types';
-import { Roles } from '../../../shared/constants/constants';
+import { Roles } from '../../../shared/types/enums';
 
 export type UserNameWithInitialProperties = {
   name: string;

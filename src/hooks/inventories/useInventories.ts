@@ -32,7 +32,7 @@ import type {
 } from '../../api/InventoryService/inventory.schemas';
 import type { Paginated } from '../../shared/types/schemas';
 import { useUserStore } from '../../stores/useUserStore';
-import { InventoryRole, Roles, Status } from '../../shared/constants/constants';
+import { InventoryRoles, Roles, Statuses } from '../../shared/types/enums';
 
 export const useGetInventories = (
   parameters?: InventoriesQuery,
@@ -87,7 +87,7 @@ export const useCanEditInventory = (
     enabled: shouldCheckAccess,
   });
 
-  if (!user || user.status === Status.BLOCKED) return { canEdit: false, isLoading: false };
+  if (!user || user.status === Statuses.BLOCKED) return { canEdit: false, isLoading: false };
 
   const isAdmin = user.role === Roles.ADMIN;
   const isOwner = user.id === ownerId;
@@ -98,8 +98,8 @@ export const useCanEditInventory = (
   const hasEditAccess = accessData?.some(
     (access) =>
       access.userId === user.id &&
-      (access.inventoryRole === InventoryRole.EDITOR ||
-        access.inventoryRole === InventoryRole.OWNER)
+      (access.inventoryRole === InventoryRoles.EDITOR ||
+        access.inventoryRole === InventoryRoles.OWNER)
   );
   return { canEdit: !!hasEditAccess, isLoading: false };
 };

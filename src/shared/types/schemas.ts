@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { VALIDATION_MESSAGES } from '../constants/messages';
 
 export const ResponseErrorSchema = z.object({
   message: z.string(),
@@ -9,11 +10,7 @@ export type ResponseError = z.infer<typeof ResponseErrorSchema>;
 export const IdSchema = z.string().trim().pipe(z.cuid());
 export type Id = z.infer<typeof IdSchema>;
 
-export const EmailSchema = z
-  .string()
-  .trim()
-  .toLowerCase()
-  .pipe(z.email({ message: 'Invalid email' }));
+export const EmailSchema = z.string().trim().toLowerCase().email(VALIDATION_MESSAGES.EMAIL_INVALID);
 
 export const OptionalUrlSchema = z
   .union([z.string().trim().url(), z.literal(''), z.null(), z.undefined()])

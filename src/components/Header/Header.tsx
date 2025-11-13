@@ -6,7 +6,7 @@ import { APP_ROUTES } from '../../appRouter/routes/routes';
 import { useUserStore } from '../../stores/useUserStore';
 import { LogoutButton } from '../LogoutButton/LogoutButton';
 import { ThemeUpdateButton } from './ThemeUpdateButton/ThemeUpdateButton';
-import { Roles } from '../../shared/constants/constants';
+import { Roles } from '../../shared/types/enums';
 import { UserCircle, LogIn, UserPlus } from 'lucide-react';
 
 export const Header = (): JSX.Element => {
