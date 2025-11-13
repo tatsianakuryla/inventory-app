@@ -1,6 +1,23 @@
 import { useId, useState, type ChangeEvent, type JSX } from 'react';
 import { useController, useFormContext } from 'react-hook-form';
 import { ErrorBlock } from '../ErrorBlock/ErrorBlock';
+import { getTailWindClass } from '../../shared/helpers/helpers';
+import {
+  baseWrapper,
+  labelClass,
+  requiredMark,
+  optionalMark,
+  inputWrapperBase,
+  inputWrapperNormal,
+  inputWrapperError,
+  inputWrapperDisabled,
+  baseInput,
+  textInput,
+  textareaInput,
+  passwordInputPadding,
+  passwordToggleButton,
+  errorContainer,
+} from './form-input.styles';
 
 type StringForm = Record<string, string>;
 
@@ -42,24 +59,24 @@ export function FormInput({
   const inputType = isPasswordField && showPassword ? 'text' : type;
 
   return (
-    <div className={`flex w-full flex-col gap-1 ${className ?? ''}`}>
+    <div className={getTailWindClass(baseWrapper, className)}>
       {label && (
-        <label htmlFor={id} className="text-sm font-medium text-gray-900 dark:text-gray-100">
+        <label htmlFor={id} className={labelClass}>
           {label}{' '}
           {required ? (
-            <span className="text-red-500">*</span>
+            <span className={requiredMark}>*</span>
           ) : (
-            <span className="text-gray-500 dark:text-gray-400">(optional)</span>
+            <span className={optionalMark}>(optional)</span>
           )}
         </label>
       )}
 
       <div
-        className={`relative flex items-center rounded-xl border bg-white shadow-sm transition-colors focus-within:ring-2 dark:bg-gray-900 ${
-          hasError
-            ? 'border-red-400 focus-within:ring-red-400 dark:border-red-500 dark:focus-within:ring-red-600'
-            : 'border-gray-300 focus-within:ring-emerald-500 dark:border-gray-700 dark:focus-within:ring-emerald-700'
-        } ${disabled ? 'cursor-not-allowed opacity-60' : ''}`}
+        className={getTailWindClass(
+          inputWrapperBase,
+          hasError ? inputWrapperError : inputWrapperNormal,
+          disabled && inputWrapperDisabled
+        )}
       >
         {multiline ? (
           <textarea
@@ -73,7 +90,7 @@ export function FormInput({
             disabled={disabled}
             aria-invalid={hasError || undefined}
             rows={rows}
-            className={`w-full resize-y bg-transparent px-3 py-2 text-gray-900 outline-none placeholder:text-gray-400 dark:text-gray-100 dark:placeholder:text-gray-500`}
+            className={getTailWindClass(baseInput, textareaInput)}
           />
         ) : (
           <>
@@ -89,7 +106,11 @@ export function FormInput({
               autoComplete={autoComplete}
               disabled={disabled}
               aria-invalid={hasError || undefined}
-              className={`h-9 w-full bg-transparent px-3 text-gray-900 outline-none placeholder:text-gray-400 dark:text-gray-100 dark:placeholder:text-gray-500 ${isPasswordField ? 'pr-10' : ''}`}
+              className={getTailWindClass(
+                baseInput,
+                textInput,
+                isPasswordField && passwordInputPadding
+              )}
               autoCapitalize="none"
               autoCorrect="off"
               spellCheck={false}
@@ -99,7 +120,7 @@ export function FormInput({
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
                 disabled={disabled}
-                className="absolute right-2 flex h-9 items-center justify-center px-2 text-gray-500 hover:text-gray-700 focus:outline-none disabled:opacity-50 dark:text-gray-400 dark:hover:text-gray-200"
+                className={passwordToggleButton}
                 aria-label={showPassword ? 'Hide password' : 'Show password'}
               >
                 {showPassword ? (
@@ -139,7 +160,7 @@ export function FormInput({
         )}
       </div>
 
-      <div className="flex">
+      <div className={errorContainer}>
         {hasError && <ErrorBlock>{String(fieldState.error?.message ?? '')}</ErrorBlock>}
       </div>
     </div>

@@ -1,6 +1,7 @@
 import { type JSX } from 'react';
 import { ChevronDown, ChevronUp, ChevronsUpDown } from 'lucide-react';
 import { Sorter } from '../../../sorter/Sorter';
+import { button, iconSize, inactiveIcon } from './sortable-header.styles';
 
 export type SortOrder = 'asc' | 'desc';
 
@@ -26,18 +27,18 @@ export const SortableHeader = ({
       type="button"
       onClick={handleClick}
       aria-sort={ariaSort}
-      className="flex w-full items-center gap-1 text-left hover:text-gray-700 dark:hover:text-gray-200"
+      className={button}
       title={`Sort by ${label}${isActive && order ? ` (${order})` : ''}`}
     >
       <span>{label}</span>
       {isActive ? (
         order === 'asc' ? (
-          <ChevronUp className="h-4 w-4" />
+          <ChevronUp className={iconSize} />
         ) : (
-          <ChevronDown className="h-4 w-4" />
+          <ChevronDown className={iconSize} />
         )
       ) : (
-        <ChevronsUpDown className="h-4 w-4 opacity-40" />
+        <ChevronsUpDown className={inactiveIcon} />
       )}
     </button>
   );

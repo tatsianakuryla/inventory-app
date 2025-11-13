@@ -129,10 +129,10 @@ function formatCell(
     return (
       <span
         className={[
-          'inline-flex items-center rounded-full px-2 py-1 text-xs font-medium',
+          'textClass-xs inline-flex items-center rounded-full px-2 py-1 font-medium',
           isTrue
-            ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400'
-            : 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300',
+            ? 'textClass-green-800 dark:textClass-green-400 bg-green-100 dark:bg-green-900/30'
+            : 'textClass-gray-800 dark:textClass-gray-300 bg-gray-100 dark:bg-gray-700',
         ].join(' ')}
       >
         {isTrue ? 'Yes' : 'No'}

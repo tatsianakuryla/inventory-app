@@ -142,7 +142,7 @@ export const InventoryCustomFieldsTab = ({
               key={key}
               className="rounded-lg border border-gray-300 bg-white p-4 dark:border-gray-600 dark:bg-gray-800"
             >
-              <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+              <div className="flex flex-col gap-4 md:flex-row">
                 <div>
                   <label className="mb-1 block text-sm font-medium">
                     {label} ({type})
@@ -206,8 +206,8 @@ export const InventoryCustomFieldsTab = ({
           <div
             className={`rounded-lg border p-3 text-sm ${
               saveMessage.startsWith('✅')
-                ? 'border-green-300 bg-green-50 text-green-800 dark:border-green-700 dark:bg-green-900/20 dark:text-green-400'
-                : 'border-red-300 bg-red-50 text-red-800 dark:border-red-700 dark:bg-red-900/20 dark:text-red-400'
+                ? 'textClass-green-800 dark:textClass-green-400 border-green-300 bg-green-50 dark:border-green-700 dark:bg-green-900/20'
+                : 'textClass-red-800 dark:textClass-red-400 border-red-300 bg-red-50 dark:border-red-700 dark:bg-red-900/20'
             }`}
           >
             {saveMessage}

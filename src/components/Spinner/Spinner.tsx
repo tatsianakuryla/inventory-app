@@ -1,5 +1,6 @@
 import type { JSX, CSSProperties } from 'react';
 import clsx from 'clsx';
+import * as styles from './spinner.styles';
 
 type SpinnerProperties = {
   size?: number;
@@ -11,8 +12,8 @@ type SpinnerProperties = {
 
 export function Spinner({
   size = 16,
-  ringClassName = 'text-gray-300 dark:text-gray-600',
-  fillClassName = 'fill-emerald-600',
+  ringClassName = styles.defaultRingColor,
+  fillClassName = styles.defaultFillColor,
   className,
   label = 'Loading…',
 }: SpinnerProperties): JSX.Element {
@@ -23,7 +24,7 @@ export function Spinner({
       <svg
         aria-hidden="true"
         viewBox="0 0 100 101"
-        className={clsx('inline animate-spin', ringClassName, fillClassName, className)}
+        className={clsx(styles.baseSvg, ringClassName, fillClassName, className)}
         style={{ width: radius, height: radius }}
         xmlns="http://www.w3.org/2000/svg"
       >
@@ -36,7 +37,7 @@ export function Spinner({
           fill="currentFill"
         />
       </svg>
-      <span className="sr-only">{label}</span>
+      <span className={styles.srOnly}>{label}</span>
     </div>
   );
 }

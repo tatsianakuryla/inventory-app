@@ -1,4 +1,5 @@
 import { type JSX } from 'react';
+import * as styles from './inventory-access-tab.styles';
 
 interface InventoryAccessTabProperties {
   inventoryId: string;
@@ -6,9 +7,9 @@ interface InventoryAccessTabProperties {
 
 export const InventoryAccessTab = ({ inventoryId }: InventoryAccessTabProperties): JSX.Element => {
   return (
-    <div className="space-y-4">
-      <h2 className="text-xl font-semibold">Access Management</h2>
-      <p className="text-sm text-gray-600 dark:text-gray-400">
+    <div className={styles.container}>
+      <h2 className={styles.title}>Access Management</h2>
+      <p className={styles.description}>
         Manage who can view and edit the inventory ${inventoryId}
       </p>
     </div>

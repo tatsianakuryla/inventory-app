@@ -28,7 +28,9 @@ export const ItemsToolbar = ({
       <div className="flex items-center gap-3">
         <span
           className={`text-sm font-medium ${
-            hasSelection ? 'text-teal-900 dark:text-teal-100' : 'text-gray-600 dark:text-gray-400'
+            hasSelection
+              ? 'textClass-teal-900 dark:textClass-teal-100'
+              : 'textClass-gray-600 dark:textClass-gray-400'
           }`}
         >
           {selectedCount > 0 ? (

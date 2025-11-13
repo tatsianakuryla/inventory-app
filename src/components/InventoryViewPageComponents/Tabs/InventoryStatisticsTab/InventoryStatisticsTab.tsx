@@ -4,6 +4,8 @@ import { BarChart3, Calendar, Hash, TrendingUp } from 'lucide-react';
 import { useGetInventoryById } from '../../../../hooks/inventories/useInventories';
 import { isFieldKey } from '../../../../shared/typeguards/typeguards';
 import { NAME_KEYS, STATE_KEYS } from '../../../../api/InventoryService/inventory.schemas';
+import { getTailWindClass } from '../../../../shared/helpers/helpers';
+import * as styles from './inventory-statistics-tab.styles';
 
 interface InventoryStatisticsTabProperties {
   inventoryId: string;
@@ -26,10 +28,10 @@ export const InventoryStatisticsTab = ({
 
   if (isLoading) {
     return (
-      <div className="space-y-4">
-        <h2 className="text-xl font-semibold">Statistics</h2>
-        <div className="rounded-lg border border-gray-200 bg-white p-6 text-center dark:border-gray-700 dark:bg-gray-800">
-          <p className="text-gray-600 dark:text-gray-400">Loading statistics...</p>
+      <div className={styles.loadingContainer}>
+        <h2 className={styles.title}>Statistics</h2>
+        <div className={styles.cardCentered}>
+          <p className={styles.loadingMessage}>Loading statistics...</p>
         </div>
       </div>
     );
@@ -37,10 +39,10 @@ export const InventoryStatisticsTab = ({
 
   if (error) {
     return (
-      <div className="space-y-4">
-        <h2 className="text-xl font-semibold">Statistics</h2>
-        <div className="rounded-lg border border-red-200 bg-red-50 p-6 text-center dark:border-red-800 dark:bg-red-900/20">
-          <p className="text-red-600 dark:text-red-400">Failed to load statistics</p>
+      <div className={styles.loadingContainer}>
+        <h2 className={styles.title}>Statistics</h2>
+        <div className={styles.errorCard}>
+          <p className={styles.errorMessage}>Failed to load statistics</p>
         </div>
       </div>
     );
@@ -48,10 +50,10 @@ export const InventoryStatisticsTab = ({
 
   if (!statistics) {
     return (
-      <div className="space-y-4">
-        <h2 className="text-xl font-semibold">Statistics</h2>
-        <div className="rounded-lg border border-gray-200 bg-white p-6 text-center dark:border-gray-700 dark:bg-gray-800">
-          <p className="text-gray-600 dark:text-gray-400">No statistics available</p>
+      <div className={styles.loadingContainer}>
+        <h2 className={styles.title}>Statistics</h2>
+        <div className={styles.cardCentered}>
+          <p className={styles.loadingMessage}>No statistics available</p>
         </div>
       </div>
     );
@@ -79,84 +81,75 @@ export const InventoryStatisticsTab = ({
   );
 
   return (
-    <div className="space-y-6">
-      <h2 className="text-xl font-semibold">Statistics</h2>
+    <div className={styles.container}>
+      <h2 className={styles.title}>Statistics</h2>
 
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-        <div className="rounded-lg border border-gray-200 bg-white p-6 dark:border-gray-700 dark:bg-gray-800">
-          <div className="flex items-center gap-3">
-            <div className="rounded-lg bg-blue-100 p-3 dark:bg-blue-900/30">
-              <Hash className="h-6 w-6 text-blue-600 dark:text-blue-400" />
+      <div className={styles.statsFlex}>
+        <div className={styles.statCard}>
+          <div className={styles.statContent}>
+            <div className={styles.iconBlue}>
+              <Hash className={getTailWindClass(styles.iconLarge, styles.iconBlueColor)} />
             </div>
             <div>
-              <p className="text-sm text-gray-600 dark:text-gray-400">Total Items</p>
-              <p className="text-2xl font-bold">{statistics.itemsCount}</p>
+              <p className={styles.labelSmall}>Total Items</p>
+              <p className={styles.valueLarge}>{statistics.itemsCount}</p>
             </div>
           </div>
         </div>
 
-        <div className="rounded-lg border border-gray-200 bg-white p-6 dark:border-gray-700 dark:bg-gray-800">
-          <div className="flex items-center gap-3">
-            <div className="rounded-lg bg-green-100 p-3 dark:bg-green-900/30">
-              <Calendar className="h-6 w-6 text-green-600 dark:text-green-400" />
+        <div className={styles.statCard}>
+          <div className={styles.statContent}>
+            <div className={styles.iconGreen}>
+              <Calendar className={getTailWindClass(styles.iconLarge, styles.iconGreenColor)} />
             </div>
             <div>
-              <p className="text-sm text-gray-600 dark:text-gray-400">First Item</p>
-              <p className="text-lg font-semibold">{formatDate(statistics.firstItemCreatedAt)}</p>
+              <p className={styles.labelSmall}>First Item</p>
+              <p className={styles.valueMedium}>{formatDate(statistics.firstItemCreatedAt)}</p>
             </div>
           </div>
         </div>
 
-        <div className="rounded-lg border border-gray-200 bg-white p-6 dark:border-gray-700 dark:bg-gray-800">
-          <div className="flex items-center gap-3">
-            <div className="rounded-lg bg-purple-100 p-3 dark:bg-purple-900/30">
-              <Calendar className="h-6 w-6 text-purple-600 dark:text-purple-400" />
+        <div className={styles.statCard}>
+          <div className={styles.statContent}>
+            <div className={styles.iconPurple}>
+              <Calendar className={getTailWindClass(styles.iconLarge, styles.iconPurpleColor)} />
             </div>
             <div>
-              <p className="text-sm text-gray-600 dark:text-gray-400">Last Item</p>
-              <p className="text-lg font-semibold">{formatDate(statistics.lastItemCreatedAt)}</p>
+              <p className={styles.labelSmall}>Last Item</p>
+              <p className={styles.valueMedium}>{formatDate(statistics.lastItemCreatedAt)}</p>
             </div>
           </div>
         </div>
       </div>
 
       {visibleNumericFields.length > 0 && (
-        <div className="space-y-4">
-          <h3 className="flex items-center gap-2 text-lg font-semibold">
-            <TrendingUp className="h-5 w-5" />
+        <div className={styles.fieldSection}>
+          <h3 className={styles.sectionTitle}>
+            <TrendingUp className={styles.iconMedium} />
             Numeric Fields Statistics
           </h3>
-          <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+          <div className={styles.fieldsFlex}>
             {visibleNumericFields.map(([fieldKey, stats]) => (
-              <div
-                key={fieldKey}
-                className="rounded-lg border border-gray-200 bg-white p-5 dark:border-gray-700 dark:bg-gray-800"
-              >
-                <h4 className="mb-3 font-semibold text-gray-900 dark:text-gray-100">
-                  {getFieldName(fieldKey)}
-                </h4>
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="rounded-md bg-gray-50 p-3 dark:bg-gray-900/50">
-                    <p className="text-xs text-gray-600 dark:text-gray-400">Average</p>
-                    <p className="text-lg font-semibold">
+              <div key={fieldKey} className={styles.fieldCard}>
+                <h4 className={styles.cardTitle}>{getFieldName(fieldKey)}</h4>
+                <div className={styles.statValuesFlex}>
+                  <div className={styles.statValueBox}>
+                    <p className={styles.labelExtraSmall}>Average</p>
+                    <p className={styles.valueMedium}>
                       {stats.avg === null ? 'N/A' : stats.avg.toFixed(2)}
                     </p>
                   </div>
-                  <div className="rounded-md bg-gray-50 p-3 dark:bg-gray-900/50">
-                    <p className="text-xs text-gray-600 dark:text-gray-400">Count</p>
-                    <p className="text-lg font-semibold">{stats.count}</p>
+                  <div className={styles.statValueBox}>
+                    <p className={styles.labelExtraSmall}>Count</p>
+                    <p className={styles.valueMedium}>{stats.count}</p>
                   </div>
-                  <div className="rounded-md bg-gray-50 p-3 dark:bg-gray-900/50">
-                    <p className="text-xs text-gray-600 dark:text-gray-400">Minimum</p>
-                    <p className="text-lg font-semibold">
-                      {stats.min === null ? 'N/A' : stats.min}
-                    </p>
+                  <div className={styles.statValueBox}>
+                    <p className={styles.labelExtraSmall}>Minimum</p>
+                    <p className={styles.valueMedium}>{stats.min === null ? 'N/A' : stats.min}</p>
                   </div>
-                  <div className="rounded-md bg-gray-50 p-3 dark:bg-gray-900/50">
-                    <p className="text-xs text-gray-600 dark:text-gray-400">Maximum</p>
-                    <p className="text-lg font-semibold">
-                      {stats.max === null ? 'N/A' : stats.max}
-                    </p>
+                  <div className={styles.statValueBox}>
+                    <p className={styles.labelExtraSmall}>Maximum</p>
+                    <p className={styles.valueMedium}>{stats.max === null ? 'N/A' : stats.max}</p>
                   </div>
                 </div>
               </div>
@@ -166,40 +159,28 @@ export const InventoryStatisticsTab = ({
       )}
 
       {visibleTextFields.length > 0 && (
-        <div className="space-y-4">
-          <h3 className="flex items-center gap-2 text-lg font-semibold">
-            <BarChart3 className="h-5 w-5" />
+        <div className={styles.fieldSection}>
+          <h3 className={styles.sectionTitle}>
+            <BarChart3 className={styles.iconMedium} />
             Text Fields Statistics
           </h3>
-          <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+          <div className={styles.fieldsFlex}>
             {visibleTextFields.map(([fieldKey, items]) => (
-              <div
-                key={fieldKey}
-                className="rounded-lg border border-gray-200 bg-white p-5 dark:border-gray-700 dark:bg-gray-800"
-              >
-                <h4 className="mb-3 font-semibold text-gray-900 dark:text-gray-100">
-                  {getFieldName(fieldKey)}
-                </h4>
-                <div className="space-y-2">
+              <div key={fieldKey} className={styles.fieldCard}>
+                <h4 className={styles.cardTitle}>{getFieldName(fieldKey)}</h4>
+                <div className={styles.listSpacing}>
                   {items.length > 0 ? (
                     items.slice(0, 5).map((item, index) => (
-                      <div
-                        key={index}
-                        className="flex items-center justify-between rounded-md bg-gray-50 p-3 dark:bg-gray-900/50"
-                      >
-                        <span className="truncate text-sm font-medium">{item.value}</span>
-                        <span className="ml-2 flex-shrink-0 rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-semibold text-blue-800 dark:bg-blue-900/50 dark:text-blue-300">
-                          {item.count}
-                        </span>
+                      <div key={index} className={styles.textFieldItem}>
+                        <span className={styles.textFieldValue}>{item.value}</span>
+                        <span className={styles.textFieldBadge}>{item.count}</span>
                       </div>
                     ))
                   ) : (
-                    <p className="text-sm text-gray-500 dark:text-gray-400">No data available</p>
+                    <p className={styles.valueSmall}>No data available</p>
                   )}
                   {items.length > 5 && (
-                    <p className="text-xs text-gray-500 dark:text-gray-400">
-                      +{items.length - 5} more values
-                    </p>
+                    <p className={styles.valueExtraSmall}>+{items.length - 5} more values</p>
                   )}
                 </div>
               </div>
@@ -209,14 +190,10 @@ export const InventoryStatisticsTab = ({
       )}
 
       {statistics.itemsCount === 0 && (
-        <div className="rounded-lg border border-gray-200 bg-white p-12 text-center dark:border-gray-700 dark:bg-gray-800">
-          <BarChart3 className="mx-auto mb-4 h-12 w-12 text-gray-400" />
-          <h3 className="mb-2 text-lg font-semibold text-gray-900 dark:text-gray-100">
-            No Statistics Yet
-          </h3>
-          <p className="text-gray-600 dark:text-gray-400">
-            Add items to this inventory to see statistics
-          </p>
+        <div className={styles.emptyCard}>
+          <BarChart3 className={getTailWindClass(styles.iconExtraLarge, styles.iconGrayColor)} />
+          <h3 className={styles.emptyTitle}>No Statistics Yet</h3>
+          <p className={styles.emptyDescription}>Add items to this inventory to see statistics</p>
         </div>
       )}
     </div>

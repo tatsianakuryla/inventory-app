@@ -3,9 +3,10 @@ import { Button } from '../../Button/Button';
 import { Moon, Sun } from 'lucide-react';
 import { useUserStore } from '../../../stores/useUserStore';
 import { useUpdateUser } from '../../../hooks/users/useUpdateUser';
-import type { Theme } from '../../../api/UserService/user.schemas';
+import type { Theme } from '../../../shared/types/enums';
 import { applyTheme, defineInitialTheme } from '../../../shared/helpers/theme.helpers';
 import { LocalStorage } from '../../../storages/localStorage/localStorage';
+import { buttonClass, iconSize } from './theme-update-button.styles';
 
 export const ThemeUpdateButton = (): JSX.Element => {
   const user = useUserStore((state) => state.user);
@@ -43,9 +44,9 @@ export const ThemeUpdateButton = (): JSX.Element => {
       aria-pressed={isDark}
       title={isDark ? 'Switch to Light' : 'Switch to Dark'}
       disabled={updateUser.isPending}
-      className="inline-flex items-center gap-2 rounded-lg px-3 py-2"
+      className={buttonClass}
     >
-      {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+      {isDark ? <Sun className={iconSize} /> : <Moon className={iconSize} />}
     </Button>
   );
 };

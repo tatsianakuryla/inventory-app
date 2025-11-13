@@ -1,4 +1,5 @@
 import type { JSX } from 'react';
+import { badge } from './items-count-badge.styles';
 
 interface ItemsCountBadgeProperties {
   value: number;
@@ -13,7 +14,7 @@ export const ItemsCountBadge = ({
 }: ItemsCountBadgeProperties): JSX.Element => {
   const label = value === 1 ? singular : plural;
   return (
-    <span className="inline-flex rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-800 dark:bg-green-900/30 dark:text-green-400">
+    <span className={badge}>
       {value} {label}
     </span>
   );

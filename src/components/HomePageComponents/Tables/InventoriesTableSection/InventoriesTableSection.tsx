@@ -3,7 +3,10 @@ import type { UseQueryResult } from '@tanstack/react-query';
 import { INVENTORY_COLUMNS, type InventoryTableRows } from '../../../Tables/CreateCommonColumns';
 import { InventoriesBasicTable } from '../../../Tables/InventoriesBasicTable/InventoriesBasicTable';
 import { LoadingErrorEmptySwitcher } from '../../../Tables/LoadingErrorEmptySwitcher/LoadingErrorEmptySwitcher';
-import { type AnyInventoryListItem, toInventoryTableRows } from '../inventory.mappers';
+import {
+  type AnyInventoryListItem,
+  toInventoryTableRows,
+} from '../../../../shared/mappers/inventory.mappers';
 
 type InventoriesTableSectionProperties<TData, TItem extends AnyInventoryListItem> = {
   queryResult: UseQueryResult<TData, Error>;

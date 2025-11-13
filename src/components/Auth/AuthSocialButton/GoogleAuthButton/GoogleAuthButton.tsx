@@ -5,6 +5,13 @@ import { ErrorBlock } from '../../../ErrorBlock/ErrorBlock';
 import { useGoogleLogin } from '../../../../hooks/auth/useGoogleLogin';
 import { getApiError } from '../../../../api/helpers/api.helpers';
 import { Mail } from 'lucide-react';
+import {
+  container,
+  buttonWrapper,
+  button,
+  sdkWrapper,
+  sdkHidden,
+} from './google-auth-button.styles';
 
 export function GoogleAuthButton(): JSX.Element {
   const [errorText, setErrorText] = useState<string>();
@@ -25,19 +32,19 @@ export function GoogleAuthButton(): JSX.Element {
     }
   };
   return (
-    <div className="space-y-2">
-      <div className="relative">
+    <div className={container}>
+      <div className={buttonWrapper}>
         <Button
           type="button"
           variant="secondary"
-          className="inline-flex w-full select-none items-center justify-center gap-2"
+          className={button}
           onClick={(event) => event.preventDefault()}
         >
           <Mail />
           Continue with Google
         </Button>
-        <div className="pointer-events-auto absolute inset-0 flex items-center justify-center">
-          <div className="opacity-0">
+        <div className={sdkWrapper}>
+          <div className={sdkHidden}>
             <GoogleLogin
               locale="en"
               useOneTap={false}

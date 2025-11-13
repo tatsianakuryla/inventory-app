@@ -1,6 +1,7 @@
 import { type JSX } from 'react';
 import type { InventoryDetail } from '../../../../api/InventoryService/inventory.schemas';
 import { Button } from '../../../Button/Button';
+import * as styles from './inventory-settings-tab.styles';
 
 interface InventorySettingsTabProperties {
   inventory: InventoryDetail;
@@ -10,10 +11,10 @@ export const InventorySettingsTab = ({
   inventory,
 }: InventorySettingsTabProperties): JSX.Element => {
   return (
-    <div className="space-y-6">
+    <div className={styles.container}>
       <div>
-        <h2 className="text-xl font-semibold">Inventory Settings</h2>
-        <p className="text-sm text-gray-600 dark:text-gray-400">
+        <h2 className={styles.title}>Inventory Settings</h2>
+        <p className={styles.description}>
           Manage the inventory ${inventory.id} title, description, image, category, and tags
         </p>
       </div>

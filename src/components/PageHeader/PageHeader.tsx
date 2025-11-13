@@ -1,5 +1,6 @@
 import { type JSX } from 'react';
 import { PageButtonsGroup } from '../PageButtonsGroup/PageButtonsGroup';
+import { titleClass } from './page-header.styles';
 
 type PageHeaderProperties = {
   title?: string;
@@ -8,7 +9,7 @@ type PageHeaderProperties = {
 export function PageHeader({ title }: PageHeaderProperties): JSX.Element {
   return (
     <>
-      {title && <h1 className="text-2xl font-bold tracking-tight">{title}</h1>}
+      {title && <h1 className={titleClass}>{title}</h1>}
       <PageButtonsGroup />
     </>
   );

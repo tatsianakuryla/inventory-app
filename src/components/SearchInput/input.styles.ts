@@ -7,6 +7,6 @@ export const baseWrapper =
 
 export const baseInput =
   'w-full bg-transparent outline-none px-3 h-10 ' +
-  'text-sm sm:text-base ' +
-  'text-gray-900 placeholder:text-gray-400 ' +
-  'dark:text-gray-100 dark:placeholder:text-gray-500';
+  'textClass-sm sm:textClass-base ' +
+  'textClass-gray-900 placeholder:textClass-gray-400 ' +
+  'dark:textClass-gray-100 dark:placeholder:textClass-gray-500';

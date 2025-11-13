@@ -1,11 +1,12 @@
 import type { JSX } from 'react';
 import { Outlet } from 'react-router-dom';
+import * as styles from './auth-layout.styles';
 
 export function AuthLayout(): JSX.Element {
   return (
-    <div className="relative">
-      <div aria-hidden className="fixed inset-0 -z-10 bg-gray-50 dark:bg-gray-900" />
-      <main className="grid min-h-dvh place-items-center px-4">
+    <div className={styles.wrapper}>
+      <div aria-hidden className={styles.background} />
+      <main className={styles.main}>
         <Outlet />
       </main>
     </div>

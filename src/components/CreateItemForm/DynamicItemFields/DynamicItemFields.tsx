@@ -4,6 +4,7 @@ import type { InventoryFields } from '../../../api/InventoryService/inventory.sc
 import type { ItemCreateRequest } from '../../../api/ItemsService/items.schemas';
 import { FormInput } from '../../FormInput/FormInput';
 import { ErrorBlock } from '../../ErrorBlock/ErrorBlock';
+import * as styles from './dynamic-item-fields.styles';
 
 interface DynamicItemFieldsProperties {
   fields: InventoryFields;
@@ -47,11 +48,9 @@ export const DynamicItemFields = ({
     label?: string | null;
     desc?: string | null;
   }): JSX.Element => (
-    <div className="flex flex-col gap-1">
-      {label && (
-        <label className="text-sm font-medium text-gray-900 dark:text-gray-100">{label}</label>
-      )}
-      {desc && <p className="text-xs text-gray-500 dark:text-gray-400">{desc}</p>}
+    <div className={styles.fieldWrapper}>
+      {label && <label className={styles.label}>{label}</label>}
+      {desc && <p className={styles.hint}>{desc}</p>}
       {children}
     </div>
   );
@@ -222,9 +221,7 @@ export const DynamicItemFields = ({
 
   if (descriptors.length === 0) {
     return (
-      <p className="text-sm text-gray-600 dark:text-gray-400">
-        No fields are configured to be shown in this inventory
-      </p>
+      <p className={styles.emptyText}>No fields are configured to be shown in this inventory</p>
     );
   }
 
@@ -234,7 +231,7 @@ export const DynamicItemFields = ({
         const error = getErrorMessage(desc.key);
         if (desc.type === 'text' || desc.type === 'long' || desc.type === 'link') {
           return (
-            <div key={desc.key} className="flex flex-col gap-1">
+            <div key={desc.key} className={styles.inputWrapper}>
               <FormInput
                 name={desc.key}
                 label={desc.label ?? undefined}
@@ -268,7 +265,7 @@ export const DynamicItemFields = ({
                           field.onChange(value === '' ? undefined : event.target.valueAsNumber);
                         }}
                         onBlur={field.onBlur}
-                        className="rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 shadow-sm transition-colors focus:border-teal-500 focus:outline-none focus:ring-2 focus:ring-teal-500 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:focus:border-teal-400"
+                        className={styles.input}
                       />
                       {error && <ErrorBlock>{error}</ErrorBlock>}
                     </>
@@ -285,18 +282,16 @@ export const DynamicItemFields = ({
               control={methods.control}
               render={({ field }) => (
                 <>
-                  <label className="flex items-center gap-2">
+                  <label className={styles.checkboxLabel}>
                     <input
                       type="checkbox"
                       disabled={disabled}
                       checked={Boolean(field.value)}
                       onChange={(event) => field.onChange(event.target.checked)}
                       onBlur={field.onBlur}
-                      className="h-4 w-4 rounded border-gray-300 text-teal-600 focus:ring-2 focus:ring-teal-500 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-600 dark:bg-gray-800"
+                      className={styles.checkbox}
                     />
-                    <span className="text-sm text-gray-700 dark:text-gray-300">
-                      {field.value ? 'Yes' : 'No'}
-                    </span>
+                    <span className={styles.checkboxText}>{field.value ? 'Yes' : 'No'}</span>
                   </label>
                   {error && <ErrorBlock>{error}</ErrorBlock>}
                 </>

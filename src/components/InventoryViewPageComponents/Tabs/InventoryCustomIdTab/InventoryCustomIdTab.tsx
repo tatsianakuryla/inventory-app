@@ -4,6 +4,8 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { InventoriesService } from '../../../../api/InventoryService/InventoryService';
 import { Button } from '../../../Button/Button';
 import { Spinner } from '../../../Spinner/Spinner';
+import { getTailWindClass } from '../../../../shared/helpers/helpers';
+import * as styles from './inventory-custom-id-tab.styles';
 
 interface InventoryCustomIdTabProperties {
   inventoryId: string;
@@ -68,7 +70,7 @@ function isValidCustomIdSchema(value: unknown): value is CustomIdFormatSchema {
 }
 
 const ELEMENT_TYPES: { value: ElementType; label: string; description: string }[] = [
-  { value: 'FIXED_TEXT', label: 'Fixed Text', description: 'Static text (Unicode supported)' },
+  { value: 'FIXED_TEXT', label: 'Fixed Text', description: 'Static textClass (Unicode supported)' },
   { value: 'RANDOM_20BIT', label: '20-bit Random', description: 'Random number (0-1,048,575)' },
   { value: 'RANDOM_32BIT', label: '32-bit Random', description: 'Random number (0-4,294,967,295)' },
   { value: 'RANDOM_6DIGIT', label: '6-digit Random', description: 'Random 6-digit number' },
@@ -193,7 +195,7 @@ export const InventoryCustomIdTab = ({
 
   if (isLoading) {
     return (
-      <div className="flex justify-center py-8">
+      <div className={styles.loadingContainer}>
         <Spinner />
       </div>
     );
@@ -204,52 +206,61 @@ export const InventoryCustomIdTab = ({
     ? (pickAxiosMessage(previewError) ?? 'Error loading preview')
     : (previewData?.preview ?? 'Loading...');
   return (
-    <div className="space-y-6">
+    <div className={styles.container}>
       <div>
-        <h2 className="mb-2 text-xl font-semibold">Custom Item ID Format</h2>
-        <p className="text-sm text-gray-600 dark:text-gray-400">
+        <h2 className={styles.header}>Custom Item ID Format</h2>
+        <p className={styles.description}>
           Define how item IDs are generated. Each format must contain exactly one SEQUENCE element.
         </p>
       </div>
 
       <div
-        className={`${previewError ? 'border-red-200 bg-red-50 dark:border-red-800 dark:bg-red-900/20' : 'border-blue-200 bg-blue-50 dark:border-blue-800 dark:bg-blue-900/20'} rounded-lg border p-4`}
+        className={getTailWindClass(
+          styles.previewCard,
+          previewError ? styles.previewError : styles.previewNormal
+        )}
       >
         <h3
-          className={`mb-2 text-sm font-semibold ${previewError ? 'text-red-900 dark:text-red-100' : 'text-blue-900 dark:text-blue-100'}`}
+          className={getTailWindClass(
+            styles.previewTitle,
+            previewError ? styles.previewTitleError : styles.previewTitleNormal
+          )}
         >
           Preview (Next ID):
         </h3>
         <div
-          className={`font-mono text-lg font-bold ${previewError ? 'text-red-700 dark:text-red-300' : 'text-blue-700 dark:text-blue-300'}`}
+          className={getTailWindClass(
+            styles.previewText,
+            previewError ? styles.previewTextError : styles.previewTextNormal
+          )}
         >
           {previewText}
         </div>
         <p
-          className={`mt-1 text-xs ${previewError ? 'text-red-600 dark:text-red-400' : 'text-blue-600 dark:text-blue-400'}`}
+          className={getTailWindClass(
+            styles.previewNote,
+            previewError ? styles.previewNoteError : styles.previewNoteNormal
+          )}
         >
           {previewError
             ? 'Fix the errors to see a preview'
             : 'This shows what the next generated ID will look like'}
         </p>
       </div>
-      <div className="space-y-3">
-        <h3 className="text-lg font-semibold">ID Elements (in order)</h3>
+      <div className={styles.elementsSection}>
+        <h3 className={styles.sectionTitle}>ID Elements (in order)</h3>
         {schema.elements.length === 0 ? (
-          <p className="text-sm italic text-gray-500">No elements added yet</p>
+          <p className={styles.emptyText}>No elements added yet</p>
         ) : (
           schema.elements.map((element, index) => (
-            <div
-              key={index}
-              className="rounded-lg border border-gray-300 bg-white p-4 dark:border-gray-600 dark:bg-gray-800"
-            >
-              <div className="flex items-start gap-4">
-                <div className="flex flex-col gap-1">
+            <div key={index} className={styles.elementCard}>
+              <div className={styles.elementContent}>
+                <div className={styles.moveButtons}>
                   <button
                     type="button"
                     onClick={() => moveElement(index, 'up')}
                     disabled={index === 0}
-                    className="rounded bg-gray-100 px-2 py-1 text-xs disabled:opacity-30 dark:bg-gray-700"
+                    className={styles.moveButton}
                   >
                     ▲
                   </button>
@@ -257,43 +268,43 @@ export const InventoryCustomIdTab = ({
                     type="button"
                     onClick={() => moveElement(index, 'down')}
                     disabled={index === schema.elements.length - 1}
-                    className="rounded bg-gray-100 px-2 py-1 text-xs disabled:opacity-30 dark:bg-gray-700"
+                    className={styles.moveButton}
                   >
                     ▼
                   </button>
                 </div>
-                <div className="flex-1 space-y-3">
-                  <div className="flex items-center justify-between">
-                    <span className="font-semibold text-gray-900 dark:text-gray-100">
+                <div className={styles.elementBody}>
+                  <div className={styles.elementHeader}>
+                    <span className={styles.elementLabel}>
                       {ELEMENT_TYPES.find((t) => t.value === element.type)?.label || element.type}
                     </span>
                     <button
                       type="button"
                       onClick={() => removeElement(index)}
-                      className="text-sm font-medium text-red-600 hover:text-red-800"
+                      className={styles.removeButton}
                     >
                       Remove
                     </button>
                   </div>
                   {element.type === 'FIXED_TEXT' && (
                     <div>
-                      <label className="mb-1 block text-sm font-medium">Text Value</label>
+                      <label className={styles.fieldLabel}>Text Value</label>
                       <input
                         type="text"
                         value={element.value || ''}
                         onChange={(event) => updateElement(index, { value: event.target.value })}
-                        className="w-full rounded-md border border-gray-300 px-3 py-2 dark:border-gray-600 dark:bg-gray-700"
+                        className={styles.textInput}
                         placeholder="Enter text (Unicode supported)"
                       />
                     </div>
                   )}
                   {element.type === 'DATETIME' && (
                     <div>
-                      <label className="mb-1 block text-sm font-medium">Date Format</label>
+                      <label className={styles.fieldLabel}>Date Format</label>
                       <select
                         value={element.format || 'YYYYMMDD'}
                         onChange={(event) => updateElement(index, { format: event.target.value })}
-                        className="w-full rounded-md border border-gray-300 px-3 py-2 dark:border-gray-600 dark:bg-gray-700"
+                        className={styles.selectInput}
                       >
                         {DATE_FORMATS.map((fmt) => (
                           <option key={fmt.value} value={fmt.value}>
@@ -306,7 +317,7 @@ export const InventoryCustomIdTab = ({
                   {(element.type === 'RANDOM_20BIT' ||
                     element.type === 'RANDOM_32BIT' ||
                     element.type === 'SEQUENCE') && (
-                    <div className="flex items-center gap-2">
+                    <div className={styles.checkboxWrapper}>
                       <input
                         type="checkbox"
                         id={`leadingZeros-${index}`}
@@ -314,38 +325,34 @@ export const InventoryCustomIdTab = ({
                         onChange={(event) =>
                           updateElement(index, { leadingZeros: event.target.checked })
                         }
-                        className="h-4 w-4"
+                        className={styles.checkbox}
                       />
-                      <label htmlFor={`leadingZeros-${index}`} className="text-sm">
+                      <label htmlFor={`leadingZeros-${index}`} className={styles.checkboxLabel}>
                         Use leading zeros
                       </label>
                     </div>
                   )}
                   {element.type === 'SEQUENCE' && (
                     <div>
-                      <label className="mb-1 block text-sm font-medium">
-                        Sequence Name (optional)
-                      </label>
+                      <label className={styles.fieldLabel}>Sequence Name (optional)</label>
                       <input
                         type="text"
                         value={element.sequenceName || ''}
                         onChange={(event) =>
                           updateElement(index, { sequenceName: event.target.value })
                         }
-                        className="w-full rounded-md border border-gray-300 px-3 py-2 dark:border-gray-600 dark:bg-gray-700"
+                        className={styles.textInput}
                         placeholder="default"
                       />
                     </div>
                   )}
                   <div>
-                    <label className="mb-1 block text-sm font-medium">
-                      Separator (after this element)
-                    </label>
+                    <label className={styles.fieldLabel}>Separator (after this element)</label>
                     <input
                       type="text"
                       value={element.separator || ''}
                       onChange={(event) => updateElement(index, { separator: event.target.value })}
-                      className="w-full rounded-md border border-gray-300 px-3 py-2 dark:border-gray-600 dark:bg-gray-700"
+                      className={styles.textInput}
                       placeholder="e.g., - or _"
                       maxLength={5}
                     />
@@ -356,16 +363,16 @@ export const InventoryCustomIdTab = ({
           ))
         )}
       </div>
-      <div className="border-t border-gray-300 pt-4 dark:border-gray-600">
-        <h3 className="mb-3 text-lg font-semibold">Add Element</h3>
-        <div className="grid grid-cols-2 gap-2 md:grid-cols-4">
+      <div className={styles.separator}>
+        <h3 className={styles.sectionTitle}>Add Element</h3>
+        <div className={styles.addElementFlex}>
           {ELEMENT_TYPES.map((type) => (
             <button
               key={type.value}
               type="button"
               onClick={() => addElement(type.value)}
               disabled={type.value === 'SEQUENCE' && sequenceCount >= 1}
-              className="rounded-md border border-gray-300 px-3 py-2 text-sm hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-600 dark:hover:bg-gray-700"
+              className={styles.addElementButton}
               title={type.description}
             >
               {type.label}
@@ -374,15 +381,15 @@ export const InventoryCustomIdTab = ({
         </div>
       </div>
       {sequenceCount !== 1 && (
-        <div className="rounded-lg border border-yellow-400 bg-yellow-50 p-3 dark:border-yellow-700 dark:bg-yellow-900/20">
-          <p className="text-sm font-medium text-yellow-800 dark:text-yellow-200">
+        <div className={styles.warningBox}>
+          <p className={styles.warningText}>
             ⚠️ Warning: Format must contain exactly one SEQUENCE element (currently: {sequenceCount}
             )
           </p>
         </div>
       )}
       <div>
-        <label className="mb-1 block text-sm font-medium">
+        <label className={styles.fieldLabel}>
           Maximum ID Length (optional, leave empty for no limit)
         </label>
         <input
@@ -394,12 +401,12 @@ export const InventoryCustomIdTab = ({
               maxLength: event.target.value ? Number(event.target.value) : undefined,
             })
           }
-          className="w-full max-w-xs rounded-md border border-gray-300 px-3 py-2 dark:border-gray-600 dark:bg-gray-700"
+          className={styles.maxLengthInput}
           placeholder="No limit"
           min={1}
         />
       </div>
-      <div className="flex gap-3">
+      <div className={styles.buttonGroup}>
         <Button
           variant="primary"
           onClick={handleSave}
@@ -419,9 +426,9 @@ export const InventoryCustomIdTab = ({
           Reset
         </Button>
       </div>
-      <div className="rounded-lg border border-gray-300 bg-gray-50 p-4 text-sm dark:border-gray-600 dark:bg-gray-800">
-        <h4 className="mb-2 font-semibold">💡 Tips:</h4>
-        <ul className="list-inside list-disc space-y-1 text-gray-700 dark:text-gray-300">
+      <div className={styles.tipsBox}>
+        <h4 className={styles.tipsTitle}>💡 Tips:</h4>
+        <ul className={styles.tipsList}>
           <li>Use drag buttons (▲▼) to reorder elements</li>
           <li>Add separators like "-" or "_" between elements for readability</li>
           <li>SEQUENCE is required and auto-increments for each new item</li>

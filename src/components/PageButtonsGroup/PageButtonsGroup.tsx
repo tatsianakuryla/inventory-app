@@ -5,6 +5,16 @@ import { APP_ROUTES } from '../../appRouter/routes/routes';
 import { useUserStore } from '../../stores/useUserStore';
 import { Statuses } from '../../shared/types/enums';
 import { Home, Plus, BookMarked, Library } from 'lucide-react';
+import {
+  container,
+  buttonContent,
+  iconSize,
+  hiddenOnSmall,
+  hiddenOnMedium,
+  hiddenOnLarge,
+  hiddenFromMediumToLarge,
+  hiddenOnMediumVisible,
+} from './page-buttons-group.styles';
 
 export const PageButtonsGroup = (): JSX.Element => {
   const isAuthenticated = useUserStore((state) => state.isAuthenticated);
@@ -21,44 +31,44 @@ export const PageButtonsGroup = (): JSX.Element => {
   const showAllButton = !onAllInventoriesPage;
 
   return (
-    <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+    <div className={container}>
       {showHomeButton && (
         <ButtonLink href={APP_ROUTES.HOME} variant="secondary">
-          <span className="flex items-center gap-2">
-            <Home className="h-4 w-4" />
-            <span className="hidden sm:inline">Home</span>
+          <span className={buttonContent}>
+            <Home className={iconSize} />
+            <span className={hiddenOnSmall}>Home</span>
           </span>
         </ButtonLink>
       )}
 
       {showCreateButton && (
         <ButtonLink href={APP_ROUTES.CREATE_INVENTORY} variant="primary">
-          <span className="flex items-center gap-2">
-            <Plus className="h-4 w-4" />
-            <span className="hidden md:inline">Create Inventory</span>
-            <span className="md:hidden">Create</span>
+          <span className={buttonContent}>
+            <Plus className={iconSize} />
+            <span className={hiddenOnMedium}>Create Inventory</span>
+            <span className={hiddenOnMediumVisible}>Create</span>
           </span>
         </ButtonLink>
       )}
 
       {showMyButton && (
         <ButtonLink href={APP_ROUTES.MY_INVENTORIES} variant="primary">
-          <span className="flex items-center gap-2">
-            <BookMarked className="h-4 w-4" />
-            <span className="hidden lg:inline">Browse My Inventories</span>
-            <span className="hidden md:inline lg:hidden">My Inventories</span>
-            <span className="md:hidden">My</span>
+          <span className={buttonContent}>
+            <BookMarked className={iconSize} />
+            <span className={hiddenOnLarge}>Browse My Inventories</span>
+            <span className={hiddenFromMediumToLarge}>My Inventories</span>
+            <span className={hiddenOnMediumVisible}>My</span>
           </span>
         </ButtonLink>
       )}
 
       {showAllButton && (
         <ButtonLink href={APP_ROUTES.INVENTORIES} variant="primary">
-          <span className="flex items-center gap-2">
-            <Library className="h-4 w-4" />
-            <span className="hidden lg:inline">Browse All Inventories</span>
-            <span className="hidden md:inline lg:hidden">All Inventories</span>
-            <span className="md:hidden">All</span>
+          <span className={buttonContent}>
+            <Library className={iconSize} />
+            <span className={hiddenOnLarge}>Browse All Inventories</span>
+            <span className={hiddenFromMediumToLarge}>All Inventories</span>
+            <span className={hiddenOnMediumVisible}>All</span>
           </span>
         </ButtonLink>
       )}

@@ -4,12 +4,14 @@ import { FormInput } from '../../FormInput/FormInput';
 import { CategorySelect } from '../CategorySelect/CategorySelect';
 import type { InventoryCreateRequestInput } from '../../../api/InventoryService/inventory.schemas';
 import { ErrorBlock } from '../../ErrorBlock/ErrorBlock';
+import { getTailWindClass } from '../../../shared/helpers/helpers';
+import * as styles from './name-and-category-row.styles';
 
 export function NameAndCategoryRow({ disabled }: { disabled?: boolean }): JSX.Element {
   const methods = useFormContext<InventoryCreateRequestInput>();
   return (
-    <div className="flex flex-col gap-3 md:flex-row">
-      <div className="flex flex-1 flex-col gap-1">
+    <div className={styles.row}>
+      <div className={styles.column}>
         <FormInput
           name="name"
           label="Inventory Name"
@@ -18,13 +20,10 @@ export function NameAndCategoryRow({ disabled }: { disabled?: boolean }): JSX.El
           required
         />
       </div>
-      <div className="flex flex-1 flex-col gap-1">
-        <div className="flex flex-col gap-1">
-          <label
-            htmlFor="categoryId"
-            className="text-sm font-medium text-gray-900 dark:text-gray-100"
-          >
-            Category <span className="text-gray-500 dark:text-gray-400">(optional)</span>
+      <div className={styles.column}>
+        <div className={styles.fieldWrapper}>
+          <label htmlFor="categoryId" className={styles.label}>
+            Category <span className={styles.optional}>(optional)</span>
           </label>
 
           <Controller
@@ -32,11 +31,12 @@ export function NameAndCategoryRow({ disabled }: { disabled?: boolean }): JSX.El
             control={methods.control}
             render={({ field }) => (
               <div
-                className={`rounded-xl border bg-white shadow-sm transition-colors dark:bg-gray-900 ${
+                className={getTailWindClass(
+                  styles.categoryWrapper,
                   methods.formState.errors.categoryId
-                    ? 'border-red-400 dark:border-red-500'
-                    : 'border-gray-300 dark:border-gray-700'
-                }`}
+                    ? styles.categoryWrapperError
+                    : styles.categoryWrapperNormal
+                )}
               >
                 <CategorySelect value={field.value} onChange={field.onChange} disabled={disabled} />
               </div>

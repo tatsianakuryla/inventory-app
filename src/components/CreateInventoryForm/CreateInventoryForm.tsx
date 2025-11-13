@@ -15,6 +15,7 @@ import { NameAndCategoryRow } from './NameAndCategoryRow/NameAndCategoryRow';
 import { ImageUrl } from './ImageUrl/ImageUrl';
 import { DescriptionWithCounter } from './Description/Description';
 import { VisibilityToggler } from './VisibilityToggler/VisibilityToggler';
+import * as styles from './create-inventory-form.styles';
 
 export const CreateInventoryForm = (): JSX.Element => {
   const navigate = useNavigate();
@@ -53,13 +54,11 @@ export const CreateInventoryForm = (): JSX.Element => {
 
   return (
     <FormProvider {...methods}>
-      <form onSubmit={handleFormSubmit} className="mx-auto max-w-3xl">
-        <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm dark:border-gray-800 dark:bg-gray-950">
-          <h1 className="p-3 text-lg font-semibold text-gray-900 dark:text-gray-50">
-            Create inventory
-          </h1>
+      <form onSubmit={handleFormSubmit} className={styles.form}>
+        <div className={styles.card}>
+          <h1 className={styles.header}>Create inventory</h1>
 
-          <div className="flex flex-col gap-3 p-3">
+          <div className={styles.content}>
             <NameAndCategoryRow disabled={isSubmitting} />
             <ImageUrl disabled={isSubmitting} />
             <DescriptionWithCounter disabled={isSubmitting} />
@@ -67,7 +66,7 @@ export const CreateInventoryForm = (): JSX.Element => {
             {createMutation.isError && <ErrorBlock>{createMutation.error?.message}</ErrorBlock>}
           </div>
 
-          <div className="flex items-center justify-end gap-3 border-t border-gray-200 p-3 dark:border-gray-800">
+          <div className={styles.footer}>
             <Button type="submit" disabled={isSubmitting} variant="primary">
               {isSubmitting ? <Spinner label="Creating" /> : 'Create Inventory'}
             </Button>

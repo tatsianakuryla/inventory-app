@@ -14,6 +14,7 @@ import { Spinner } from '../Spinner/Spinner';
 import { ErrorBlock } from '../ErrorBlock/ErrorBlock';
 import { LoadingBlock } from '../Tables/LoadingBlock/LoadingBlock';
 import { DynamicItemFields } from './DynamicItemFields/DynamicItemFields';
+import * as styles from './create-item-form.styles';
 import {
   type CustomIdFormatSchema,
   isCustomIdFormatSchema,
@@ -95,20 +96,18 @@ export const CreateItemForm = (): JSX.Element => {
 
   return (
     <FormProvider {...methods}>
-      <form onSubmit={handleFormSubmit} className="mx-auto max-w-3xl">
-        <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm dark:border-gray-800 dark:bg-gray-950">
-          <div className="border-b border-gray-200 p-4 dark:border-gray-800">
-            <h1 className="text-xl font-semibold text-gray-900 dark:text-gray-50">Add New Item</h1>
-            <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">to {inventory.name}</p>
+      <form onSubmit={handleFormSubmit} className={styles.form}>
+        <div className={styles.card}>
+          <div className={styles.header}>
+            <h1 className={styles.title}>Add New Item</h1>
+            <p className={styles.subtitle}>to {inventory.name}</p>
           </div>
 
-          <div className="flex flex-col gap-4 p-4">
+          <div className={styles.content}>
             {!hasValidIdFormat && (
               <ErrorBlock>
-                <p className="text-sm font-semibold text-red-800 dark:text-red-200">
-                  ⚠️ Invalid Custom ID Format
-                </p>
-                <p className="mt-1 text-sm text-red-700 dark:text-red-300">
+                <p className={styles.errorTitle}>⚠️ Invalid Custom ID Format</p>
+                <p className={styles.errorText}>
                   The inventory's Custom ID format must contain exactly one SEQUENCE element. Please
                   configure it in the "Custom Item IDs" tab before creating items.
                 </p>
@@ -118,21 +117,21 @@ export const CreateItemForm = (): JSX.Element => {
             {inventory.fields ? (
               <DynamicItemFields fields={inventory.fields} disabled={isSubmitting} />
             ) : (
-              <div className="flex flex-col gap-1">
-                <label className="text-sm font-medium text-gray-900 dark:text-gray-100">
-                  Name <span className="text-red-500">*</span>
+              <div className={styles.fieldWrapper}>
+                <label className={styles.label}>
+                  Name <span className={styles.required}>*</span>
                 </label>
                 <input
                   {...methods.register('text1', { required: 'Name is required' })}
                   type="text"
                   disabled={isSubmitting}
                   placeholder="Enter item name"
-                  className="rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 shadow-sm transition-colors focus:border-teal-500 focus:outline-none focus:ring-2 focus:ring-teal-500 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:focus:border-teal-400"
+                  className={styles.input}
                 />
                 {methods.formState.errors.text1 && (
-                  <p className="text-xs text-red-500">{methods.formState.errors.text1.message}</p>
+                  <p className={styles.errorMessage}>{methods.formState.errors.text1.message}</p>
                 )}
-                <p className="mt-2 text-xs text-gray-500 dark:text-gray-400">
+                <p className={styles.hint}>
                   To add additional fields, go to the "Custom Fields" tab.
                 </p>
               </div>
@@ -141,7 +140,7 @@ export const CreateItemForm = (): JSX.Element => {
             {createMutation.isError && <ErrorBlock>{createMutation.error?.message}</ErrorBlock>}
           </div>
 
-          <div className="flex items-center justify-end gap-3 border-t border-gray-200 p-4 dark:border-gray-800">
+          <div className={styles.footer}>
             <Button type="submit" disabled={isSubmitting || !hasValidIdFormat} variant="primary">
               {isSubmitting ? <Spinner label="Creating" /> : 'Create Item'}
             </Button>

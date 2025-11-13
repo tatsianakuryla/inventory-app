@@ -11,6 +11,7 @@ import { Spinner } from '../Spinner/Spinner';
 import { ErrorBlock } from '../ErrorBlock/ErrorBlock';
 import { LoadingBlock } from '../Tables/LoadingBlock/LoadingBlock';
 import { DynamicItemFields } from '../CreateItemForm/DynamicItemFields/DynamicItemFields';
+import * as styles from './edit-item-form.styles';
 
 export const EditItemForm = (): JSX.Element => {
   const navigate = useNavigate();
@@ -91,22 +92,20 @@ export const EditItemForm = (): JSX.Element => {
 
   return (
     <FormProvider {...methods}>
-      <form onSubmit={handleFormSubmit} className="mx-auto max-w-3xl">
-        <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm dark:border-gray-800 dark:bg-gray-950">
-          <div className="border-b border-gray-200 p-4 dark:border-gray-800">
-            <h1 className="text-xl font-semibold text-gray-900 dark:text-gray-50">Edit Item</h1>
-            <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
+      <form onSubmit={handleFormSubmit} className={styles.form}>
+        <div className={styles.card}>
+          <div className={styles.header}>
+            <h1 className={styles.title}>Edit Item</h1>
+            <p className={styles.subtitle}>
               in {inventory.name} • ID: {item.customId}
             </p>
           </div>
 
-          <div className="flex flex-col gap-4 p-4">
+          <div className={styles.content}>
             {inventory.fields ? (
               <DynamicItemFields fields={inventory.fields} disabled={isSubmitting} />
             ) : (
-              <p className="text-sm text-gray-600 dark:text-gray-400">
-                No fields configured for this inventory
-              </p>
+              <p className={styles.emptyText}>No fields configured for this inventory</p>
             )}
 
             {updateMutation.isError && (
@@ -117,7 +116,7 @@ export const EditItemForm = (): JSX.Element => {
             )}
           </div>
 
-          <div className="flex items-center justify-end gap-3 border-t border-gray-200 p-4 dark:border-gray-800">
+          <div className={styles.footer}>
             <Button type="submit" disabled={isSubmitting} variant="primary">
               {isSubmitting ? <Spinner label="Saving" /> : 'Save Changes'}
             </Button>

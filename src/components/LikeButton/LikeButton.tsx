@@ -1,13 +1,24 @@
 import type { JSX, MouseEvent } from 'react';
 import { Heart } from 'lucide-react';
 import { useLikeItem, useUnlikeItem } from '../../hooks/items/useItems';
+import { getTailWindClass } from '../../shared/helpers/helpers';
+import {
+  baseButton,
+  likedColor,
+  unlikedColor,
+  iconSizeClasses,
+  textSizeClasses,
+  fillCurrent,
+  fontMedium,
+  type LikeButtonSize,
+} from './like-button.styles';
 
 interface LikeButtonProperties {
   inventoryId: string;
   itemId: string;
   isLiked: boolean;
   likesCount: number;
-  size?: 'sm' | 'md' | 'lg';
+  size?: LikeButtonSize;
   onClick?: (event: MouseEvent) => void;
 }
 
@@ -35,18 +46,6 @@ export const LikeButton = ({
 
   const isPending = likeMutation.isPending || unlikeMutation.isPending;
 
-  const sizeClasses = {
-    sm: 'h-4 w-4',
-    md: 'h-5 w-5',
-    lg: 'h-6 w-6',
-  };
-
-  const textSizeClasses = {
-    sm: 'text-xs',
-    md: 'text-sm',
-    lg: 'text-base',
-  };
-
   return (
     <button
       type="button"
@@ -54,13 +53,11 @@ export const LikeButton = ({
         void handleClick(event);
       }}
       disabled={isPending}
-      className={`inline-flex items-center gap-1.5 rounded-md px-2 py-1 transition-colors hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-50 dark:hover:bg-gray-800 ${
-        isLiked ? 'text-red-600 dark:text-red-400' : 'text-gray-500 dark:text-gray-400'
-      }`}
+      className={getTailWindClass(baseButton, isLiked ? likedColor : unlikedColor)}
       title={isLiked ? 'Unlike' : 'Like'}
     >
-      <Heart className={`${sizeClasses[size]} ${isLiked ? 'fill-current' : ''}`} />
-      <span className={`font-medium ${textSizeClasses[size]}`}>{likesCount}</span>
+      <Heart className={getTailWindClass(iconSizeClasses[size], isLiked && fillCurrent)} />
+      <span className={getTailWindClass(fontMedium, textSizeClasses[size])}>{likesCount}</span>
     </button>
   );
 };

@@ -1,6 +1,17 @@
 import type { JSX, ReactNode } from 'react';
 import { ButtonLink } from '../../Button/ButtonLink';
 import { APP_ROUTES } from '../../../appRouter/routes/routes';
+import { getTailWindClass } from '../../../shared/helpers/helpers';
+import {
+  cardBase,
+  defaultMaxWidth,
+  heading,
+  descriptionClass,
+  redirectionSection,
+  redirectionText,
+  redirectionLinkClass,
+  homeLink,
+} from './auth-card.styles';
 
 type RedirectionLink = { text: string; href: string; label: string };
 
@@ -19,34 +30,29 @@ export function AuthCard({
   children,
   redirectionLink,
   className = '',
-  maxWidthClassName = 'max-w-md',
+  maxWidthClassName = defaultMaxWidth,
 }: AuthCardProperties): JSX.Element {
-  const headingId = 'auth-card-title';
+  const headingId = 'auth-card-titleClass';
 
   return (
     <section
       aria-labelledby={headingId}
-      className={`w-full ${maxWidthClassName} rounded-2xl bg-white p-6 shadow-lg md:p-8 dark:bg-gray-800 ${className}`}
+      className={getTailWindClass(cardBase, maxWidthClassName, className)}
     >
-      <h1
-        id={headingId}
-        className="mb-2 text-center text-2xl font-semibold text-gray-900 dark:text-white"
-      >
+      <h1 id={headingId} className={heading}>
         {title}
       </h1>
-      {description && (
-        <p className="mb-4 text-center text-gray-600 dark:text-gray-300">{description}</p>
-      )}
+      {description && <p className={descriptionClass}>{description}</p>}
       {children}
       {redirectionLink && (
-        <div className="mt-6 border-t border-gray-200 pt-4 text-center dark:border-gray-700">
-          <span className="mr-2 text-gray-600 dark:text-gray-300">{redirectionLink.text}</span>
-          <ButtonLink href={redirectionLink.href} variant="link" className="font-semibold">
+        <div className={redirectionSection}>
+          <span className={redirectionText}>{redirectionLink.text}</span>
+          <ButtonLink href={redirectionLink.href} variant="link" className={redirectionLinkClass}>
             {redirectionLink.label}
           </ButtonLink>
         </div>
       )}
-      <ButtonLink className="mt-3" variant="outline" href={APP_ROUTES.HOME}>
+      <ButtonLink className={homeLink} variant="outline" href={APP_ROUTES.HOME}>
         Go to the Home page
       </ButtonLink>
     </section>

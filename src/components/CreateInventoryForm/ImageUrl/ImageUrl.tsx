@@ -2,6 +2,7 @@ import type { JSX } from 'react';
 import { useWatch, useFormContext } from 'react-hook-form';
 import { FormInput } from '../../FormInput/FormInput';
 import type { InventoryCreateRequestInput } from '../../../api/InventoryService/inventory.schemas';
+import * as styles from './image-url.styles';
 
 const isLikelyUrl = (value?: string | null): boolean => {
   if (!value) return false;
@@ -18,7 +19,7 @@ export function ImageUrl({ disabled }: { disabled?: boolean }): JSX.Element {
   const imageUrl = useWatch({ control: methods.control, name: 'imageUrl' });
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className={styles.container}>
       <FormInput
         name="imageUrl"
         label="Cover Image URL"
@@ -27,11 +28,11 @@ export function ImageUrl({ disabled }: { disabled?: boolean }): JSX.Element {
         disabled={disabled}
       />
       {isLikelyUrl(imageUrl) && (
-        <div className="overflow-hidden rounded-xl border border-gray-200 dark:border-gray-800">
-          <div className="aspect-[16/9] w-full bg-gray-50 dark:bg-gray-900">
+        <div className={styles.imageWrapper}>
+          <div className={styles.imageContainer}>
             <img
               src={imageUrl ?? ''}
-              className="h-full w-full object-cover"
+              className={styles.image}
               loading="lazy"
               onError={(event) => {
                 event.currentTarget.style.display = 'none';

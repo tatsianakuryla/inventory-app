@@ -64,7 +64,7 @@ export function InventoriesBasicTable<Row>({
                   key={column.key}
                   scope="col"
                   className={[
-                    'px-2 py-1.5 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400',
+                    'textClass-left textClass-xs textClass-gray-500 dark:textClass-gray-400 px-2 py-1.5 font-medium uppercase tracking-wider',
                     column.className ?? '',
                   ].join(' ')}
                 >

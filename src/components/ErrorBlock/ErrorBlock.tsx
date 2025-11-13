@@ -1,4 +1,6 @@
 import type { JSX, ReactNode } from 'react';
+import { getTailWindClass } from '../../shared/helpers/helpers';
+import { baseError } from './error-block.styles';
 
 type ServerErrorProperties = {
   children?: ReactNode;
@@ -11,11 +13,7 @@ export function ErrorBlock({
 }: ServerErrorProperties): JSX.Element | undefined {
   if (!children) return undefined;
   return (
-    <p
-      role="alert"
-      aria-live="polite"
-      className={`text-sm text-red-600 dark:text-red-400 ${className}`}
-    >
+    <p role="alert" aria-live="polite" className={getTailWindClass(baseError, className)}>
       {children}
     </p>
   );

@@ -15,6 +15,7 @@ import {
   BUTTON_LABELS,
 } from '../../../shared/constants/messages';
 import { UI_CONSTANTS, HTTP_STATUS } from '../../../shared/constants/validation';
+import { formClass, submitButton } from './register-form.styles';
 
 const DEFAULT_REGISTER_VALUES: RegisterPayload = { email: '', password: '', name: '' };
 
@@ -54,7 +55,7 @@ export const RegisterForm = (): JSX.Element => {
   return (
     <FormProvider {...methods}>
       <form
-        className="space-y-4"
+        className={formClass}
         onSubmit={(event) => void handleSubmit(onSubmit)(event)}
         noValidate
         aria-busy={isSubmitting || undefined}
@@ -92,7 +93,7 @@ export const RegisterForm = (): JSX.Element => {
         {errors.root?.serverError?.message && (
           <ErrorBlock>{errors.root.serverError.message}</ErrorBlock>
         )}
-        <Button type="submit" disabled={isSubmitting} className="w-full">
+        <Button type="submit" disabled={isSubmitting} className={submitButton}>
           {isSubmitting ? <Spinner size={UI_CONSTANTS.SPINNER_SIZE} /> : BUTTON_LABELS.REGISTER}
         </Button>
       </form>

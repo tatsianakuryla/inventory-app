@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { UserSchema } from '../UserService/user.schemas';
-import { EmailSchema, type ResponseError } from '../../shared/types/schemas';
+import { EmailSchema } from '../../shared/types/schemas';
 import { VALIDATION_LIMITS, VALIDATION_MESSAGES } from '../../shared/constants/validation';
 
 export const AuthResponseSchema = UserSchema.extend({
@@ -29,10 +29,3 @@ export const FacebookLoginPayloadSchema = z.object({
 export type AuthResponse = z.infer<typeof AuthResponseSchema>;
 export type LoginPayload = z.infer<typeof LoginPayloadSchema>;
 export type RegisterPayload = z.infer<typeof RegisterPayloadSchema>;
-
-export type ApiErrorBody = ResponseError;
-export const FbCompletedSchema = z.object({
-  authResponse: z.object({
-    accessToken: z.string().min(VALIDATION_LIMITS.TOKEN_MIN),
-  }),
-});

@@ -1,4 +1,15 @@
 import { type JSX, type ReactNode } from 'react';
+import { getTailWindClass } from '../../shared/helpers/helpers';
+import {
+  container,
+  navWrapper,
+  nav,
+  tabButton,
+  tabActive,
+  tabInactive,
+  tabContentVisible,
+  tabContentHidden,
+} from './tabs.styles';
 
 interface TabsProperties {
   tabs: {
@@ -12,18 +23,17 @@ interface TabsProperties {
 
 export const Tabs = ({ tabs, activeTab, onTabChange }: TabsProperties): JSX.Element => {
   return (
-    <div className="flex w-full flex-col gap-4">
-      <div className="overflow-x-auto overflow-y-hidden">
-        <nav className="-mb-px flex space-x-4 sm:space-x-8" aria-label="Tabs">
+    <div className={container}>
+      <div className={navWrapper}>
+        <nav className={nav} aria-label="Tabs">
           {tabs.map((tab) => (
             <button
               key={tab.id}
               onClick={() => onTabChange(tab.id)}
-              className={`flex-shrink-0 whitespace-nowrap border-b-2 px-1 py-4 text-xs font-medium transition-colors sm:text-sm ${
-                activeTab === tab.id
-                  ? 'border-emerald-500 text-emerald-600 dark:text-emerald-400'
-                  : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300'
-              } `}
+              className={getTailWindClass(
+                tabButton,
+                activeTab === tab.id ? tabActive : tabInactive
+              )}
               aria-current={activeTab === tab.id ? 'page' : undefined}
             >
               {tab.label}
@@ -33,7 +43,7 @@ export const Tabs = ({ tabs, activeTab, onTabChange }: TabsProperties): JSX.Elem
       </div>
       <div>
         {tabs.map((tab) => (
-          <div key={tab.id} className={activeTab === tab.id ? 'block' : 'hidden'}>
+          <div key={tab.id} className={activeTab === tab.id ? tabContentVisible : tabContentHidden}>
             {tab.content}
           </div>
         ))}

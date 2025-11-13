@@ -2,6 +2,8 @@ import { type JSX, useState, useRef, useEffect } from 'react';
 import { useGetCategoryItemsQuantity } from '../../../hooks/categories/useCategories';
 import { ChevronDown } from 'lucide-react';
 import type { CategoryWithCount } from '../../../api/CategoryService/category.schemas';
+import { getTailWindClass } from '../../../shared/helpers/helpers';
+import * as styles from './category-select.styles';
 
 interface CategorySelectProperties {
   value: number | undefined;
@@ -58,42 +60,40 @@ export const CategorySelect = ({
   };
 
   return (
-    <div className="relative w-full" ref={dropdownReference}>
+    <div className={styles.container} ref={dropdownReference}>
       <button
         type="button"
         onClick={handleToggleDropdown}
         disabled={disabled || categoriesLoading}
-        className="flex w-full items-center justify-between rounded-xl border border-gray-300 bg-white px-3 py-2.5 text-left text-gray-900 shadow-sm outline-none transition-colors focus:ring-2 focus:ring-emerald-500 disabled:cursor-not-allowed disabled:opacity-60 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100"
+        className={styles.button}
       >
-        <span className={selectedCategory ? '' : 'text-gray-400 dark:text-gray-500'}>
+        <span className={selectedCategory ? '' : styles.buttonTextPlaceholder}>
           {selectedCategory
             ? `${selectedCategory.name} (${selectedCategory.inventoriesCount})`
             : 'No category (optional)'}
         </span>
-        <ChevronDown
-          className={`h-4 w-4 text-gray-500 transition-transform dark:text-gray-400 ${isOpen ? 'rotate-180' : ''}`}
-        />
+        <ChevronDown className={getTailWindClass(styles.chevron, isOpen && styles.chevronOpen)} />
       </button>
 
       {isOpen && (
-        <div className="absolute z-50 mt-1 w-full rounded-xl border border-gray-300 bg-white shadow-lg dark:border-gray-700 dark:bg-gray-900">
-          <div className="border-b border-gray-200 p-2 dark:border-gray-700">
+        <div className={styles.dropdown}>
+          <div className={styles.searchWrapper}>
             <input
               ref={inputReference}
               type="text"
               value={searchTerm}
               onChange={(event) => setSearchTerm(event.target.value)}
               placeholder="Search categories..."
-              className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 outline-none transition-colors focus:ring-2 focus:ring-emerald-500 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100"
+              className={styles.searchInput}
             />
           </div>
 
-          <div className="max-h-60 overflow-y-auto p-1">
+          <div className={styles.optionsList}>
             {searchTerm === '' && (
               <button
                 type="button"
                 onClick={() => handleSelectCategory()}
-                className="w-full rounded-lg px-3 py-2 text-left text-sm text-gray-400 transition-colors hover:bg-gray-100 dark:text-gray-500 dark:hover:bg-gray-800"
+                className={styles.optionNone}
               >
                 No category (optional)
               </button>
@@ -104,20 +104,17 @@ export const CategorySelect = ({
                 key={category.id}
                 type="button"
                 onClick={() => handleSelectCategory(category)}
-                className={`w-full rounded-lg px-3 py-2 text-left text-sm transition-colors hover:bg-gray-100 dark:hover:bg-gray-800 ${
-                  value === category.id
-                    ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-900/20 dark:text-emerald-400'
-                    : 'text-gray-900 dark:text-gray-100'
-                }`}
+                className={getTailWindClass(
+                  styles.optionButton,
+                  value === category.id ? styles.optionSelected : styles.optionNormal
+                )}
               >
                 {category.name} ({category.inventoriesCount})
               </button>
             ))}
 
             {filteredCategories.length === 0 && searchTerm !== '' && (
-              <div className="px-3 py-2 text-sm text-gray-400 dark:text-gray-500">
-                No categories found
-              </div>
+              <div className={styles.noResults}>No categories found</div>
             )}
           </div>
         </div>
