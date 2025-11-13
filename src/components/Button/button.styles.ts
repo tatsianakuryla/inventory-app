@@ -19,7 +19,7 @@ export const sizeClasses = {
 
 export const variantClasses: Record<ButtonVariant, string> = {
   primary:
-    'textClass-white bg-emerald-800 hover:bg-emerald-700 active:bg-emerald-800/90 ring-1 ring-emerald-800/15 ' +
+    'textClass-white bg-emerald-700 hover:bg-emerald-700 active:bg-emerald-700/90 ring-1 ring-emerald-800/15 ' +
     'dark:textClass-emerald-950 dark:bg-emerald-200/90 dark:hover:bg-emerald-200 dark:active:bg-emerald-300/90 dark:ring-emerald-300/25',
 
   secondary:

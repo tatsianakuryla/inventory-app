@@ -3,7 +3,7 @@ import { Button } from '../../Button/Button';
 import { Moon, Sun } from 'lucide-react';
 import { useUserStore } from '../../../stores/useUserStore';
 import { useUpdateUser } from '../../../hooks/users/useUpdateUser';
-import type { Theme } from '../../../shared/types/enums';
+import { type Theme, Themes } from '../../../shared/types/enums';
 import { applyTheme, defineInitialTheme } from '../../../shared/helpers/theme.helpers';
 import { LocalStorage } from '../../../storages/localStorage/localStorage';
 import { buttonClass, iconSize } from './theme-update-button.styles';
@@ -23,10 +23,10 @@ export const ThemeUpdateButton = (): JSX.Element => {
   }, [user?.theme]);
 
   const effectiveTheme: Theme = user?.theme ?? localTheme;
-  const isDark = effectiveTheme === 'DARK';
+  const isDark = effectiveTheme === Themes.DARK;
 
   const toggleTheme = (): void => {
-    const nextTheme: Theme = isDark ? 'LIGHT' : 'DARK';
+    const nextTheme: Theme = isDark ? Themes.LIGHT : Themes.DARK;
     if (user) {
       updateUser.mutate({ theme: nextTheme, version: user.version });
     } else {

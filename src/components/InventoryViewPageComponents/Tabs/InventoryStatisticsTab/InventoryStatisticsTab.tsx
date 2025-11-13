@@ -5,6 +5,7 @@ import { useGetInventoryById } from '../../../../hooks/inventories/useInventorie
 import { isFieldKey } from '../../../../shared/typeguards/typeguards';
 import { NAME_KEYS, STATE_KEYS } from '../../../../api/InventoryService/inventory.schemas';
 import { getTailWindClass } from '../../../../shared/helpers/helpers';
+import { FieldStates } from '../../../../shared/types/enums';
 import * as styles from './inventory-statistics-tab.styles';
 
 interface InventoryStatisticsTabProperties {
@@ -69,7 +70,7 @@ export const InventoryStatisticsTab = ({
   const isFieldShown = (fieldKey: string): boolean => {
     if (!inventory?.fields || !isFieldKey(fieldKey)) return false;
     const stateKey = STATE_KEYS[fieldKey];
-    return inventory.fields[stateKey] === 'SHOWN';
+    return inventory.fields[stateKey] === FieldStates.SHOWN;
   };
 
   const visibleNumericFields = Object.entries(statistics.numericFields).filter(([fieldKey]) =>

@@ -9,6 +9,7 @@ import { SortableHeader } from '../../Tables/SortableHeader/SortableHeader';
 import { APP_ROUTES } from '../../../appRouter/routes/routes';
 import { LikeButton } from '../../LikeButton/LikeButton';
 import { isFieldKey } from '../../../shared/typeguards/typeguards';
+import { FieldStates } from '../../../shared/types/enums';
 
 interface ItemsTableWithSelectionProperties {
   items: Item[];
@@ -47,7 +48,7 @@ function buildColumns(inventoryFields?: InventoryFields | null): ColumnConfig[] 
   ];
 
   const hasConfiguredFields = FIELD_KEYS.some(
-    (k) => getField(inventoryFields, STATE_KEYS[k]) === 'SHOWN'
+    (k) => getField(inventoryFields, STATE_KEYS[k]) === FieldStates.SHOWN
   );
 
   if (!hasConfiguredFields) {
@@ -65,7 +66,7 @@ function buildColumns(inventoryFields?: InventoryFields | null): ColumnConfig[] 
         ? nameValue
         : String(fieldKey).toUpperCase();
 
-    if (state === 'SHOWN') {
+    if (state === FieldStates.SHOWN) {
       visibleCount += 1;
       columns.push({
         key: fieldKey,

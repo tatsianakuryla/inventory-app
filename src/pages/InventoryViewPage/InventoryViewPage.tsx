@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { PageHeader } from '../../components/PageHeader/PageHeader';
 import { useCanEditInventory, useGetInventoryById } from '../../hooks/inventories/useInventories';
 import { useUserStore } from '../../stores/useUserStore';
+import { Roles } from '../../shared/types/enums';
 import { Tabs } from '../../components/Tabs/Tabs';
 import { InventoryItemsTab } from '../../components/InventoryViewPageComponents/Tabs/InventoryItemsTab/InventoryItemsTab';
 import { InventoryDiscussionTab } from '../../components/InventoryViewPageComponents/Tabs/InventoryDiscussionTab/InventoryDiscussionTab';
@@ -24,7 +25,7 @@ export const InventoryViewPage = (): JSX.Element => {
   if (!inventory) return <PageHeader title="Inventory not found" />;
 
   const isOwner = inventory.ownerId === user?.id;
-  const isAdmin = user?.role === 'ADMIN';
+  const isAdmin = user?.role === Roles.ADMIN;
   const canManage = isOwner || isAdmin;
 
   const publicTabs = [

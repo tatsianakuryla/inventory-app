@@ -45,3 +45,11 @@ export const InventoryRoles = {
   EDITOR: 'EDITOR' as const,
   VIEWER: 'VIEWER' as const,
 } as const;
+
+export const FieldStates = {
+  HIDDEN: 'HIDDEN' as const,
+  SHOWN: 'SHOWN' as const,
+} as const;
+
+export const FieldStateSchema = z.enum(FieldStates);
+export type FieldState = z.infer<typeof FieldStateSchema>;

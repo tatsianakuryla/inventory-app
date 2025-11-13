@@ -5,12 +5,11 @@ import {
 } from '../../../../hooks/inventories/useInventories';
 import { Button } from '../../../Button/Button';
 import { Spinner } from '../../../Spinner/Spinner';
+import { FieldStates, type FieldState } from '../../../../shared/types/enums';
 
 interface InventoryCustomFieldsTabProperties {
   inventoryId: string;
 }
-
-type FieldState = 'HIDDEN' | 'SHOWN';
 
 type FieldConfig = {
   state: FieldState;
@@ -63,7 +62,10 @@ export const InventoryCustomFieldsTab = ({
         const descValue = fieldsData[`${key}Desc`];
 
         initialFields[key] = {
-          state: stateValue === 'HIDDEN' || stateValue === 'SHOWN' ? stateValue : 'HIDDEN',
+          state:
+            stateValue === FieldStates.HIDDEN || stateValue === FieldStates.SHOWN
+              ? stateValue
+              : FieldStates.HIDDEN,
           name: typeof nameValue === 'string' ? nameValue : undefined,
           desc: typeof descValue === 'string' ? descValue : undefined,
         };
@@ -93,7 +95,7 @@ export const InventoryCustomFieldsTab = ({
         patch[`${key}State`] = field.state;
         patch[`${key}Name`] = field.name;
         patch[`${key}Desc`] = field.desc;
-        patch[`${key}ShowInTable`] = field.state === 'SHOWN';
+        patch[`${key}ShowInTable`] = field.state === FieldStates.SHOWN;
       }
     }
 
@@ -132,7 +134,7 @@ export const InventoryCustomFieldsTab = ({
       <div className="space-y-4">
         {FIELD_DEFINITIONS.map(({ key, label, type, defaultName }) => {
           const field = fields[key] || {
-            state: 'HIDDEN',
+            state: FieldStates.HIDDEN,
             name: undefined,
             desc: undefined,
           };
@@ -151,14 +153,14 @@ export const InventoryCustomFieldsTab = ({
                     value={field.state}
                     onChange={(event) => {
                       const value = event.target.value;
-                      if (value === 'HIDDEN' || value === 'SHOWN') {
+                      if (value === FieldStates.HIDDEN || value === FieldStates.SHOWN) {
                         updateField(key, { state: value });
                       }
                     }}
                     className="w-full rounded-md border border-gray-300 px-3 py-2 dark:border-gray-600 dark:bg-gray-700"
                   >
-                    <option value="HIDDEN">Hidden</option>
-                    <option value="SHOWN">Shown</option>
+                    <option value={FieldStates.HIDDEN}>Hidden</option>
+                    <option value={FieldStates.SHOWN}>Shown</option>
                   </select>
                 </div>
 
@@ -171,7 +173,7 @@ export const InventoryCustomFieldsTab = ({
                       updateField(key, { name: event.target.value || undefined })
                     }
                     placeholder={defaultName}
-                    disabled={field.state === 'HIDDEN'}
+                    disabled={field.state === FieldStates.HIDDEN}
                     className="w-full rounded-md border border-gray-300 px-3 py-2 disabled:opacity-50 dark:border-gray-600 dark:bg-gray-700"
                   />
                 </div>
@@ -185,7 +187,7 @@ export const InventoryCustomFieldsTab = ({
                       updateField(key, { desc: event.target.value || undefined })
                     }
                     placeholder={`Description for ${defaultName}`}
-                    disabled={field.state === 'HIDDEN'}
+                    disabled={field.state === FieldStates.HIDDEN}
                     className="w-full rounded-md border border-gray-300 px-3 py-2 disabled:opacity-50 dark:border-gray-600 dark:bg-gray-700"
                   />
                 </div>

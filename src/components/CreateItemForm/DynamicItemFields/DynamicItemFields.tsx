@@ -4,6 +4,7 @@ import type { InventoryFields } from '../../../api/InventoryService/inventory.sc
 import type { ItemCreateRequest } from '../../../api/ItemsService/items.schemas';
 import { FormInput } from '../../FormInput/FormInput';
 import { ErrorBlock } from '../../ErrorBlock/ErrorBlock';
+import { FieldStates } from '../../../shared/types/enums';
 import * as styles from './dynamic-item-fields.styles';
 
 interface DynamicItemFieldsProperties {
@@ -63,7 +64,7 @@ export const DynamicItemFields = ({
     | { key: FieldKey; type: 'bool'; label?: string | null; desc?: string | null };
 
   const descriptors: Descriptor[] = [
-    ...(fields.text1State === 'SHOWN'
+    ...(fields.text1State === FieldStates.SHOWN
       ? [
           {
             key: 'text1' as const,
@@ -73,7 +74,7 @@ export const DynamicItemFields = ({
           },
         ]
       : []),
-    ...(fields.text2State === 'SHOWN'
+    ...(fields.text2State === FieldStates.SHOWN
       ? [
           {
             key: 'text2' as const,
@@ -83,7 +84,7 @@ export const DynamicItemFields = ({
           },
         ]
       : []),
-    ...(fields.text3State === 'SHOWN'
+    ...(fields.text3State === FieldStates.SHOWN
       ? [
           {
             key: 'text3' as const,
@@ -94,7 +95,7 @@ export const DynamicItemFields = ({
         ]
       : []),
 
-    ...(fields.long1State === 'SHOWN'
+    ...(fields.long1State === FieldStates.SHOWN
       ? [
           {
             key: 'long1' as const,
@@ -104,7 +105,7 @@ export const DynamicItemFields = ({
           },
         ]
       : []),
-    ...(fields.long2State === 'SHOWN'
+    ...(fields.long2State === FieldStates.SHOWN
       ? [
           {
             key: 'long2' as const,
@@ -114,7 +115,7 @@ export const DynamicItemFields = ({
           },
         ]
       : []),
-    ...(fields.long3State === 'SHOWN'
+    ...(fields.long3State === FieldStates.SHOWN
       ? [
           {
             key: 'long3' as const,
@@ -125,7 +126,7 @@ export const DynamicItemFields = ({
         ]
       : []),
 
-    ...(fields.num1State === 'SHOWN'
+    ...(fields.num1State === FieldStates.SHOWN
       ? [
           {
             key: 'num1' as const,
@@ -135,7 +136,7 @@ export const DynamicItemFields = ({
           },
         ]
       : []),
-    ...(fields.num2State === 'SHOWN'
+    ...(fields.num2State === FieldStates.SHOWN
       ? [
           {
             key: 'num2' as const,
@@ -145,7 +146,7 @@ export const DynamicItemFields = ({
           },
         ]
       : []),
-    ...(fields.num3State === 'SHOWN'
+    ...(fields.num3State === FieldStates.SHOWN
       ? [
           {
             key: 'num3' as const,
@@ -156,7 +157,7 @@ export const DynamicItemFields = ({
         ]
       : []),
 
-    ...(fields.link1State === 'SHOWN'
+    ...(fields.link1State === FieldStates.SHOWN
       ? [
           {
             key: 'link1' as const,
@@ -166,7 +167,7 @@ export const DynamicItemFields = ({
           },
         ]
       : []),
-    ...(fields.link2State === 'SHOWN'
+    ...(fields.link2State === FieldStates.SHOWN
       ? [
           {
             key: 'link2' as const,
@@ -176,7 +177,7 @@ export const DynamicItemFields = ({
           },
         ]
       : []),
-    ...(fields.link3State === 'SHOWN'
+    ...(fields.link3State === FieldStates.SHOWN
       ? [
           {
             key: 'link3' as const,
@@ -187,7 +188,7 @@ export const DynamicItemFields = ({
         ]
       : []),
 
-    ...(fields.bool1State === 'SHOWN'
+    ...(fields.bool1State === FieldStates.SHOWN
       ? [
           {
             key: 'bool1' as const,
@@ -197,7 +198,7 @@ export const DynamicItemFields = ({
           },
         ]
       : []),
-    ...(fields.bool2State === 'SHOWN'
+    ...(fields.bool2State === FieldStates.SHOWN
       ? [
           {
             key: 'bool2' as const,
@@ -207,7 +208,7 @@ export const DynamicItemFields = ({
           },
         ]
       : []),
-    ...(fields.bool3State === 'SHOWN'
+    ...(fields.bool3State === FieldStates.SHOWN
       ? [
           {
             key: 'bool3' as const,
