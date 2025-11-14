@@ -19,6 +19,7 @@ import {
   type CustomIdFormatSchema,
   isCustomIdFormatSchema,
 } from '../../shared/typeguards/typeguards';
+import { DEFAULT_FIELDS_VALUES } from './create-item-form.contatns';
 
 export const CreateItemForm = (): JSX.Element => {
   const navigate = useNavigate();
@@ -28,23 +29,7 @@ export const CreateItemForm = (): JSX.Element => {
 
   const methods = useForm<ItemCreateRequest>({
     resolver: zodResolver(ItemCreateRequestSchema),
-    defaultValues: {
-      text1: undefined,
-      text2: undefined,
-      text3: undefined,
-      long1: undefined,
-      long2: undefined,
-      long3: undefined,
-      num1: undefined,
-      num2: undefined,
-      num3: undefined,
-      link1: undefined,
-      link2: undefined,
-      link3: undefined,
-      bool1: undefined,
-      bool2: undefined,
-      bool3: undefined,
-    },
+    defaultValues: DEFAULT_FIELDS_VALUES,
     mode: 'onTouched',
   });
 
