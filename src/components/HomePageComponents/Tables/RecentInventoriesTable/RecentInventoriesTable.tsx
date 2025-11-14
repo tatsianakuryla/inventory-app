@@ -1,7 +1,7 @@
 import { type JSX } from 'react';
 import { useGetRecentInventories } from '../../../../hooks/inventories/useInventories';
 import { InventoriesTableSection } from '../InventoriesTableSection/InventoriesTableSection';
-import type { AnyInventoryListItem } from '../inventory.mappers';
+import type { AnyInventoryListItem } from '../../../../shared/mappers/inventory.mappers';
 
 export function RecentInventoriesTable(): JSX.Element {
   const queryResult = useGetRecentInventories({ limit: 5 });
