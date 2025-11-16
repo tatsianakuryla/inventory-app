@@ -10,6 +10,16 @@ import {
 } from '../../shared/types/enums';
 import { VALIDATION_LIMITS, VALIDATION_MESSAGES } from '../../shared/constants/validation';
 
+export const SalesforceIntegrationSchema = z
+  .object({
+    userId: z.string(),
+    accountId: z.string(),
+  })
+  .nullable()
+  .optional();
+
+export type SalesforceIntegration = z.infer<typeof SalesforceIntegrationSchema>;
+
 export const UserSchema = z.object({
   id: IdSchema,
   email: EmailSchema.optional().nullable(),
@@ -23,6 +33,7 @@ export const UserSchema = z.object({
   version: z.number().int(),
   googleId: z.string().nullable().optional(),
   facebookId: z.string().nullable().optional(),
+  salesforceIntegration: SalesforceIntegrationSchema,
 });
 
 export type User = z.infer<typeof UserSchema>;

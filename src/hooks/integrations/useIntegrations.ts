@@ -1,4 +1,4 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, type UseMutationResult } from '@tanstack/react-query';
 import { IntegrationService } from '../../api/IntegrationService/IntegrationService';
 import type {
   SalesforceAccountCreateRequest,
@@ -11,7 +11,11 @@ type SalesforceIntegrationVariables = {
   contact: Omit<SalesforceContactCreateRequest, 'AccountId'>;
 };
 
-export const useSalesforceIntegration = () => {
+export const useSalesforceIntegration = (): UseMutationResult<
+  SalesforceAccountWithContactResponse,
+  unknown,
+  SalesforceIntegrationVariables
+> => {
   return useMutation<SalesforceAccountWithContactResponse, unknown, SalesforceIntegrationVariables>(
     {
       mutationFn: ({ account, contact }) =>

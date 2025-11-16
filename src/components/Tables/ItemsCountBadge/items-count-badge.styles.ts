@@ -1,3 +1,3 @@
 export const badge =
-  'inline-flex rounded-full bg-green-100 px-3 py-1 textClass-xs font-semibold textClass-green-800 ' +
-  'dark:bg-green-900/30 dark:textClass-green-400';
+  'inline-flex items-center justify-center rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-800 whitespace-nowrap ' +
+  'dark:bg-green-900/30 dark:text-green-400';
