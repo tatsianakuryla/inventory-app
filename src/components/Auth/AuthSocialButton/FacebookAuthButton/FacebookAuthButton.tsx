@@ -4,6 +4,7 @@ import { Button } from '../../../Button/Button';
 import { useFacebookLogin } from '../../../../hooks/auth/useFacebookLogin';
 import { ErrorBlock } from '../../../ErrorBlock/ErrorBlock';
 import { isError } from '../../../../shared/typeguards/typeguards';
+import { container, button, iconSize } from './facebook-auth-button.styles';
 
 let fbSdkLoaded = false;
 let fbSdkLoading = false;
@@ -111,16 +112,16 @@ export function FacebookAuthButton(): JSX.Element {
   const disabled = isLoading || mutation.isPending;
 
   return (
-    <div className="space-y-2">
+    <div className={container}>
       <Button
         type="button"
         onClick={handleLogin}
         disabled={disabled}
         aria-busy={disabled || undefined}
         variant="secondary"
-        className="inline-flex w-full items-center justify-center gap-2"
+        className={button}
       >
-        <Facebook className="h-4 w-4" aria-hidden />
+        <Facebook className={iconSize} aria-hidden />
         Continue with Facebook
       </Button>
       {errorText && <ErrorBlock>{errorText}</ErrorBlock>}

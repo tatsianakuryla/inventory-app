@@ -1,3 +1,4 @@
+/* eslint-disable unicorn/require-module-specifiers */
 declare global {
   interface ImportMetaEnvironment {
     readonly VITE_API_URL: string;
@@ -51,3 +52,5 @@ declare global {
   var FB: FBSDK | undefined;
   var fbAsyncInit: (() => void) | undefined;
 }
+
+export {};
