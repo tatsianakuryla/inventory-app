@@ -91,3 +91,7 @@ export const HOME_ROUTES = {
 export const SEARCH_ROUTES = {
   GLOBAL_SEARCH: '/search',
 } as const;
+
+export const SALESFORCE_ROUTES = {
+  CREATE_ACCOUNT_WITH_CONTACT: '/salesforce/create-account-with-contact',
+} as const;
