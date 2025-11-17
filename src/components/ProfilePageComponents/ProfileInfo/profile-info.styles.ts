@@ -40,9 +40,12 @@ export const statusBadgeActiveClassName =
 export const statusBadgeInactiveClassName =
   'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200';
 
-export const mainInfoContainerClassName = 'flex flex-wrap justify-between gap-6 p-6 sm:p-8';
+export const mainInfoContainerClassName =
+  'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-6 p-6 sm:p-8';
 
-export const infoBlockClassName = 'flex items-start gap-3 flex-basis-1/2';
+export const infoBlockClassName = 'flex items-start gap-3 min-w-0';
+
+export const infoTextWrapperClassName = 'flex-1 min-w-0';
 
 export const infoIconWrapperEmailClassName = 'rounded-lg bg-emerald-50 p-2 dark:bg-emerald-900/30';
 
@@ -69,10 +72,11 @@ export const connectedAccountsContainerClassName =
 export const connectedAccountsTitleClassName =
   'mb-3 text-sm font-medium text-gray-700 dark:text-gray-300';
 
-export const connectedAccountsListClassName = 'flex flex-wrap gap-2';
+export const connectedAccountsListClassName =
+  'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2';
 
 export const connectedAccountChipClassName =
-  'inline-flex items-center gap-2 rounded-lg bg-white px-3 py-2 text-sm text-gray-700 shadow-sm dark:bg-gray-800 dark:text-gray-300';
+  'flex items-center justify-center gap-2 rounded-lg bg-white px-3 py-2 text-sm text-gray-700 shadow-sm dark:bg-gray-800 dark:text-gray-300';
 
 export const googleIconClassName = 'h-4 w-4';
 

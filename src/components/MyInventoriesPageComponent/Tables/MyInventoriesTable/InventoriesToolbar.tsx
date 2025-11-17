@@ -1,7 +1,9 @@
 import type { JSX } from 'react';
+import { getTailWindClass } from '../../../../shared/helpers/helpers';
 import { Button } from '../../../Button/Button';
 import { Spinner } from '../../../Spinner/Spinner';
-import { Globe, Lock } from 'lucide-react';
+import { Globe, Lock, Trash2, X } from 'lucide-react';
+import * as styles from './inventories-toolbar.styles';
 
 interface InventoriesToolbarProperties {
   selectedCount: number;
@@ -28,22 +30,20 @@ export const InventoriesToolbar = ({
   const isAnyOperationPending = isDeleting || isMakingPublic || isMakingPrivate;
   const isDisabled = !hasSelection || isAnyOperationPending;
 
+  const containerClassName = getTailWindClass(
+    styles.containerBase,
+    hasSelection ? styles.containerSelected : styles.containerDefault
+  );
+
+  const textClassName = getTailWindClass(
+    styles.textBase,
+    hasSelection ? styles.textSelected : styles.textDefault
+  );
+
   return (
-    <div
-      className={`flex items-center justify-between rounded-lg border px-4 py-3 shadow-sm ${
-        hasSelection
-          ? 'border-teal-200 bg-teal-50 dark:border-teal-800 dark:bg-teal-900/20'
-          : 'border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-gray-800/40'
-      }`}
-    >
-      <div className="flex items-center gap-3">
-        <span
-          className={`text-sm font-medium ${
-            hasSelection
-              ? 'textClass-teal-900 dark:textClass-teal-100'
-              : 'textClass-gray-600 dark:textClass-gray-400'
-          }`}
-        >
+    <div className={containerClassName}>
+      <div className={styles.headerContainer}>
+        <span className={textClassName}>
           {selectedCount > 0 ? (
             <>
               {selectedCount} {selectedCount === 1 ? 'inventory' : 'inventories'} selected
@@ -54,19 +54,19 @@ export const InventoriesToolbar = ({
         </span>
       </div>
 
-      <div className="flex items-center gap-2">
+      <div className={styles.actionsContainer}>
         <Button
           onClick={onMakePublic}
           disabled={isDisabled}
           variant="secondary"
-          className="inline-flex items-center gap-1.5"
+          className={styles.buttonWithIcon}
         >
           {isMakingPublic ? (
             <Spinner />
           ) : (
             <>
-              <Globe className="h-4 w-4" />
-              Make Public
+              <Globe className={styles.iconSize} />
+              <span className="hidden sm:inline">Make Public</span>
             </>
           )}
         </Button>
@@ -75,14 +75,14 @@ export const InventoriesToolbar = ({
           onClick={onMakePrivate}
           disabled={isDisabled}
           variant="secondary"
-          className="inline-flex items-center gap-1.5"
+          className={styles.buttonWithIcon}
         >
           {isMakingPrivate ? (
             <Spinner />
           ) : (
             <>
-              <Lock className="h-4 w-4" />
-              Make Private
+              <Lock className={styles.iconSize} />
+              <span className="hidden sm:inline">Make Private</span>
             </>
           )}
         </Button>
@@ -91,13 +91,26 @@ export const InventoriesToolbar = ({
           onClick={onDelete}
           disabled={isDisabled}
           variant="secondary"
-          className="!bg-red-600 !text-white hover:!bg-red-700 disabled:!bg-gray-400 disabled:!text-gray-200 dark:!bg-red-700 dark:hover:!bg-red-800"
+          className={styles.deleteButton}
         >
-          {isDeleting ? <Spinner label="Deleting" /> : 'Delete Selected'}
+          {isDeleting ? (
+            <Spinner label="Deleting" />
+          ) : (
+            <>
+              <Trash2 className={styles.iconSize} />
+              <span className="hidden sm:inline">Delete Selected</span>
+            </>
+          )}
         </Button>
 
-        <Button onClick={onClearSelection} disabled={isDisabled} variant="secondary">
-          Clear Selection
+        <Button
+          onClick={onClearSelection}
+          disabled={isDisabled}
+          variant="secondary"
+          className={styles.buttonWithIcon}
+        >
+          <X className={styles.iconSize} />
+          <span className="hidden sm:inline">Clear Selection</span>
         </Button>
       </div>
     </div>

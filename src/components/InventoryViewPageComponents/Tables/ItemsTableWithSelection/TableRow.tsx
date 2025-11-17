@@ -24,7 +24,7 @@ export const TableRow = ({
 }: TableRowProperties): JSX.Element => {
   const rowClassName = getTailWindClass(
     styles.rowBase,
-    canEdit && styles.rowClickable,
+    styles.rowClickable,
     isSelected ? styles.rowSelected : styles.rowNormal
   );
 

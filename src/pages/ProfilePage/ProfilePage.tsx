@@ -3,16 +3,20 @@ import { useParams, Navigate } from 'react-router-dom';
 import { useUserStore } from '../../stores/useUserStore';
 import { ProfileInfo } from '../../components/ProfilePageComponents/ProfileInfo/ProfileInfo';
 import { Button } from '../../components/Button/Button';
-import { Edit2, X } from 'lucide-react';
+import { Edit2, X, Cloud } from 'lucide-react';
 import { PageButtonsGroup } from '../../components/PageButtonsGroup/PageButtonsGroup';
 import { APP_ROUTES } from '../../appRouter/routes/routes';
 import { ProfileEditForm } from '../../components/ProfilePageComponents/ProfileEditForm/ProfileEditForm';
 import { SalesforceAccountForm } from '../../components/ProfilePageComponents/SalesforceAccountForm/SalesforceAccountForm';
+import { Roles } from '../../shared/types/enums';
+import { useGetUserById } from '../../hooks/admin/useAdminUsers';
 import {
   pageContainerClassName,
   editButtonsRowClassName,
   iconButtonContentClassName,
   smallIconClassName,
+  textFullClassName,
+  textShortClassName,
 } from './profile-page.styles';
 
 export const ProfilePage = (): JSX.Element => {
@@ -22,13 +26,28 @@ export const ProfilePage = (): JSX.Element => {
   const [isCreatingSalesforce, setIsCreatingSalesforce] = useState(false);
 
   const isOwnProfile = currentUser?.id === userId;
+  const isAdmin = currentUser?.role === Roles.ADMIN;
+  const canViewProfile = isOwnProfile || isAdmin;
 
-  if (!isOwnProfile) {
+  const shouldFetchUser = !isOwnProfile && !!userId;
+  const { data: viewedUser, isLoading } = useGetUserById(userId ?? '', shouldFetchUser);
+
+  const profileUser = isOwnProfile ? currentUser : viewedUser;
+
+  if (!canViewProfile) {
     return <Navigate to={APP_ROUTES.HOME} replace />;
   }
 
   if (!currentUser) {
     return <Navigate to={APP_ROUTES.LOGIN} replace />;
+  }
+
+  if (isLoading && !isOwnProfile) {
+    return <div>Loading...</div>;
+  }
+
+  if (!profileUser) {
+    return <Navigate to={APP_ROUTES.HOME} replace />;
   }
 
   const handleStartEditing = (): void => {
@@ -60,7 +79,7 @@ export const ProfilePage = (): JSX.Element => {
       <PageButtonsGroup />
 
       <div className={editButtonsRowClassName}>
-        {!isEditing && !isCreatingSalesforce && (
+        {isOwnProfile && !isEditing && !isCreatingSalesforce && (
           <Button
             variant="outline"
             size="sm"
@@ -68,7 +87,8 @@ export const ProfilePage = (): JSX.Element => {
             className={iconButtonContentClassName}
           >
             <Edit2 className={smallIconClassName} />
-            <span>Edit Profile</span>
+            <span className={textFullClassName}>Edit Profile</span>
+            <span className={textShortClassName}>Edit</span>
           </Button>
         )}
 
@@ -96,14 +116,16 @@ export const ProfilePage = (): JSX.Element => {
           </Button>
         )}
 
-        {!isCreatingSalesforce && !currentUser.salesforceIntegration && (
+        {!isCreatingSalesforce && !profileUser.salesforceIntegration && (
           <Button
             variant="outline"
             size="sm"
             onClick={handleCreateSalesforceAccount}
             className={iconButtonContentClassName}
           >
-            Create Salesforce Account
+            <Cloud className={smallIconClassName} />
+            <span className={textFullClassName}>Create Salesforce Account</span>
+            <span className={textShortClassName}>Salesforce</span>
           </Button>
         )}
       </div>
@@ -111,6 +133,7 @@ export const ProfilePage = (): JSX.Element => {
       <div>
         {isCreatingSalesforce ? (
           <SalesforceAccountForm
+            userId={profileUser.id}
             onSuccess={handleSalesforceSuccess}
             onCancel={handleCancelSalesforce}
           />
@@ -121,7 +144,7 @@ export const ProfilePage = (): JSX.Element => {
             onCancel={handleCancelEditing}
           />
         ) : (
-          <ProfileInfo user={currentUser} />
+          <ProfileInfo user={profileUser} />
         )}
       </div>
     </div>

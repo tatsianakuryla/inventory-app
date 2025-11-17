@@ -87,8 +87,15 @@ export const MyInventoriesTable = (): JSX.Element => {
   const isAllSelected =
     view.sortedItems && selectedIds.size === view.sortedItems.length && view.sortedItems.length > 0;
 
+  const filteredData = view.sortedItems.length > 0 ? { items: view.sortedItems } : undefined;
+
   return (
-    <LoadingErrorEmptySwitcher isLoading={query.isLoading} error={query.error} data={query.data}>
+    <LoadingErrorEmptySwitcher
+      isLoading={query.isLoading}
+      error={query.error}
+      data={filteredData}
+      emptyText="No inventories found"
+    >
       <div className="flex flex-col gap-3">
         <InventoriesToolbar
           selectedCount={selectedIds.size}
@@ -109,20 +116,18 @@ export const MyInventoriesTable = (): JSX.Element => {
           }
         />
 
-        {query.data?.items && (
-          <InventoriesBasicTable
-            items={view.sortedItems}
-            columns={INVENTORY_COLUMNS}
-            getRowId={(row) => row.id}
-            sortKey={view.sortKey}
-            sortOrder={view.sortOrder}
-            onSort={view.handleSort}
-            selectedIds={selectedIds}
-            onSelectAll={handleSelectAll}
-            onSelectOne={handleSelectOne}
-            isAllSelected={isAllSelected}
-          />
-        )}
+        <InventoriesBasicTable
+          items={view.sortedItems}
+          columns={INVENTORY_COLUMNS}
+          getRowId={(row) => row.id}
+          sortKey={view.sortKey}
+          sortOrder={view.sortOrder}
+          onSort={view.handleSort}
+          selectedIds={selectedIds}
+          onSelectAll={handleSelectAll}
+          onSelectOne={handleSelectOne}
+          isAllSelected={isAllSelected}
+        />
       </div>
     </LoadingErrorEmptySwitcher>
   );

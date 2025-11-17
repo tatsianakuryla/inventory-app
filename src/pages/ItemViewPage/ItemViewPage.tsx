@@ -1,13 +1,20 @@
 import { type JSX } from 'react';
-import { useParams } from 'react-router-dom';
 import { PageHeader } from '../../components/PageHeader/PageHeader';
+import { container, card, content, message } from './item-view-page.styles';
 
 export const ItemViewPage = (): JSX.Element => {
-  const { itemId } = useParams<{ itemId: string }>();
-
   return (
     <>
-      <PageHeader title={`Viewing item with ID: ${itemId}`} />
+      <PageHeader title="Item View" />
+      <div className={container}>
+        <div className={card}>
+          <div className={content}>
+            <div className={message}>
+              To view and edit the item card you need to get permission from the Owner or an Admin.
+            </div>
+          </div>
+        </div>
+      </div>
     </>
   );
 };

@@ -41,17 +41,20 @@ export const WriteAccessInventoriesTable = (): JSX.Element => {
   };
 
   return (
-    <LoadingErrorEmptySwitcher isLoading={isLoading} error={error} data={data}>
-      {data?.items && (
-        <InventoriesBasicTable
-          items={sortedItems}
-          columns={INVENTORY_COLUMNS}
-          getRowId={(row) => row.id}
-          sortKey={sortKey}
-          sortOrder={sortOrder}
-          onSort={handleSort}
-        />
-      )}
+    <LoadingErrorEmptySwitcher
+      isLoading={isLoading}
+      error={error}
+      data={data}
+      emptyText="No inventories found"
+    >
+      <InventoriesBasicTable
+        items={sortedItems}
+        columns={INVENTORY_COLUMNS}
+        getRowId={(row) => row.id}
+        sortKey={sortKey}
+        sortOrder={sortOrder}
+        onSort={handleSort}
+      />
     </LoadingErrorEmptySwitcher>
   );
 };

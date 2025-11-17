@@ -9,6 +9,7 @@ import {
 import { useSalesforceIntegration } from '../../../hooks/integrations/useIntegrations';
 import { AuthService } from '../../../api/AuthService/AuthService';
 import { useUserStore } from '../../../stores/useUserStore';
+import { useQueryClient } from '@tanstack/react-query';
 import { ErrorBlock } from '../../ErrorBlock/ErrorBlock';
 import { FormInput } from '../../FormInput/FormInput';
 import { Button } from '../../Button/Button';
@@ -35,16 +36,19 @@ import {
 import { getApiError } from '../../../api/helpers/api.helpers';
 
 type SalesforceAccountFormProperties = {
+  userId?: string;
   onSuccess: () => void;
   onCancel: () => void;
 };
 
 export const SalesforceAccountForm = ({
+  userId,
   onSuccess,
   onCancel,
 }: SalesforceAccountFormProperties): JSX.Element => {
   const [success, setSuccess] = useState<string | undefined>();
   const setUser = useUserStore((state) => state.setUser);
+  const queryClient = useQueryClient();
   const { mutate, isPending, isError, error: mutationError } = useSalesforceIntegration();
 
   const errorMessage = mutationError
@@ -70,7 +74,11 @@ export const SalesforceAccountForm = ({
     setSuccess(undefined);
 
     mutate(
-      { account: data.account, contact: data.contact },
+      {
+        account: data.account,
+        contact: data.contact,
+        ...(userId && { userId }),
+      },
       {
         onSuccess: () => {
           setSuccess(`Successfully created Salesforce account and contact!`);
@@ -78,6 +86,10 @@ export const SalesforceAccountForm = ({
           void AuthService.me().then((updatedUser) => {
             setUser(updatedUser);
           });
+
+          if (userId) {
+            void queryClient.invalidateQueries({ queryKey: ['admin', 'user', userId] });
+          }
 
           setTimeout(() => {
             onSuccess();

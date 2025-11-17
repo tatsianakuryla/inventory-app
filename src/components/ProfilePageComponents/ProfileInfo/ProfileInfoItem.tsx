@@ -1,5 +1,9 @@
 import { type JSX, type ReactNode } from 'react';
-import { infoBlockClassName, infoLabelClassName } from './profile-info.styles';
+import {
+  infoBlockClassName,
+  infoLabelClassName,
+  infoTextWrapperClassName,
+} from './profile-info.styles';
 
 type ProfileInfoItemProperties = {
   icon: ReactNode;
@@ -17,7 +21,7 @@ export const ProfileInfoItem = ({
   return (
     <div className={infoBlockClassName}>
       {icon}
-      <div>
+      <div className={infoTextWrapperClassName}>
         <p className={infoLabelClassName}>{label}</p>
         <p className={valueClassName}>{value}</p>
       </div>

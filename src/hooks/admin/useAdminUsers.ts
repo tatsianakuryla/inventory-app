@@ -28,11 +28,14 @@ export const useGetUsers = (query: UsersQuery = {}): UseQueryResult<GetUsersResp
   });
 };
 
-export const useGetUserById = (userId: string): UseQueryResult<UserListItem> => {
+export const useGetUserById = (
+  userId: string,
+  enabled: boolean = true
+): UseQueryResult<UserListItem> => {
   return useQuery({
     queryKey: queryKeys.userById(userId),
     queryFn: () => AdminService.getUserById(userId),
-    enabled: !!userId,
+    enabled: enabled && !!userId,
   });
 };
 

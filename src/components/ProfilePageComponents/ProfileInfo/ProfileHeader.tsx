@@ -2,6 +2,7 @@ import { type JSX } from 'react';
 import { User as UserIcon, Shield, CheckCircle, XCircle } from 'lucide-react';
 import { Statuses } from '../../../shared/types/enums';
 import type { User } from '../../../api/UserService/user.schemas';
+import type { UserListItem } from '../../../api/AdminService/admin.schemas';
 import {
   profileHeaderClassName,
   profileHeaderContentClassName,
@@ -17,7 +18,7 @@ import {
 } from './profile-info.styles';
 
 type ProfileHeaderProperties = {
-  user: User;
+  user: User | UserListItem;
 };
 
 export const ProfileHeader = ({ user }: ProfileHeaderProperties): JSX.Element => {

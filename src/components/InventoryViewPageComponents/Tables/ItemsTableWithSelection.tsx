@@ -9,6 +9,12 @@ import { buildColumns } from './ItemsTableWithSelection/table-columns';
 import { TableHeader } from './ItemsTableWithSelection/TableHeader';
 import { TableRow } from './ItemsTableWithSelection/TableRow';
 import { EmptyTableState } from './ItemsTableWithSelection/EmptyTableState';
+import {
+  tableContainer,
+  table,
+  tbody,
+  checkboxColWidth,
+} from './ItemsTableWithSelection/items-table-with-selection.styles';
 
 interface ItemsTableWithSelectionProperties {
   items: Item[];
@@ -41,9 +47,9 @@ export const ItemsTableWithSelection = ({
 
   const handleRowClick = useCallback(
     (item: Item): void => {
-      if (!canEdit) return;
+      const route = canEdit ? APP_ROUTES.ITEM_EDIT : APP_ROUTES.ITEM_VIEW;
       void navigate(
-        generatePath(APP_ROUTES.ITEM_EDIT, {
+        generatePath(route, {
           inventoryId: item.inventoryId,
           itemId: item.id,
         })
@@ -53,13 +59,10 @@ export const ItemsTableWithSelection = ({
   );
 
   return (
-    <div
-      className="max-h-[700px] overflow-x-auto overflow-y-auto rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-900"
-      style={{ scrollbarGutter: 'stable' }}
-    >
-      <table className="w-full min-w-[900px] table-auto border-collapse">
+    <div className={tableContainer} style={{ scrollbarGutter: 'stable' }}>
+      <table className={table}>
         <colgroup>
-          {canEdit && <col style={{ width: '50px' }} />}
+          {canEdit && <col style={{ width: checkboxColWidth }} />}
           {columns.map((col) => (
             <col key={String(col.key)} style={{ width: col.width }} />
           ))}
@@ -75,7 +78,7 @@ export const ItemsTableWithSelection = ({
           onSort={onSort}
         />
 
-        <tbody className="divide-y divide-gray-100 bg-white dark:divide-gray-700 dark:bg-gray-900">
+        <tbody className={tbody}>
           {items.length === 0 ? (
             <EmptyTableState colSpan={canEdit ? columns.length + 1 : columns.length} />
           ) : (

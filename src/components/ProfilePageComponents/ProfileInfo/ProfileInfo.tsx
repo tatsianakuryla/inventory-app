@@ -1,5 +1,6 @@
 import { type JSX } from 'react';
 import type { User } from '../../../api/UserService/user.schemas';
+import type { UserListItem } from '../../../api/AdminService/admin.schemas';
 import { Mail, Calendar, Globe, Palette } from 'lucide-react';
 import { Languages } from '../../../shared/types/enums';
 import { ProfileHeader } from './ProfileHeader';
@@ -23,7 +24,7 @@ import {
 } from './profile-info.styles';
 
 type ProfileInfoProperties = {
-  user: User;
+  user: User | UserListItem;
 };
 
 export const ProfileInfo = ({ user }: ProfileInfoProperties): JSX.Element => {
