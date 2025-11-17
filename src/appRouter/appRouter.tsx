@@ -9,7 +9,7 @@ import { InventoryViewPage } from '../pages/InventoryViewPage/InventoryViewPage'
 import { ItemViewPage } from '../pages/ItemViewPage/ItemViewPage';
 import { SearchPage } from '../pages/SearchPage/SearchPage';
 import { ProfilePage } from '../pages/ProfilePage/ProfilePage';
-import { AdminUsersPage } from '../pages/AdminUsersPage/AdminUsersPage';
+import { AdminPage } from '../pages/AdminPage/AdminPage';
 import { LoginPage } from '../pages/LoginPage/LoginPage';
 import { RegisterPage } from '../pages/RegisterPage/RegisterPage';
 import { NotFoundPage } from '../pages/NotFoundPage/NotFoundPage';
@@ -44,7 +44,7 @@ export const AppRouter = (): JSX.Element => {
 
       <Route element={<RequireAdmin />}>
         <Route element={<AppLayout />}>
-          <Route path={APP_ROUTES.ADMIN_USERS} element={<AdminUsersPage />} />
+          <Route path={APP_ROUTES.ADMIN_USERS} element={<AdminPage />} />
         </Route>
       </Route>
 

@@ -9,6 +9,7 @@ import type {
 type SalesforceIntegrationVariables = {
   account: SalesforceAccountCreateRequest;
   contact: Omit<SalesforceContactCreateRequest, 'AccountId'>;
+  userId?: string;
 };
 
 export const useSalesforceIntegration = (): UseMutationResult<
@@ -18,8 +19,8 @@ export const useSalesforceIntegration = (): UseMutationResult<
 > => {
   return useMutation<SalesforceAccountWithContactResponse, unknown, SalesforceIntegrationVariables>(
     {
-      mutationFn: ({ account, contact }) =>
-        IntegrationService.createSalesforceAccountWithContact(account, contact),
+      mutationFn: ({ account, contact, userId }) =>
+        IntegrationService.createSalesforceAccountWithContact(account, contact, userId),
     }
   );
 };

@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { EmailSchema } from '../../shared/types/schemas';
+import { EmailSchema, IdSchema } from '../../shared/types/schemas';
 import { OptionalUrlSchema } from '../../shared/types/schemas';
 
 export const SalesforceAccountCreateRequestSchema = z.object({
@@ -27,6 +27,7 @@ export type SalesforceContactCreateRequest = z.infer<typeof SalesforceContactCre
 export const SalesforceAccountWithContactRequestSchema = z.object({
   account: SalesforceAccountCreateRequestSchema,
   contact: SalesforceContactCreateRequestSchema.omit({ AccountId: true }),
+  userId: z.union([IdSchema, z.undefined()]).optional(),
 });
 
 export type SalesforceAccountWithContactRequest = z.infer<
