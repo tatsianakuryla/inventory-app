@@ -1,4 +1,4 @@
-export const container = 'space-y-6';
+export const container = 'space-y-6 max-w-5xl mx-auto';
 export const loadingContainer = 'space-y-4';
 export const title = 'text-xl font-semibold';
 export const sectionTitle = 'flex items-center gap-2 text-lg font-semibold';
@@ -11,7 +11,7 @@ export const errorCard =
   'rounded-lg border border-red-200 bg-red-50 p-6 text-center ' +
   'dark:border-red-800 dark:bg-red-900/20';
 export const emptyCard = card + ' p-12 text-center';
-export const statsFlex = 'flex flex-col gap-4 md:flex-row';
+export const statsFlex = 'flex flex-col gap-4 md:flex-row justify-between';
 export const fieldsFlex = 'flex flex-col gap-4 lg:flex-row lg:flex-wrap';
 export const statValuesFlex = 'flex flex-wrap gap-3';
 export const statCard = card;

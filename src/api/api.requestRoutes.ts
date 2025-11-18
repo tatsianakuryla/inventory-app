@@ -95,3 +95,7 @@ export const SEARCH_ROUTES = {
 export const SALESFORCE_ROUTES = {
   CREATE_ACCOUNT_WITH_CONTACT: '/salesforce/create-account-with-contact',
 } as const;
+
+export const ODOO_ROUTES = {
+  CREATE_API_TOKEN: '/inventory/odoo/:inventoryId/api-token',
+} as const;

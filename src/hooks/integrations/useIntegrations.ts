@@ -1,10 +1,15 @@
-import { useMutation, type UseMutationResult } from '@tanstack/react-query';
+import {
+  useMutation,
+  type UseMutationResult,
+  type UseMutationOptions,
+} from '@tanstack/react-query';
 import { IntegrationService } from '../../api/IntegrationService/IntegrationService';
 import type {
   SalesforceAccountCreateRequest,
   SalesforceAccountWithContactResponse,
   SalesforceContactCreateRequest,
 } from '../../api/IntegrationService/salesforce.schemas';
+import type { OdooApiTokenResponse } from '../../api/IntegrationService/odoo.schemas';
 
 type SalesforceIntegrationVariables = {
   account: SalesforceAccountCreateRequest;
@@ -23,4 +28,13 @@ export const useSalesforceIntegration = (): UseMutationResult<
         IntegrationService.createSalesforceAccountWithContact(account, contact, userId),
     }
   );
+};
+
+export const useOdooIntegration = (
+  options?: Omit<UseMutationOptions<OdooApiTokenResponse, unknown, string>, 'mutationFn'>
+): UseMutationResult<OdooApiTokenResponse, unknown, string> => {
+  return useMutation<OdooApiTokenResponse, unknown, string>({
+    mutationFn: (inventoryId) => IntegrationService.createOdooApiToken(inventoryId),
+    ...options,
+  });
 };
